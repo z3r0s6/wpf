@@ -1,0 +1,26 @@
+@page { size: A4; margin: 2.2cm 2cm 2.4cm 2cm;
+  @bottom-right { content: counter(page) " / " counter(pages); font-family: monospace; font-size: 9pt; color: #8aa0c0; }
+}
+@page :first { margin: 0; }
+.cover {
+  height: 297mm; width: 210mm; padding: 4cm 3cm; box-sizing: border-box;
+  background: #0a0e1a; color: #d4e0f0; page-break-after: always;
+  display: flex; flex-direction: column; justify-content: space-between;
+}
+.cover h1 { font-size: 38pt; color: #9bd2ff; margin: 0; }
+.cover .sub { font-size: 14pt; color: #6f96c0; }
+.cover .logo { max-height: 84px; }
+body { font-family: "JetBrains Mono", "Fira Code", monospace; font-size: 10pt; color: #d4e0f0; background: #0e1320; line-height: 1.55; }
+h1, h2, h3, h4 { color: #9bd2ff; }
+h2 { border-bottom: 1px solid #2a3957; padding-bottom: .15em; }
+a { color: #74c0fc; }
+pre { background: #131a2c; border: 1px solid #2a3957; padding: .8em 1em; border-radius: 4px; }
+code { background: #1a2236; color: #9bd2ff; padding: 0 .25em; border-radius: 3px; }
+table { border-collapse: collapse; width: 100%; }
+th, td { border: 1px solid #2a3957; padding: .35em .55em; }
+th { background: #131a2c; color: #9bd2ff; }
+.severity-critical { background: #ff4d6d; color: #fff; padding: .1em .5em; border-radius: 3px; }
+.severity-high     { background: #ff9f1c; color: #1a1a1a; padding: .1em .5em; border-radius: 3px; }
+.severity-medium   { background: #ffd166; color: #2a2a2a; padding: .1em .5em; border-radius: 3px; }
+.severity-low      { background: #8ecae6; color: #0a0e1a; padding: .1em .5em; border-radius: 3px; }
+.severity-info     { background: #2a3957; color: #d4e0f0; padding: .1em .5em; border-radius: 3px; }

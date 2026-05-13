@@ -1,0 +1,10 @@
+graft wpf/data
+graft wpf/payloads
+graft wpf/report/templates
+graft wpf/report/themes
+graft wpf/report/assets
+include LICENSE
+include README.md
+include install.sh
+include scope/example.scope.yml
+include scripts/mock_target.py

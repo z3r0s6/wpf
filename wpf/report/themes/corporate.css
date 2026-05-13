@@ -1,0 +1,49 @@
+@page {
+  size: A4;
+  margin: 2.4cm 2cm 2.6cm 2cm;
+  @bottom-right { content: counter(page) " / " counter(pages); font-family: sans-serif; font-size: 9pt; color: #888; }
+  @bottom-left  { content: "wpf — Security Assessment Report";     font-family: sans-serif; font-size: 9pt; color: #888; }
+}
+@page :first { margin: 0; }
+.cover {
+  height: 297mm; width: 210mm; padding: 4cm 3cm; box-sizing: border-box;
+  background: linear-gradient(135deg, #0b1c3a 0%, #14315f 60%, #2557a7 100%);
+  color: white;
+  display: flex; flex-direction: column; justify-content: space-between;
+  page-break-after: always;
+}
+.cover .logo { max-height: 88px; max-width: 240px; }
+.cover h1   { font-size: 36pt; line-height: 1.15; margin: 0 0 .3em 0; font-weight: 700; }
+.cover .sub { font-size: 16pt; opacity: .88; }
+.cover .meta { font-size: 11pt; opacity: .85; line-height: 1.7; }
+.cover .classification {
+  border: 1px solid rgba(255,255,255,.6); padding: .3em .7em;
+  display: inline-block; letter-spacing: .12em; font-size: 9pt;
+}
+
+body {
+  font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+  font-size: 10.5pt;
+  color: #181a1f; line-height: 1.55;
+}
+h1 { color: #0b1c3a; border-bottom: 2px solid #2557a7; padding-bottom: .15em; }
+h2 { color: #14315f; margin-top: 1.4em; border-bottom: 1px solid #d0d4dc; padding-bottom: .15em; }
+h3 { color: #2557a7; }
+h4 { color: #14315f; margin-top: 1.2em; }
+code, pre { font-family: "JetBrains Mono", "Fira Code", "Consolas", monospace; font-size: 9.5pt; }
+pre {
+  background: #f4f6fb; border: 1px solid #d8dde9; padding: .8em 1em;
+  border-radius: 4px; white-space: pre-wrap; word-wrap: break-word;
+}
+code { background: #eef2f8; padding: 0 .2em; border-radius: 3px; }
+table { border-collapse: collapse; width: 100%; margin: .8em 0; }
+th, td { border: 1px solid #d0d4dc; padding: .35em .55em; vertical-align: top; }
+th { background: #eef2f8; color: #14315f; text-align: left; font-weight: 600; }
+
+.severity-critical { color: #fff; background: #c1121f; padding: .1em .5em; border-radius: 3px; font-weight: 700; }
+.severity-high     { color: #fff; background: #e76f51; padding: .1em .5em; border-radius: 3px; font-weight: 700; }
+.severity-medium   { color: #5b3a00; background: #ffd166; padding: .1em .5em; border-radius: 3px; font-weight: 700; }
+.severity-low      { color: #1a3300; background: #cdeac0; padding: .1em .5em; border-radius: 3px; }
+.severity-info     { color: #14315f; background: #dde9ff; padding: .1em .5em; border-radius: 3px; }
+
+hr { border: none; border-top: 1px dashed #b8bfcc; margin: 1.6em 0; }

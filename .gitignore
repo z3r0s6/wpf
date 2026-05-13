@@ -1,0 +1,43 @@
+# venvs
+.venv/
+venv/
+ENV/
+
+# python build/cache
+__pycache__/
+*.py[cod]
+*.egg
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# wpf runtime artefacts (user-local data, not source)
+reports/*/
+!reports/.gitkeep
+scope/*.yml
+!scope/example.scope.yml
+*.db
+*.db-wal
+*.db-shm
+audit.log.jsonl
+audit.log*.jsonl
+screenshots/
+tool_runs/
+evidence/
+wordlists/
+
+# editor / OS
+.vscode/
+.idea/
+.DS_Store
+*.swp
+*~
+
+# secrets — never commit
+.env
+.env.local
+*.pem
+*.key

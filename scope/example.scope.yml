@@ -1,0 +1,30 @@
+# Example scope file. Copy to `scope/scope.yml` and edit before running wpf.
+#
+# Authorization is ENFORCED at every active probe. Out-of-scope hosts raise
+# ScopeError and never trigger a subprocess. There is no override flag.
+#
+# Wildcards:   *.example.com   matches every subdomain (but not the apex)
+# Bare domain: example.com     matches apex AND every subdomain
+# CIDR:        10.0.0.0/24     matches every host in the range
+# IP literal:  203.0.113.7     matches just that address
+#
+engagement:
+  name: "ACME bug-bounty 2026"
+  type: bug_bounty            # bug_bounty | pentest | lab
+  authorized_by: "security@acme.example"
+  start: 2026-05-01
+  end:   2026-08-01
+
+scope:
+  in:
+    - "*.acme.example"
+    - "api.acme.example"
+    - "203.0.113.0/24"
+  out:
+    - "status.acme.example"   # vendor-hosted, out of scope
+    - "*.dev.acme.example"
+
+flags:
+  rate_limit_rps: 10
+  aggressive: false           # required true for sqlmap / exploit primitives
+  user_agent: "wpf/0.1 (bug-bounty; authorized)"

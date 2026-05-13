@@ -1,0 +1,10 @@
+https://attacker.example/
+//attacker.example/
+//attacker.example
+/\attacker.example
+https:attacker.example
+https://target.tld@attacker.example/
+https://attacker.example%2F.target.tld
+https://attacker.example#@target.tld
+https://attacker.example?target.tld
+javascript://attacker.example/%0aalert(1)

